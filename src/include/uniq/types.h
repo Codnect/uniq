@@ -56,7 +56,7 @@ typedef unsigned int 		dword_t;
 
 
 /*
- * diger ozellesitirilmis veri tipleri
+ * diger ozellestirilmis veri tipleri
  */
 typedef unsigned short		port_t;
 
