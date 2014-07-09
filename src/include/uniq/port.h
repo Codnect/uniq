@@ -45,6 +45,11 @@ typedef unsigned short		port_t;
 
 
 /*
+ * temel i/o islemleri
+ */
+ 
+ 
+/*
  * port'a bir byte yaz
  *
  * @param port : veri yazilacak port
