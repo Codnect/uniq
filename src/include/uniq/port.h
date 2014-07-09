@@ -17,8 +17,8 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UNIQ_IOPORT_H__
-#define __UNIQ_IOPORT_H__
+#ifndef __UNIQ_PORT_H__
+#define __UNIQ_PORT_H__
 
 #include <uniq/types.h>
 
@@ -105,4 +105,4 @@ static inline uint16_t inw(port_t port){
 	return ret_val;
 }
 
-#endif /* __UNIQ_IOPORT_H__ */
+#endif /* __UNIQ_PORT_H__ */
