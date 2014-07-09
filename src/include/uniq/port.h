@@ -20,6 +20,8 @@
 #ifndef __UNIQ_IOPORT_H__
 #define __UNIQ_IOPORT_H__
 
+#include <uniq/types.h>
+
 typedef unsigned short		port_t;
 
 /*
