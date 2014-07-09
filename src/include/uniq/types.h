@@ -54,4 +54,18 @@ typedef unsigned int 		dword_t;
 typedef signed int 		intptr_t;
 typedef unsigned int 		uintptr_t;
 
+typedef char bool;
+typedef char boolean;
+#define true  (1)
+#define false (0)
+
+#define NULL	((void*)0)
+#define null	NULL
+
+typedef unsigned int size_t;
+typedef signed int ssize_t;
+
+#define offsetof(type,member) 	((size_t) &((type*)0)->member)
+#define array_size(x)		(sizeof(x) / sizeof((x)[0]))
+
 #endif /* __UNIQ_TYPES_H__ */
