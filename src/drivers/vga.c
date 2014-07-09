@@ -2,13 +2,13 @@
  *  Copyright(C) 2014 Codnect Team
  *  Copyright(C) 2014 Burak Köken
  *
- *  This file is part of Nectlib.
+ *  This file is part of Uniq.
  *  
- *  Nectlib is free software: you can redistribute it and/or modify it under the
+ *  Uniq is free software: you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software
  *  Foundation, version 2 of the License.
  *
- *  Nectlib is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  Uniq is distributed in the hope that it will be useful, but WITHOUT ANY
  *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  *  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  *  details.
