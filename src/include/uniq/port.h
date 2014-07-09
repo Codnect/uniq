@@ -45,7 +45,8 @@ typedef unsigned short		port_t;
 
 
 /*
- * temel i/o islemleri
+ * temel i/o port islemleri
+ * -------------------------
  */
  
  
