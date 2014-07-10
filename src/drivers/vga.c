@@ -21,6 +21,7 @@
 #include <drivers/vga.h>
 #include <uniq/port.h>
 #include <uniq/types.h>
+#include <uniq/module.h>
 
 /*
  * grub onyukleyicisi kerneli 80x25 text modunda baslatir.
@@ -327,3 +328,6 @@ void init_vga_console(void){
 	reset_console();
 	
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
