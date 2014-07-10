@@ -50,7 +50,7 @@
 
 
 
-static uint16_t * vga_vram = null;	/* vga video ram */
+static uint16_t * vga_vram = NULL;	/* vga video ram */
 static uint8_t csr_x,csr_y;		/* imlec x ve y */
 static uint16_t csr_loc;		/* imlec toplam konum (y*80 + x)*/
 static uint8_t save_x,save_y;
@@ -306,7 +306,7 @@ void reset_console(void){
 void exit_vga_console(void){
 	
 	reset_console();
-	vga_vram = null;
+	vga_vram = NULL;
 	
 }
 
