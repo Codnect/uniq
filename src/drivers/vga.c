@@ -100,16 +100,16 @@ static void scrollup(){
 	for(int i=0;i<VGA_CSIZE-VGA_CWIDTH;i++)
 		vga_vram[i] = vga_vram[i+VGA_CWIDTH];
 
-	del_line(VGA_CHEIGHT-1);
+	delete_line(VGA_CHEIGHT-1);
 	csr_loc -= VGA_CWIDTH;
 }
 
 /*
- * del_line, satir numarasi verilen satirdaki karakterleri temizler
+ * delete_line, satir numarasi verilen satirdaki karakterleri temizler
  *
  * @param line_no : silinecek satir numarasi
  */
-void del_line(int line_no){
+void delete_line(int line_no){
 	
 	if(line_no < 0 || line_no > (VGA_CHEIGHT-1))
 		return;
@@ -232,7 +232,7 @@ void reset_console(void){
 	csr_x = csr_y = csr_loc = 0;
 	
 	for(int i=0;i<VGA_CHEIGHT;i++)
-		del_line(i);
+		delete_line(i);
 	move_csr();
 	
 }
