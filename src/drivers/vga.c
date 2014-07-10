@@ -309,7 +309,12 @@ void reset_console(void){
 }
 
 /*
- * exit_vga_console, vga konsolunu kapatir.
+ * exit_vga_console, vga konsolunu kapatir.kapattiktan 
+ * sonra tum ekrani temizleyecek ve ekrana bundan sonra
+ * karakter yada karakter dizisi yazdiramiyacaginizi
+ * unutmayin! ekrana karakter yazdirabilmek icin 
+ * vga_init_console fonksiyonuyla vga konsolunu tekrar 
+ * baslatmaniz gereklidir.
  */
 void exit_vga_console(void){
 	
@@ -320,7 +325,10 @@ void exit_vga_console(void){
 
 
 /*
- * init_vga_console, vga konsolunu baslatir.
+ * init_vga_console, vga konsolunu baslatir.eger bu fonksiyon
+ * vga konsolu baslatilmazsa ekrana karakter yada karakter 
+ * dizisi yazdirmaniz mumkun olmaz.onun icin init_vga_console'u
+ * baslatmayi unutmayin!
  */
 void init_vga_console(void){
 
