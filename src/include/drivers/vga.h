@@ -75,6 +75,7 @@ void reset_console(void);
 void putstr(char *string,uint8_t attr);
 void putchar(char c, uint8_t attr);
 void delete_line(uint8_t line_no);
+void insert_line(uint8_t line_no,char *s);
 
 
 #endif /* __UNIQ_VGA_H__ */
