@@ -21,7 +21,10 @@
 #define __UNIQ_VGA_H__
 
 #include <uniq/types.h>
- 
+
+/*
+ * vga 80x25 modu renkleri
+ */
 typedef enum{
 	COLOR_BLACK = 0x0,
 	COLOR_BLUE = 0x1,
@@ -42,15 +45,27 @@ typedef enum{
 }vga_color;
 
 
- 
+/*
+ * make_vga_entry , vga girisi icin karakteri hazirlar.
+ * 
+ * @param c : karakter
+ * @param attr : karakter rengi
+ */
 static inline uint16_t make_vga_entry(char c,uint8_t attr){
 	return ( attr << 8 ) | c;
 } 
 
+/*
+ * make_vga_color, vga rengi hazirlar.
+ *
+ * @param fcolor : karakter rengi
+ * @param bcolor : arkaplan rengi
+ */
 static inline uint8_t make_vga_color(uint8_t fcolor,uint8_t bcolor){
 	return ( bcolor << 4 ) | ( fcolor & 0x0F); 
 }
 
+/* varsayilan karakter ozelligi */
 #define D_ATTR	make_vga_color(COLOR_LIGHT_GREY,COLOR_BLACK)
 
 void goto_xy(uint8_t new_x,uint8_t new_y);
@@ -58,6 +73,6 @@ void init_vga_console(void);
 void reset_console(void);
 void putstr(char *string,uint8_t attr);
 void putchar(char c, uint8_t attr);
-void del_line(int line_no);
+void delete_line(int line_no);
 
 #endif /* __UNIQ_VGA_H__ */
