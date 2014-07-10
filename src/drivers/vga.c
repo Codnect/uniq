@@ -200,7 +200,8 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
  * gibi) ondan sonra eski koordinatlara donulmek istenirse bu
  * fonksiyon yardimiyla yapilir,restore_csr ile farkina gelecek
  * olursak restore_csr sadece bu kod sayfasi icinden erisilebilecek
- * duzeydedir.
+ * duzeydedir diye bir aciklama yapmisim :) zaten goruldugu gibi 
+ * restore_csr fonksiyonuna erisiliyor.
  */
 void goto_save_csr(void){
 	
