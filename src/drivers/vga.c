@@ -206,6 +206,9 @@ void putchar(char c, uint8_t attr){
 
 	if(!vga_vram)
 		return;
+		
+	if(!c)
+		return;
 
 	switch(c){
 		/* bir alt satir */
@@ -261,7 +264,10 @@ void putstr(char *string,uint8_t attr){
 	
 	if(!vga_vram)
 		return;
-
+		
+	if(!string)
+		return;
+	
 	int i = 0;
 	while(string[i])
 		putchar(string[i++],attr);
