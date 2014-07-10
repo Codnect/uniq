@@ -61,8 +61,10 @@ static uint8_t save_x,save_y;
  * konumuna(csr_loc) gore csr_x ve csr_y degerlerini ayarlar.
  */
 static void refresh_csr(void){
+	
 	csr_x = csr_loc % VGA_CWIDTH;
 	csr_y = csr_loc / VGA_CWIDTH;
+	
 }
 
 /*
@@ -71,9 +73,11 @@ static void refresh_csr(void){
  * goturur.
  */
 static void restore_csr(void){
+	
 	csr_x = save_x;
 	csr_y = save_y;
 	goto_xy(csr_x,csr_y);
+	
 }
 
 /*
@@ -102,6 +106,7 @@ static void scrollup(){
 
 	delete_line(VGA_CHEIGHT-1);
 	csr_loc -= VGA_CWIDTH;
+	
 }
 
 /*
@@ -139,6 +144,7 @@ static void move_csr(void){
 	outb(VGA_DPORT,(csr_loc & 0xFF));
 	
 	refresh_csr();
+	
 }
 
 /*
@@ -207,6 +213,7 @@ void putchar(char c, uint8_t attr){
 
 	scrollup();
 	move_csr();
+	
 }
 
 /*
