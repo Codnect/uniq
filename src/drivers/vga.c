@@ -297,6 +297,17 @@ void reset_console(void){
 }
 
 /*
+ * exit_vga_console, vga konsolunu kapatir.
+ */
+void exit_vga_console(void){
+	
+	reset_console();
+	vga_vram = null;
+	
+}
+
+
+/*
  * init_vga_console, vga konsolunu baslatir.
  */
 void init_vga_console(void){
