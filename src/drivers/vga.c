@@ -318,7 +318,10 @@ void reset_console(void){
  */
 void exit_vga_console(void){
 	
-	reset_console();
+	#ifndef DEBUG_MODE
+		reset_console();
+	#endif
+	
 	vga_vram = NULL;
 	
 }
