@@ -52,7 +52,7 @@
 
 static uint16_t * vga_vram = null;	/* vga video ram */
 static uint8_t csr_x,csr_y;		/* imlec x ve y */
-static uint16_t csr_loc;		/* imlec toplam konum */
+static uint16_t csr_loc;		/* imlec toplam konum (y*80 + x)*/
 static uint8_t save_x,save_y;
 
 
