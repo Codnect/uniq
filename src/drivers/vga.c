@@ -256,10 +256,7 @@ void putchar(char c, uint8_t attr){
  */
 void putstr(char *string,uint8_t attr){
 	
-	if(!vga_vram)
-		return;
-		
-	if(!string)
+	if(!vga_vram || !string)
 		return;
 	
 	int i = 0;
