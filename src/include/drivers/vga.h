@@ -17,8 +17,47 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
  
- #ifndef __UNIQ_VGA_H__
- #define __UNIQ_VGA_H__
+#ifndef __UNIQ_VGA_H__
+#define __UNIQ_VGA_H__
+
+#include <uniq/types.h>
  
+typedef enum{
+	COLOR_BLACK = 0x0,
+	COLOR_BLUE = 0x1,
+	COLOR_GREEN = 0x2,
+	COLOR_CYAN = 0x3,
+	COLOR_RED = 0x4,
+	COLOR_MAGENTA = 0x5,
+	COLOR_BROWN = 0x6,
+	COLOR_LIGHT_GREY = 0x7,
+	COLOR_DARK_GREY = 0x8,
+	COLOR_LIGHT_BLUE = 0x9,
+	COLOR_LIGHT_GREEN = 0xA,
+	COLOR_LIGHT_CYAN = 0xB,
+	COLOR_LIGHT_RED = 0xC,
+	COLOR_LIGHT_MAGENTA = 0xD,
+	COLOR_LIGHT_BROWN = 0xE,
+	COLOR_WHITE = 0xF
+}vga_color;
+
+
  
- #endif /* __UNIQ_VGA_H__ */
+static inline uint16_t make_vga_entry(char c,uint8_t attr){
+	return ( attr << 8 ) | c;
+} 
+
+static inline uint8_t make_vga_color(uint8_t fcolor,uint8_t bcolor){
+	return ( bcolor << 4 ) | ( fcolor & 0x0F); 
+}
+
+#define D_ATTR	make_vga_color(COLOR_LIGHT_GREY,COLOR_BLACK)
+
+void goto_xy(uint8_t new_x,uint8_t new_y);
+void init_vga_console(void);
+void reset_console(void);
+void putstr(char *string,uint8_t attr);
+void putchar(char c, uint8_t attr);
+void del_line(int line_no);
+
+#endif /* __UNIQ_VGA_H__ */
