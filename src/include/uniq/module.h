@@ -20,7 +20,6 @@
 #ifndef	__UNIQ_MODULE_H__
 #define __UNIQ_MODULE_H__
 
-
 #define	MODULE_AUTHOR(__module_author) \
 	static char * MODULE_AUTHOR = \
 	__module_author
