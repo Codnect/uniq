@@ -114,7 +114,7 @@ static void scrollup(void){
  *
  * @param line_no : silinecek satir numarasi
  */
-void delete_line(size_t line_no){
+void delete_line(uint8_t line_no){
 	
 	if(line_no > (VGA_CHEIGHT-1))
 		return;
