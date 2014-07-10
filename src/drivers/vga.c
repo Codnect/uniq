@@ -318,6 +318,9 @@ void reset_console(void){
  */
 void exit_vga_console(void){
 	
+	/*
+	 * eger debug modu tanimliysa ekrani temizleme!
+	 */
 	#ifndef DEBUG_MODE
 		reset_console();
 	#endif
