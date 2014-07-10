@@ -187,7 +187,7 @@ void putchar(char c, uint8_t attr){
 			break;
 		/* yatay tab */
 		case '\t':
-			for(int i=0;i<8;i++)
+			for(int i=0;i<TAB_SIZE;i++)
 				vga_vram[csr_loc++] = make_vga_entry(BLANK,D_ATTR);
 			break;
 		/* dikey tab */
