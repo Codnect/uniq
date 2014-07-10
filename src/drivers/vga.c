@@ -142,10 +142,7 @@ void delete_line(uint8_t line_no){
  */
 void insert_line(uint8_t line_no,char *s){
 	
-	if(!vga_vram)
-		return;
-	
-	if(!s)
+	if(!vga_vram || !s)
 		return;
 
 	if(line_no > (VGA_CHEIGHT-1))
@@ -204,10 +201,7 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
  */
 void putchar(char c, uint8_t attr){
 
-	if(!vga_vram)
-		return;
-		
-	if(!c)
+	if(!vga_vram || !c)
 		return;
 
 	switch(c){
