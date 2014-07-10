@@ -193,6 +193,22 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
 }
 
 /*
+ * goto_save_csr, kaydedilmis koordinatlara geri doner.
+ * goto_xy fonksiyonuyla baska koordinatlara gidilmeden once
+ * o anki koordinatlar kaydedilir ve yeni koordinatlar gidilir,
+ * bir degisiklik yapilicaksa yapilir(karakter dizisi yazilmasi
+ * gibi) ondan sonra eski koordinatlara donulmek istenirse bu
+ * fonksiyon yardimiyla yapilir,restore_csr ile farkina gelecek
+ * olursak restore_csr sadece bu kod sayfasi icinden erisilebilecek
+ * duzeydedir.
+ */
+void goto_save_csr(void){
+	
+	restore_csr();
+	
+}
+
+/*
  * putchar, verilen karakteri ekrana basar.
  *
  * @param c: karakter
