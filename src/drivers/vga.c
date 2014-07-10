@@ -168,7 +168,6 @@ void putchar(char c, uint8_t attr){
 	switch(c){
 		/* bir alt satir */
 		case '\n':
-
 			while(csr_loc % VGA_CWIDTH)
 				vga_vram[csr_loc++] = make_vga_entry(BLANK,D_ATTR);
 			break;
