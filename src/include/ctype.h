@@ -21,45 +21,31 @@
 #define __UNIQ_CTYPE_H__
 
 static inline int isdigit(const char c){
-
 	return c>='0' && c <='9';
-
 }
 
 static inline int islower(const char c){
-
 	return c>='a' && c <='z';
-
 }
 
 static inline int isupper(const char c){
-
 	return c>='A' && c <='Z';
-
 }
 
 static inline int isalpha(const char c){
-
 	return islower(c) && isupper(c);
-
 }
 
 static inline int isascii(const char c){
-
 	return ((unsigned char)(c) <= 0x7f);
-
 }
 
 static inline unsigned char toascii(const char c){
-
 	return ((unsigned char)(c) & 0x7f);
-
 }
 
 static inline int isodigit(const char c){
-
 	return c>='0' && c<='7';
-
 }
 
 static inline unsigned char tolower(unsigned char c){
@@ -79,9 +65,7 @@ static inline unsigned char toupper(unsigned char c){
 }
 
 static inline int isxdigit(const char c){
-
 	return tolower(c) >='0' && tolower(c)<='f';
-
 }
 
 
