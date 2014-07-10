@@ -151,7 +151,7 @@ static void move_csr(void){
 }
 
 /*
- * goto_xy ,verilen x e y koordinatlarina gore imleci tasir.
+ * goto_xy ,verilen x ve y koordinatlarina gore imleci tasir.
  *
  * @param new_x : x koordinati
  * @param new_y : y koordinati
