@@ -135,6 +135,33 @@ void delete_line(uint8_t line_no){
 }
 
 /*
+ * insert_line,satirdaki karakter dizisini degistirir
+ *
+ * @param line_no : satir numarasi
+ * @param s : karakter dizisi
+ */
+void insert_line(uint8_t line_no,char *s){
+	
+	if(!vga_vram)
+		return;
+	
+	if(line_no > (VGA_CHEIGHT-1))
+		return;
+		
+	if(!s)
+		return;
+
+	delete_line(line_no);	
+	save_csr();
+	csr_x = 0;
+	csr_y = line_no;
+	goto_xy(csr_x,csr_y);
+	putstr(s);
+	restore_csr();
+		
+}
+ 
+/*
  * move_csr, imleci degisen csr_loc'a gore ayarlar.kisacasi imlec
  * konumunu ayarlar.
  */
