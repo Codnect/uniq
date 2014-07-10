@@ -128,7 +128,7 @@ void delete_line(uint8_t line_no){
 	goto_xy(csr_x,csr_y);
 
 	for(int i=csr_x;i<VGA_CWIDTH;i++)
-		vga_vram[csr_loc +i] = make_vga_entry(BLANK,D_ATTR);
+		vga_vram[csr_loc+i] = make_vga_entry(BLANK,D_ATTR);
 
 	restore_csr();
  	
@@ -183,8 +183,7 @@ void putchar(char c, uint8_t attr){
 	switch(c){
 		/* bir alt satir */
 		case '\n':
-			while(csr_loc % VGA_CWIDTH)
-				vga_vram[csr_loc++] = make_vga_entry(BLANK,D_ATTR);
+			goto_xy(0,csr_y+1);
 			break;
 		/* imleci sola kaydir(backspace) */
 		case '\b':
