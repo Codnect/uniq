@@ -207,8 +207,9 @@ void goto_save_csr(void){
 	
 	if(!vga_vram)
 		return;
-		
-	restore_csr();
+	
+	if(!save_x && !save_y)
+		restore_csr();
 	
 }
 
@@ -222,6 +223,9 @@ void putchar(char c, uint8_t attr){
 
 	if(!vga_vram || !c)
 		return;
+		
+	if(!attr)
+		attr = D_ATTR;
 
 	switch(c){
 		/* bir alt satir */
@@ -278,6 +282,9 @@ void putstr(char *string,uint8_t attr){
 	if(!vga_vram || !string)
 		return;
 	
+	if(!attr)
+		attr = D_ATTR;
+		
 	int i = 0;
 	while(string[i])
 		putchar(string[i++],attr);
