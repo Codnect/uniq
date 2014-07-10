@@ -122,7 +122,6 @@ void delete_line(uint8_t line_no){
 	if(line_no > (VGA_CHEIGHT-1))
 		return;
 
-	save_csr();
 	csr_x = 0;
 	csr_y = line_no;
 	goto_xy(csr_x,csr_y);
@@ -149,7 +148,6 @@ void insert_line(uint8_t line_no,char *s){
 		return;
 		
 	delete_line(line_no);	
-	save_csr();
 	csr_x = 0;
 	csr_y = line_no;
 	goto_xy(csr_x,csr_y);
@@ -188,6 +186,7 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
 	if(new_x > (VGA_CWIDTH-1) || (VGA_CHEIGHT-1) < new_y)
 		return;
 
+	save_csr();
 	csr_loc = new_y * VGA_CWIDTH + new_x;
 	move_csr();
 
