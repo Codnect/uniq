@@ -151,7 +151,7 @@ void insert_line(uint8_t line_no,char *s){
 	csr_x = 0;
 	csr_y = line_no;
 	goto_xy(csr_x,csr_y);
-	putstr(s);
+	putstr(s,D_ATTR);
 	restore_csr();
 		
 }
