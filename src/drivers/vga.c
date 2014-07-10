@@ -116,6 +116,9 @@ static void scrollup(void){
  */
 void delete_line(uint8_t line_no){
 	
+	if(!vga_vram)
+		return;
+
 	if(line_no > (VGA_CHEIGHT-1))
 		return;
 
@@ -155,6 +158,9 @@ static void move_csr(void){
  */
 void goto_xy(uint8_t new_x,uint8_t new_y){
 	
+	if(!vga_vram)
+		return;
+
 	if(new_x > (VGA_CWIDTH-1) || (VGA_CHEIGHT-1) < new_y)
 		return;
 
@@ -170,6 +176,9 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
  * @param attr: karakter ozelligi(rengi)
  */
 void putchar(char c, uint8_t attr){
+
+	if(!vga_vram)
+		return;
 
 	switch(c){
 		/* bir alt satir */
@@ -223,6 +232,9 @@ void putchar(char c, uint8_t attr){
  * @param attr : karakter ozelligi
  */
 void putstr(char *string,uint8_t attr){
+	
+	if(!vga_vram)
+		return;
 
 	int i = 0;
 	while(string[i])
@@ -235,8 +247,11 @@ void putstr(char *string,uint8_t attr){
  */
 void reset_console(void){
 	
-	csr_x = csr_y = csr_loc = 0;
+	if(!vga_vram)
+		return;
 	
+	csr_x = csr_y = csr_loc = 0;
+
 	for(int i=0;i<VGA_CHEIGHT;i++)
 		delete_line(i);
 	move_csr();
