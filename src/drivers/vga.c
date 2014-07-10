@@ -205,6 +205,9 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
  */
 void goto_save_csr(void){
 	
+	if(!vga_vram)
+		return;
+		
 	restore_csr();
 	
 }
