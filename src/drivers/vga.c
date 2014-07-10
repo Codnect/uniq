@@ -145,12 +145,12 @@ void insert_line(uint8_t line_no,char *s){
 	if(!vga_vram)
 		return;
 	
-	if(line_no > (VGA_CHEIGHT-1))
-		return;
-		
 	if(!s)
 		return;
 
+	if(line_no > (VGA_CHEIGHT-1))
+		return;
+		
 	delete_line(line_no);	
 	save_csr();
 	csr_x = 0;
