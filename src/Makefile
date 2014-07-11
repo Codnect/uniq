@@ -1,12 +1,13 @@
 include Makefile.am
 
 
-LIBS = #
-DRIVERS = drivers/vga.o
-
 LDFLAGS=-Tlink.ld
 LDEMULATION=elf_i386
 TARGET=elf32-i386
+KERN_OUTPUT=kernel.bin
+
+LIBS = #
+DRIVERS = drivers/vga.o
 
 ALLSOURCES = arch/i386/boot.o \
 	     init/main.o
@@ -25,4 +26,4 @@ clean:
 	-rm $(SOURCES)
 
 link:
-	$(LD) -m $(LDEMULATION) $(LDFLAGS) -o kernel.bin -b $(TARGET) $(SOURCES)
+	$(LD) -m $(LDEMULATION) $(LDFLAGS) -o $(KERN_OUTPUT) -b $(TARGET) $(SOURCES)
