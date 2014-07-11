@@ -22,9 +22,29 @@
 
 uint32_t strlen(const char *s){
  
-  uint32_t i = 0;
-  while(s[i++]);
+   uint32_t i = 0;
+   while(s[i++]);
   
-  return i;
+   return i;
   
+}
+
+int32_t strcmp(const char *s1,const char *s2){
+ 
+   uint32_t i = 0;
+   
+   for(;;){
+    
+      if((!s1[i] ||  !s2[i]) && (s1[i] || s2[i]))
+         return i;
+         
+      if(s1[i] != s2[i])
+         return s1[i] - s2[i];
+         
+      if(!s1[i] && !s2[i])
+         return 0;
+    
+      i++;
+   }
+   
 }
