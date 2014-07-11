@@ -18,33 +18,55 @@
  */
 
 #include <uniq/types.h>
+#include <ctype.h>
 
-
-uint32_t strlen(const char *s){
+size_t strlen(const char *s){
  
-   uint32_t i = 0;
+   size_t i = 0;
    while(s[i++]);
   
    return i;
   
 }
 
-int32_t strcmp(const char *s1,const char *s2){
+
+
+int strcmp(const char *s1,const char *s2){
  
-   uint32_t i = 0;
+   size_t i = 0;
    
    for(;;){
     
-      if((!s1[i] ||  !s2[i]) && (s1[i] || s2[i]))
-         return i;
-         
       if(s1[i] != s2[i])
-         return s1[i] - s2[i];
+         return (s1[i] > s2[i]) : 1 : -1;
          
-      if(!s1[i] && !s2[i])
-         return 0;
-    
+      if(!s1[i])
+         break;
       i++;
+      
    }
    
+   return 0;
+   
+}
+
+int strcasecmp(const char *s1,const char *s2){
+ 
+  int c1,c2,i = 0;
+  
+  for(;;){
+     
+     c1 = tolower(s1[i]);
+     c2 = tolower(s2[i]);
+     
+     if(c1 != c2)
+        return (c1 > c2) : 1 : -1;
+        
+     if(!c1)
+        break;
+   
+  }
+  
+  return 0;
+  
 }
