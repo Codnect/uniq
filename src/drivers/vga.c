@@ -220,7 +220,7 @@ void goto_save_csr(void){
  * @param c: karakter
  * @param attr: karakter ozelligi(rengi)
  */
-void putchar(char c, uint8_t attr){
+void putchar(const char c, uint8_t attr){
 
 	if(!vga_vram || !c)
 		return;
@@ -278,7 +278,7 @@ void putchar(char c, uint8_t attr){
  * @param string : karakter dizisi
  * @param attr : karakter ozelligi
  */
-void putstr(char *string,uint8_t attr){
+void putstr(const char *string,uint8_t attr){
 	
 	if(!vga_vram || !string)
 		return;
