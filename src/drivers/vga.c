@@ -123,11 +123,11 @@ void delete_line(uint8_t line_no){
 	if(line_no > (VGA_CHEIGHT-1))
 		return;
 
-	csr_x = 0;
-	csr_y = line_no;
-	goto_xy(csr_x,csr_y);
+	uint8_t new_x = 0;
+	uint8_t new_y = line_no;
+	goto_xy(new_x,new_y);
 
-	for(int i=csr_x;i<VGA_CWIDTH;i++)
+	for(uint8_t i=csr_x;i<VGA_CWIDTH;i++)
 		vga_vram[csr_loc+i] = make_vga_entry(BLANK,DEFAULT_ATTR);
 
 	restore_csr();
@@ -149,9 +149,9 @@ void insert_line(uint8_t line_no,char *s){
 		return;
 		
 	delete_line(line_no);	
-	csr_x = 0;
-	csr_y = line_no;
-	goto_xy(csr_x,csr_y);
+	uint8_t new_x = 0;
+	uint8_t new_y = line_no;
+	goto_xy(new_x,new_y);
 	putstr(s,DEFAULT_ATTR);
 	restore_csr();
 		
@@ -302,7 +302,7 @@ void reset_console(void){
 	
 	csr_x = csr_y = csr_loc = 0;
 
-	for(int i=0;i<VGA_CHEIGHT;i++)
+	for(uint8_t i=0;i<VGA_CHEIGHT;i++)
 		delete_line(i);
 	move_csr();
 	
