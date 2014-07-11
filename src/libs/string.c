@@ -17,3 +17,14 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <uniq/types.h>
+
+
+uint32_t strlen(const char *s){
+ 
+  uint32_t i = 0;
+  while(s[i++]);
+  
+  return i;
+  
+}
