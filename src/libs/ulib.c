@@ -17,3 +17,24 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <uniq/types.h>
+
+void swap(int32_t *x,int32_t *y){
+    
+    int32_t z = *x;
+    *x = *y;
+    *y = z;
+  
+}
+
+int32_t abs(int32_t x){
+    return (x < 0) ? -x : x; 
+}
+
+int32_t max(int32_t x,int32_t y){
+    return (x > y) ? x : y; 
+}
+
+int32_t min(int32_t a,int32_t b){
+    return (x > y) ? y : x;
+}
