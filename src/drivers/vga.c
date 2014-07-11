@@ -318,6 +318,9 @@ void reset_console(void){
  */
 void exit_vga_console(void){
 	
+	if(!vga_vram)
+		return;
+		
 	/*
 	 * eger debug modu tanimliysa ekrani temizleme!
 	 */
@@ -337,6 +340,9 @@ void exit_vga_console(void){
  * baslatmayi unutmayin!
  */
 void init_vga_console(void){
+
+	if(vga_vram)
+		return;
 
 	vga_vram = (uint16_t*)(VGA_VRAM_START);
 	reset_console();
