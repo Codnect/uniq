@@ -127,7 +127,7 @@ void delete_line(uint8_t line_no){
 	uint8_t new_y = line_no;
 	goto_xy(new_x,new_y);
 
-	for(uint8_t i=csr_x;i<VGA_CWIDTH;i++)
+	for(uint8_t i=new_x;i<VGA_CWIDTH;i++)
 		vga_vram[csr_loc+i] = make_vga_entry(BLANK,DEFAULT_ATTR);
 
 	restore_csr();
