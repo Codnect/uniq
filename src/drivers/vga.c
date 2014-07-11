@@ -128,7 +128,7 @@ void delete_line(uint8_t line_no){
 	goto_xy(csr_x,csr_y);
 
 	for(int i=csr_x;i<VGA_CWIDTH;i++)
-		vga_vram[csr_loc+i] = make_vga_entry(BLANK,D_ATTR);
+		vga_vram[csr_loc+i] = make_vga_entry(BLANK,DEFAULT_ATTR);
 
 	restore_csr();
  	
@@ -152,7 +152,7 @@ void insert_line(uint8_t line_no,char *s){
 	csr_x = 0;
 	csr_y = line_no;
 	goto_xy(csr_x,csr_y);
-	putstr(s,D_ATTR);
+	putstr(s,DEFAULT_ATTR);
 	restore_csr();
 		
 }
@@ -226,7 +226,7 @@ void putchar(char c, uint8_t attr){
 		return;
 		
 	if(!attr)
-		attr = D_ATTR;
+		attr = DEFAULT_ATTR;
 
 	switch(c){
 		/* bir alt satir */
@@ -235,7 +235,7 @@ void putchar(char c, uint8_t attr){
 			break;
 		/* imleci sola kaydir(backspace) */
 		case '\b':
-			vga_vram[csr_loc--] = make_vga_entry(BLANK,D_ATTR);
+			vga_vram[csr_loc--] = make_vga_entry(BLANK,DEFAULT_ATTR);
 			break;
 		/* satir basi */
 		case '\r':
@@ -244,11 +244,11 @@ void putchar(char c, uint8_t attr){
 		/* yatay tab */
 		case '\t':
 			for(int i=0;i<TAB_SIZE;i++)
-				vga_vram[csr_loc++] = make_vga_entry(BLANK,D_ATTR);
+				vga_vram[csr_loc++] = make_vga_entry(BLANK,DEFAULT_ATTR);
 			break;
 		/* dikey tab */
 		case '\v':
-			putstr("\n\t",D_ATTR);
+			putstr("\n\t",DEFAULT_ATTR);
 			break;
 		/* cift tirnak */
 		case '\"':
@@ -284,7 +284,7 @@ void putstr(char *string,uint8_t attr){
 		return;
 	
 	if(!attr)
-		attr = D_ATTR;
+		attr = DEFAULT_ATTR;
 		
 	int i = 0;
 	while(string[i])
