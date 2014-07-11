@@ -209,7 +209,7 @@ void goto_save_csr(void){
 	if(!vga_vram)
 		return;
 	
-	if(!save_x && !save_y)
+	if(save_x && save_y)
 		restore_csr();
 	
 }
