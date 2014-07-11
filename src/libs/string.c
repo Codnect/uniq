@@ -26,7 +26,6 @@ size_t strlen(const char *s){
    while(s[i++]);
   
    return i;
-  
 }
 
 
@@ -43,11 +42,9 @@ int strcmp(const char *s1,const char *s2){
       if(!s1[i])
          break;
       i++;
-      
    }
    
    return 0;
-   
 }
 
 int strcasecmp(const char *s1,const char *s2){
@@ -55,7 +52,6 @@ int strcasecmp(const char *s1,const char *s2){
   int c1,c2,i = 0;
   
   for(;;){
-     
      c1 = tolower(s1[i]);
      c2 = tolower(s2[i]);
      
@@ -64,9 +60,8 @@ int strcasecmp(const char *s1,const char *s2){
         
      if(!c1)
         break;
-   
+     i++;
   }
   
   return 0;
-  
 }
