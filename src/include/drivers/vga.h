@@ -66,7 +66,7 @@ static inline uint8_t make_vga_color(uint8_t fcolor,uint8_t bcolor){
 }
 
 /* varsayilan karakter ozelligi */
-#define D_ATTR	make_vga_color(COLOR_LIGHT_GREY,COLOR_BLACK)
+#define DEFAULT_ATTR	make_vga_color(COLOR_LIGHT_GREY,COLOR_BLACK)
 
 void goto_xy(uint8_t new_x,uint8_t new_y);
 void goto_save_csr(void);
