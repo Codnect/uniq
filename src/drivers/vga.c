@@ -135,12 +135,12 @@ void delete_line(uint8_t line_no){
 }
 
 /*
- * insert_line,satirdaki karakter dizisini degistirir
+ * change_line,satirdaki karakter dizisini degistirir
  *
  * @param line_no : satir numarasi
  * @param s : karakter dizisi
  */
-void insert_line(uint8_t line_no,char *s){
+void change_line(uint8_t line_no,const char *s){
 	
 	if(!vga_vram || !s)
 		return;
