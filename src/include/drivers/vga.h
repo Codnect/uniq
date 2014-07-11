@@ -73,8 +73,8 @@ void goto_save_csr(void);
 void init_vga_console(void);
 void exit_vga_console(void);
 void reset_console(void);
-void putstr(char *string,uint8_t attr);
-void putchar(char c, uint8_t attr);
+void putstr(const char *string,uint8_t attr);
+void putchar(const char c, uint8_t attr);
 void delete_line(uint8_t line_no);
 void insert_line(uint8_t line_no,char *s);
 
