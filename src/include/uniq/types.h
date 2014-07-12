@@ -68,4 +68,23 @@ typedef signed int ssize_t;
 #define offsetof(type,member) 	((size_t) &((type*)0)->member)
 #define array_size(x)		(sizeof(x) / sizeof((x)[0]))
 
+/*
+ * veri tipi limitleri
+ */
+#define UINT8_MAX		0xff
+#define UINT8_MIN		0
+#define INT8_MAX		0x7f
+#define INT8_MIN		-(0x7f+1)
+
+#define UINT16_MAX		0xffff
+#define UINT16_MIN		0
+#define INT16_MAX		0x7fff
+#define INT16_MIN		-(0x7fff+1)
+
+#define UINT32_MAX		0xffffffff
+#define UINT32_MIN		0
+#define INT32_MAX		0x7fffffff
+#define INT32_MIN		-(0x7fffffff+1)
+
+
 #endif /* __UNIQ_TYPES_H__ */
