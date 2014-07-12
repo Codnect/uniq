@@ -163,11 +163,11 @@ void change_line(uint8_t line_no,const char *s){
  */
 static void move_csr(void){
 
-	outb(VGA_IPORT,VGA_CLHIGH);
-	outb(VGA_DPORT,csr_loc >> 8);
+	outbyte(VGA_IPORT,VGA_CLHIGH);
+	outbyte(VGA_DPORT,csr_loc >> 8);
 
-	outb(VGA_IPORT,VGA_CLLOW);
-	outb(VGA_DPORT,(csr_loc & 0xFF));
+	outbyte(VGA_IPORT,VGA_CLLOW);
+	outbyte(VGA_DPORT,(csr_loc & 0xFF));
 	
 	refresh_csr();
 	
