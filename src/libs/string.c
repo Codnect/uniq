@@ -270,3 +270,50 @@ int strtobool(const char *s, bool *r){
 	}
 	return 0;
 }
+
+/*
+ * str_ltrim, karakter dizisinin solundaki bosluklari
+ * kaldirir.
+ *
+ * @param s : karakter dizisi
+ */
+char *str_ltrim(char *s){
+	while(isspace(*s))
+		++s;
+	return (char*)s;
+}
+
+
+/*
+ * str_rtrim, karakter dizisinin sagindaki bosluklari
+ * kaldirir.
+ *
+ * @param s : karakter dizisi
+ */
+char *str_rtrim(char *s){
+
+	size_t len;
+	char *end_s;
+	
+	len = strlen(s);
+	if(!len)
+		return s;
+	end_s = s + len - 1;
+	while(end_s >= s && isspace(*end_s))
+		end_s--;
+
+	*(++end_s) = '\0';
+
+	return (char*)s;	
+}
+
+/*
+ * strim, karakter dizisinin sagindaki ve solundaki 
+ * bosluklari kaldirir.
+ *
+ * @param s : karakter dizisi
+ */
+char *strim(char *s){
+	return str_ltrim(str_rtrim(s));
+	
+}
