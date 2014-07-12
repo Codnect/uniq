@@ -30,7 +30,25 @@ size_t strlen(const char *s){
 	size_t i = 0;
 	while(s[i++]);
 	
-	return i-1;
+	return --i;
+}
+
+/*
+ * strnlen,verilen karakter dizisinin uzunlugu verir.
+ * fakat belli bir maksimum karaktere kadar bakar.
+ *
+ * @param s : karakter dizisi
+ * @param count : maksimum bakilacak karakter uzunlugu
+ */
+size_t strnlen(const char *s,size_t count){
+	
+	size_t i = 0;
+	while(count--)
+		if(!s[i++]){
+			--i;
+			break;
+		}
+	return i;
 }
 
 /*
