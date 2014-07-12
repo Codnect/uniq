@@ -60,7 +60,7 @@ int strcmp(const char *s1,const char *s2){
  *
  * @param s1 : ilk karakter dizisi
  * @param s2 : diger karakter dizisi
- * @param count : karsilastirilacak karakter sayisi 
+ * @param count : maksimum karsilastirilacak karakter sayisi
  */
 int strncmp(const char *s1,const char *s2,size_t count){
   
@@ -107,7 +107,7 @@ int strcasecmp(const char *s1,const char *s2){
  *
  * @param s1 : ilk karakter dizisi
  * @param s2 : diger karakter dizisi
- * @param count : karsilastirilacak karakter sayisi 
+ * @param count : maksimum karsilastirilacak karakter sayisi 
  */
 int strncasecmp(const char *s1,const char *s2,size_t count){
  
@@ -161,7 +161,7 @@ char* strtolower(char *s){
  * sayisina kadar buyuk harfe cevirir.
  *
  * @param s : karakter dizisi
- * @param count : karakter sayisi
+ * @param count : maksimum karakter sayisi
  */
 char* strntoupper(char* s,size_t count) {
 
@@ -215,7 +215,7 @@ char* strcpy(char *dest, const char *src){
  *
  * @param dest : hedef karakter dizisi
  * @param src : kaynak karakter dizisi
- * @param count : kopyalacak karakter sayisi
+ * @param count : maksimum kopyalanacak karakter sayisi
  */
 char *strncpy(char *dest, const char *src, size_t count){
 	
