@@ -125,3 +125,33 @@ int strncasecmp(const char *s1,const char *s2,size_t count){
   
   	return 0;
 }
+
+/*
+ * strtoupper, verilen karakter dizisini buyuk harfe cevirir.
+ *
+ * @param s : karakter dizisi
+ */
+char* strtoupper(char* s) {
+
+	size_t i = 0;
+	while(s[i]){
+		s[i] = toupper(s[i]);
+		i++;
+	}
+	return s;
+}
+
+/*
+ * strtolower, verilen karakter dizisini kucuk harfe cevirir.
+ *
+ * @param s : karakter dizisi
+ */
+char* strtolower(char *s){
+
+	size_t i = 0;
+	while(s[i]){
+		s[i] = tolower(s[i]);
+		i++;
+	}
+	return s;
+}
