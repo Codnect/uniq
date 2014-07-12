@@ -43,11 +43,13 @@ size_t strlen(const char *s){
 size_t strnlen(const char *s,size_t count){
 	
 	size_t i = 0;
-	while(count--)
+	while(count--){
 		if(!s[i++]){
 			--i;
 			break;
 		}
+	}
+	
 	return i;
 }
 
