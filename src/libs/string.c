@@ -193,3 +193,35 @@ char* strntolower(char *s,size_t count){
 	}
 	return s;
 }
+
+/*
+ * strcpy, bir karakter dizisini diger bir karakter
+ * dizisine kopyalar.
+ *
+ * @param dest : hedef karakter dizisi
+ * @param src : kaynak karakter dizisi
+ */
+char* strcpy(char *dest, const char *src){
+	
+	char *temp = dest;
+	while ((*dest++ = *src++) != '\0');
+
+	return temp;
+}
+
+/*
+ * strcpy, bir karakter dizisini diger bir karakter
+ * dizisine belirtilen karakter sayisi kadar kopyalar.
+ *
+ * @param dest : hedef karakter dizisi
+ * @param src : kaynak karakter dizisi
+ * @param count : kopyalacak karakter sayisi
+ */
+char *strncpy(char *dest, const char *src, size_t count){
+	
+	char *temp = dest;
+	while (count--) 
+		if ((*dest++ = *src++) != 0);
+
+	return temp;
+}
