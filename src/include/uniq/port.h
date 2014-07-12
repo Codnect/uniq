@@ -56,7 +56,7 @@ typedef unsigned short		port_t;
  * @param port : veri yazilacak port
  * @param data : yazilacak veri
  */
-static inline void outb(port_t port,uint8_t data){
+static inline void outbyte(port_t port,uint8_t data){
 	__asm__ volatile("outb %1,%0"
 			 :				/* cikis yok */
 			 : "dN"(port),"a"(data)		/* girisler  */
@@ -68,7 +68,7 @@ static inline void outb(port_t port,uint8_t data){
  *
  * @param port : veri okunacak port
  */
-static inline uint8_t inb(port_t port){
+static inline uint8_t inbyte(port_t port){
 	uint8_t ret_val;
 	__asm__ volatile("inb %1,%0"
 			 : "=a"(ret_val)		/* cikislar */
@@ -83,7 +83,7 @@ static inline uint8_t inb(port_t port){
  * @param port : veri yazilacak port
  * @param data : yazilacak veri
  */
-static inline void outw(port_t port,uint16_t data){
+static inline void outword(port_t port,uint16_t data){
 	__asm__ volatile("outw %1,%0"
 			 :				/* cikis yok */
 			 : "dN"(port),"a"(data)		/* girisler  */
@@ -96,7 +96,7 @@ static inline void outw(port_t port,uint16_t data){
  *
  * @param port : veri okunacak port
  */
-static inline uint16_t inw(port_t port){
+static inline uint16_t inword(port_t port){
 	uint16_t ret_val;
 	__asm__ volatile("inw %1,%0"
 			 : "=a"(ret_val)		/* cikislar */
