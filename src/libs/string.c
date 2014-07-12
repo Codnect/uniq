@@ -353,3 +353,44 @@ char *strrchr(const char *s, int c){
 
 	return NULL;
 }
+
+/*
+ * strcat,bir karakter dizisine diger karakter dizisini
+ * ekler.
+ *
+ * @param dest : hedef karakter dizisi
+ * @param src : eklenecek karakter dizisi
+ */
+char *strcat(char *dest, const char *src){
+	char *temp = dest;
+	while (*dest)
+		dest++;
+	while ((*dest++ = *src++) != '\0');
+
+	return temp;
+}
+
+/*
+ * strcat,bir karakter dizisine diger karakter dizisinin
+ * belirtilen karakter adedi kadar ekler.
+ *
+ * @param dest : hedef karakter dizisi
+ * @param src : eklenecek karakter dizisi
+ * @param count : eklenecek karakter adedi
+ */
+char *strncat(char *dest, const char *src, size_t count){
+	
+	char *temp = dest;
+	if (count) {
+		while (*dest)
+			dest++;
+		while ((*dest++ = *src++) != '\0') {
+			if (--count == 0) {
+				*dest = '\0';
+				break;
+			}
+		}
+	}
+
+	return temp;
+}
