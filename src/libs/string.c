@@ -335,7 +335,6 @@ char *strchr(const char *s, int c){
 	return NULL;
 }
 
-#define strlchr(s,c)	strchr(s,c)
 
 /*
  * strrchr, karakter dizisinde sagdan baslayarak belirtilen
