@@ -131,7 +131,7 @@ int strncasecmp(const char *s1,const char *s2,size_t count){
  *
  * @param s : karakter dizisi
  */
-char* strtoupper(char* s) {
+char* strtoupper(char* s){
 
 	size_t i = 0;
 	while(s[i]){
@@ -221,7 +221,7 @@ char *strncpy(char *dest, const char *src, size_t count){
 	
 	char *temp = dest;
 	while (count--) 
-		if ((*dest++ = *src++) != 0);
+		if ((*dest++ = *src++) != '\0');
 
 	return temp;
 }
