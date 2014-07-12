@@ -155,3 +155,41 @@ char* strtolower(char *s){
 	}
 	return s;
 }
+
+/*
+ * strtoupper, verilen karakter dizisini belirtilen karakter
+ * sayisina kadar buyuk harfe cevirir.
+ *
+ * @param s : karakter dizisi
+ * @param count : karakter sayisi
+ */
+char* strntoupper(char* s,size_t count) {
+
+	size_t i = 0;
+	while(count--){
+		if(!s[i])
+			break;
+		s[i] = toupper(s[i]);
+		i++;
+	}
+	return s;
+}
+
+/*
+ * strtolower, verilen karakter dizisini belirtilen karakter
+ * sayisina kadar kucuk harfe cevirir.
+ *
+ * @param s : karakter dizisi
+ * @param count : karakter sayisi
+ */
+char* strntolower(char *s,size_t count){
+
+	size_t i = 0;
+	while(count--){
+		if(!s[i])
+			break;
+		s[i] = tolower(s[i]);
+		i++;
+	}
+	return s;
+}
