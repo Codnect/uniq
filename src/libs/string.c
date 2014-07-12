@@ -225,3 +225,28 @@ char *strncpy(char *dest, const char *src, size_t count){
 
 	return temp;
 }
+
+/*
+ * strtobool, kullanici girisini boolean'a gore uyarlar
+ *
+ * @param s : karakter dizisi
+ * @param r : sonuc
+ */
+int strtobool(const char *s, bool *r){
+	
+	switch (*s) {
+		case '1':
+		case 'y':
+		case 'Y':
+			*r = true;
+			break;
+		case '0':
+		case 'n':
+		case 'N':
+			*r = false;
+			break;
+		default:
+			return -1;
+	}
+	return 0;
+}
