@@ -47,6 +47,23 @@ int strcmp(const char *s1,const char *s2){
    return 0;
 }
 
+
+int strncmp(const char *s1,const char *s2,size_t count){
+  
+  size_t i = 0;
+  
+  while(count--){
+      if(s1[i] != s2[i])
+         return (s1[i] > s2[i]) : 1 : -1;
+         
+      if(!s1[i])
+         break;
+      i++;
+  }
+
+  return 0;
+}
+
 int strcasecmp(const char *s1,const char *s2){
  
   int c1,c2,i = 0;
