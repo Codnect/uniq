@@ -317,3 +317,40 @@ char *strim(char *s){
 	return str_ltrim(str_rtrim(s));
 	
 }
+
+/*
+ * strchr, karakter dizisinde soldan baslayarak belirtilen
+ * karakteri arar ve adresini dondurur.
+ *
+ * @param s : karakter dizisi
+ * @param c : karakter
+ */
+char *strchr(const char *s, int c){
+
+	do{
+		if(*s == (char)c)
+			return (char*)s; 
+	}while(*(++s));
+
+	return NULL;
+}
+
+#define strlchr(s,c)	strchr(s,c)
+
+/*
+ * strrchr, karakter dizisinde sagdan baslayarak belirtilen
+ * karakteri arar ve adresini dondurur.
+ *
+ * @param s : karakter dizisi
+ * @param c : karakter
+ */
+char *strrchr(const char *s, int c){
+
+	const char *temp = s + strlen(s);
+	do {
+           if (*temp == (char)c)
+               return (char *)temp;
+        }while (--temp >= s);
+
+	return NULL;
+}
