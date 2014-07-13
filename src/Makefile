@@ -6,7 +6,9 @@ LDEMULATION=elf_i386
 TARGET=elf32-i386
 KERN_OUTPUT=kernel.bin
 
-LIBS = #
+LIBS = 	libs/string.o \
+	libs/ulib.o
+
 DRIVERS = drivers/vga.o
 
 ALLSOURCES = arch/i386/boot.o \
@@ -23,7 +25,7 @@ AFLAGS = -felf
 all: $(SOURCES) link
 
 clean:
-	-rm $(SOURCES)
+	-rm $(SOURCES) $(KERN_OUTPUT)
 
 link:
 	$(LD) -m $(LDEMULATION) $(LDFLAGS) -o $(KERN_OUTPUT) -b $(TARGET) $(SOURCES)
