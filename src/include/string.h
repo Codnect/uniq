@@ -38,7 +38,11 @@ extern char *str_rtrim(char *s);
 extern char *strim(char *s);
 extern char *strchr(const char *s, int c);
 extern char *strrchr(const char *s, int c);
+extern char *strtok(char *s,const char *delim);
+extern char *strrtok(char *s,const char *delim);
 
-#define strlchr(s,c)	strchr(s,c)
+
+#define strlchr(s,c)		strchr(s,c)
+#define strltok(s,delim)	strtok(s,delim)
 
 #endif /* __UNIQ_STRING_H__ */
