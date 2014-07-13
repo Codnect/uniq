@@ -57,6 +57,7 @@ static uint8_t csr_x,csr_y;		/* imlec x ve y */
 static uint16_t csr_loc;		/* imlec toplam konum (y*80 + x)*/
 static uint8_t save_x,save_y;
 
+void goto_xy(uint8_t new_x,uint8_t new_y);
 
 /*
  * refresh_csr, imlec degerlerlerini yeniler, imleci
@@ -149,7 +150,7 @@ void delete_line(uint8_t line_no){
 /*
  * change_line,satirdaki karakter dizisini degistirir
  * !dikkat : sadece 80 karakterlik bir karakter dizisi 
- * degistirilebilir.cunku bu islem sirasinda sonradan
+ * degistirilebilir.cunku bu islem sirasinda sonrandan
  * gelen satirlarin etkilenmesi soz konusu olabilir.
  *
  * @param line_no : satir numarasi
@@ -198,18 +199,12 @@ static void move_csr(void){
 
 /*
  * goto_xy ,verilen x ve y koordinatlarina gore imleci tasir.
- * !dikkat, goto_xy ile belirlenen koordinata gidip islemlerinizi
- * yaptiktan sonra goto_save_xy'yi cagirmayi unutmayin!. yoksa 
- * koordinatlar farkli yerlere gidebilir.
  *
  * @param new_x : x koordinati
  * @param new_y : y koordinati
  */
 void goto_xy(uint8_t new_x,uint8_t new_y){
 	
-	if(!vga_vram)
-		return;
-
 	if(new_x > (VGA_CWIDTH-1) || (VGA_CHEIGHT-1) < new_y)
 		return;
 
@@ -219,28 +214,35 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
 
 }
 
+
 /*
- * goto_save_csr, kaydedilmis koordinatlara geri doner.
- * goto_xy fonksiyonuyla baska koordinatlara gidilmeden once
- * o anki koordinatlar kaydedilir ve yeni koordinatlar gidilir,
- * bir degisiklik yapilicaksa yapilir(karakter dizisi yazilmasi
- * gibi) ondan sonra eski koordinatlara donulmek istenirse bu
- * fonksiyon yardimiyla yapilir,restore_csr ile farkina gelecek
- * olursak restore_csr sadece bu kod sayfasi icinden erisilebilecek
- * duzeydedir diye bir aciklama yapmisim :) zaten goruldugu gibi 
- * restore_csr fonksiyonuna erisiliyor.
+ * puts_goto_xy,belirttiginiz koordinatlara gidip karakter
+ * dizisi yazdirir.
+ *
+ * @param x : x koordinati
+ * @param y : y koordinati
+ * @param s : karakter dizisi
+ * @param attr : karakter ozelligi
  */
-void goto_save_csr(void){
-	
+void putstr_goto_xy(uint8_t new_x,uint8_t new_y,char *s,uint8_t attr){
+
 	if(!vga_vram)
 		return;
-	
+
+	if(new_x > (VGA_CWIDTH-1) || (VGA_CHEIGHT-1) < new_y)
+		return;
+
+	if(!attr)
+		attr = DEFAULT_ATTR;
+
+	goto_xy(new_x,new_y);
+	putstr(s,attr);
+
 	if((save_y == csr_y) && (csr_x > save_x))
 		return;
 
 	if(save_x && save_y)
 		restore_csr();
-	
 }
 
 /*
