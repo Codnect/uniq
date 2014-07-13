@@ -475,3 +475,45 @@ char *strrtok(char *s,const char *delim){
 	end = true;
 	return (char*)start;
 }
+
+/*
+ * memcmp, verilen 2 bellek bolgesini belirtilen alan
+ * boyutu kadar karsilastirir.
+ *
+ * @param m1 : ilk bellek bolgesi
+ * @param m2 : diger bellek bolgesi
+ * @param c : alanin boyutu
+ */
+int memcmp(const void *m1, const void *m2, size_t c){
+	
+	const unsigned char *t1, *t2;
+	int r = 0;
+
+	t1 = m1;
+	t2 = m2;	
+	while(c--){
+		if((r = *t1++ - *t2++) != 0)
+			break;
+	}
+
+	return r;
+
+}
+
+/*
+ * memcpy, bir bellek bolgesinden diger bolgeye belirtilen
+ * alanin boyutu kadar kopyalar.
+ *
+ * @param m1 : ilk bellek bolgesi
+ * @param m2 : diger bellek bolgesi
+ * @param c : alanin boyutu
+ */
+void *memcpy(void *dest, const void *src, size_t c){
+
+	char *tmp = dest;
+	const char *s = src;
+
+	while (c--)
+		*tmp++ = *s++;
+	return dest;
+}
