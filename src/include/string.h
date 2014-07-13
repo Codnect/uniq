@@ -46,6 +46,8 @@ extern void *memset(void *s, int v, size_t c);
 extern void *memscan(void *s, int v, size_t c);
 extern char *strstr(const char *s1, const char *s2);
 extern char *strnstr(const char *s1, const char *s2, size_t len);
+extern char *strcasestr(const char *s1, const char *s2);
+extern char *strncasestr(const char *s1, const char *s2, size_t len);
 
 #define strlchr(s,c)		strchr(s,c)
 #define strltok(s,delim)	strtok(s,delim)
