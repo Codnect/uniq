@@ -517,3 +517,39 @@ void *memcpy(void *dest, const void *src, size_t c){
 		*tmp++ = *s++;
 	return dest;
 }
+
+/*
+ * memset,bir bellek alaninin doldurulucak degerle belirtilen
+ * alan kadari doldurur.
+ *
+ * @param s : bellek bolgesi
+ * @param v : doldurulacak deger
+ * @param c : doldurulacak alan
+ */
+void *memset(void *s, int v, size_t c){
+	char *tmp = s;
+
+	while (c--)
+		*tmp++ = v;
+	return s;
+}
+
+/*
+ * memscan,bir bellek alaninda belirlenen bir bayti 
+ * belli bir alan boyutu kadar aranacak ve varsa
+ * adresi dondurulecektir.
+ *
+ * @param s : bellek bolgesi
+ * @param v : belirlenen bayt
+ * @param c : aranacak boyut
+ */
+void *memscan(void *s, int v, size_t c){
+	unsigned char *p = s;
+
+	while (c--) {
+		if (*p == v)
+			break;
+		p++;
+	}
+  	return (void *)p;
+}
