@@ -115,7 +115,6 @@ static void scrollup(void){
 	for(int i=0;i<=VGA_CHEIGHT;i++)
 		memcpy(vga_vram+i*VGA_CWIDTH,vga_vram+(i+1)*VGA_CWIDTH,(VGA_CWIDTH)*2);
 
-	delete_line(VGA_CHEIGHT-1);
 	csr_loc -= VGA_CWIDTH;
 	
 }
@@ -139,13 +138,19 @@ void delete_line(uint8_t line_no){
 
 	for(uint8_t i=new_x;i<VGA_CWIDTH;i++)
 		vga_vram[csr_loc+i] = make_vga_entry(BLANK,DEFAULT_ATTR);
-
+	
+	if(line_no == save_y)
+		save_x = 0;
+	
 	restore_csr();
  	
 }
 
 /*
  * change_line,satirdaki karakter dizisini degistirir
+ * !dikkat : sadece 80 karakterlik bir karakter dizisi 
+ * degistirilebilir.cunku bu islem sirasinda sonrandan
+ * gelen satirlarin etkilenmesi soz konusu olabilir.
  *
  * @param line_no : satir numarasi
  * @param s : karakter dizisi
@@ -157,12 +162,20 @@ void change_line(uint8_t line_no,const char *s){
 
 	if(line_no > (VGA_CHEIGHT-1))
 		return;
-		
+
+	uint8_t len = strlen(s);
+	if(len > 80)
+		return;	
+
 	delete_line(line_no);	
 	uint8_t new_x = 0;
 	uint8_t new_y = line_no;
 	goto_xy(new_x,new_y);
 	putstr(s,DEFAULT_ATTR);
+
+	if(line_no == save_y)
+		save_x = strlen(s);
+
 	restore_csr();
 		
 }
