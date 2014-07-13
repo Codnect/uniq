@@ -40,7 +40,12 @@ extern char *strchr(const char *s, int c);
 extern char *strrchr(const char *s, int c);
 extern char *strtok(char *s,const char *delim);
 extern char *strrtok(char *s,const char *delim);
-
+extern int memcmp(const void *m1, const void *m2, size_t c);
+extern void *memcpy(void *dest, const void *src, size_t c);
+extern void *memset(void *s, int v, size_t c);
+extern void *memscan(void *s, int v, size_t c);
+extern char *strstr(const char *s1, const char *s2);
+extern char *strnstr(const char *s1, const char *s2, size_t len);
 
 #define strlchr(s,c)		strchr(s,c)
 #define strltok(s,delim)	strtok(s,delim)
