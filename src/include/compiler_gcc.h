@@ -25,7 +25,7 @@
 	#define __GNU_COMPILER__
 #endif
 
-#define __asm__ asm
+#define __asm__ 	asm
 
 
 #endif	/* __UNIQ_COMPILER_GCC_H__ */
