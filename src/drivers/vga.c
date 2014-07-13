@@ -22,6 +22,7 @@
 #include <uniq/port.h>
 #include <uniq/types.h>
 #include <uniq/module.h>
+#include <string.h>
 
 /*
  * grub onyukleyicisi kerneli 80x25 text modunda baslatir.
@@ -99,11 +100,20 @@ static void save_csr(void){
  */
 static void scrollup(void){
 
-	if(csr_loc < VGA_CSIZE-VGA_CWIDTH)
+	if(csr_loc < VGA_CSIZE)
 		return;
-
-	for(int i=0;i<VGA_CSIZE-VGA_CWIDTH;i++)
-		vga_vram[i] = vga_vram[i+VGA_CWIDTH];
+	
+	/*
+	 *for(int i=0;i<=VGA_CSIZE;i++)
+	 *	vga_vram[i] = vga_vram[i+VGA_CWIDTH];
+	 */
+	 
+	/*
+	 * string.c'ye memcpy'yi ekledikten sonra onu kullanmak
+	 * daha iyi gibi ;)
+	 */
+	for(int i=0;i<=VGA_CHEIGHT;i++)
+		memcpy(vga_vram+i*VGA_CWIDTH,vga_vram+(i+1)*VGA_CWIDTH,(VGA_CWIDTH)*2);
 
 	delete_line(VGA_CHEIGHT-1);
 	csr_loc -= VGA_CWIDTH;
