@@ -394,3 +394,84 @@ char *strncat(char *dest, const char *src, size_t count){
 
 	return temp;
 }
+
+/*
+ * strtok,karakter dizisini belirtilen ayraclara gore
+ * soldan baslayarak parcalar.
+ *
+ * @param s : karakter dizisi
+ * @param delim : ayraclar
+ */
+char *strtok(char *s,const char *delim){
+	
+	static char *last;
+	char *ret;			/* geri donus */
+	const char *temp_delim;		/* gecici ayraclar */
+
+	if(s)	/* s != null ise */
+		ret = last = s;
+	else	/* s == null ise */
+		ret = last;
+		
+	while(*last){
+		temp_delim = delim;
+		while(*temp_delim){
+			if(*temp_delim == *last ){
+				*last = '\0';
+				last++;
+				return (char*)ret;
+			}
+			temp_delim++;	
+		}
+		last++;
+	}
+
+	if(!(*last) && !(*ret))
+		return NULL;
+	
+	return (char*)ret;	
+}
+
+/*
+ * strtok,karakter dizisini belirtilen ayraclara gore
+ * sagdan baslayarak parcalar.
+ *
+ * @param s : karakter dizisi
+ * @param delim : ayraclar
+ */
+char *strrtok(char *s,const char *delim){
+	
+	static char *start;		/* baslangic */
+	char *last;			
+	size_t len;
+	static bool end;		/* karakter dizisinin basina gelinip 
+					 * gelinmedigi icin
+					 */
+	const char *temp_delim;		/* gecici ayraclar */
+	
+	if(s){	/* s != null ise */
+		last = start = s;
+		end = false;
+	}
+	else
+		if(end)
+			return NULL;	
+	
+	last = start + strlen(start) - 1;
+
+	do{
+		temp_delim = delim;
+		while(*temp_delim){
+			if(*temp_delim == *last ){
+				*last = '\0';
+				return (char*)(last+1);
+			}
+			temp_delim++;	
+		}
+		len--;
+
+	}while(--last >= start);
+	
+	end = true;
+	return (char*)start;
+}
