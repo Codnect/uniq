@@ -588,7 +588,7 @@ char *strstr(const char *s1, const char *s2){
  * @param s1 : hedef karakter dizisi
  * @param s2 : aranacak karakter dizisi
  */
-char *strcasestr(const char *s1, const char *s2){
+char *strcasestr(char *s1,char *s2){
 	
 	size_t l1, l2;
 
@@ -643,7 +643,7 @@ char *strnstr(const char *s1, const char *s2, size_t len){
  * @param s2 : aranacak karakter dizisi
  * @param len : maksimum karakter sayisi
  */
-char *strncasestr(const char *s1, const char *s2, size_t len){
+char *strncasestr(char *s1,char *s2, size_t len){
 
 	size_t l2;
 
