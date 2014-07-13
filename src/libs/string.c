@@ -557,6 +557,7 @@ void *memscan(void *s, int v, size_t c){
 /*
  * strstr,bir karakter dizisi icerisinde diger bir
  * karakter dizisini arar ve buldugunda adresini dondurur.
+ * buyuk ve kucuk harfe duyarlidir.
  *
  * @param s1 : hedef karakter dizisi
  * @param s2 : aranacak karakter dizisi
@@ -580,9 +581,36 @@ char *strstr(const char *s1, const char *s2){
 }
 
 /*
- * strstr,bir karakter dizisi icerisinde diger bir
+ * strcasestr,bir karakter dizisi icerisinde diger bir
+ * karakter dizisini arar ve buldugunda adresini dondurur.
+ * buyuk ve kucuk harfe duyarli degildir.
+ *
+ * @param s1 : hedef karakter dizisi
+ * @param s2 : aranacak karakter dizisi
+ */
+char *strcasestr(const char *s1, const char *s2){
+	
+	size_t l1, l2;
+
+	l2 = strlen(s2);
+	if (!l2)
+		return (char *)s1;
+
+	l1 = strlen(s1);
+	while (l1 >= l2) {
+		l1--;
+		if (!memcmp(strtolower(s1),strtolower(s2), l2))
+			return (char *)s1;
+		s1++;
+	}
+	return NULL;
+}
+
+/*
+ * strnstr,bir karakter dizisi icerisinde diger bir
  * karakter dizisini belli bir karakter sayisina kadar
  * arar ve buldugunda adresini dondurur.
+ * buyuk ve kucuk harfe duyarlidir.
  *
  * @param s1 : hedef karakter dizisi
  * @param s2 : aranacak karakter dizisi
@@ -599,6 +627,33 @@ char *strnstr(const char *s1, const char *s2, size_t len){
 	while (len >= l2) {
 		len--;
 		if (!memcmp(s1, s2, l2))
+			return (char *)s1;
+		s1++;
+	}
+	return NULL;
+}
+
+/*
+ * strncasestr,bir karakter dizisi icerisinde diger bir
+ * karakter dizisini belli bir karakter sayisina kadar
+ * arar ve buldugunda adresini dondurur.
+ * buyuk ve kucuk harfe duyarli degildir.
+ *
+ * @param s1 : hedef karakter dizisi
+ * @param s2 : aranacak karakter dizisi
+ * @param len : maksimum karakter sayisi
+ */
+char *strncasestr(const char *s1, const char *s2, size_t len){
+
+	size_t l2;
+
+	l2 = strlen(s2);	
+	if (!l2)
+		return (char *)s1;
+	
+	while (len >= l2) {
+		len--;
+		if (!memcmp(strtolower(s1),strtolower(s2), l2))
 			return (char *)s1;
 		s1++;
 	}
