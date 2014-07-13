@@ -20,5 +20,11 @@
 #ifndef __UNIQ_LIB_H__
 #define __UNIQ_LIB_H__
 
+#include <uniq/types.h>
+
+void swap(int32_t *x,int32_t *y);
+int32_t abs(int32_t x);
+int32_t max(int32_t x,int32_t y);
+int32_t min(int32_t x,int32_t y);
 
 #endif /* __UNIQ_LIB_H__ */
