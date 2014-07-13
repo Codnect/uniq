@@ -453,10 +453,9 @@ char *strrtok(char *s,const char *delim){
 		last = start = s;
 		end = false;
 	}
-	else{
-		if(end)
-			return NULL;	
-	}
+	
+	if(end)
+		return NULL;		
 	
 	last = start + strlen(start) - 1;
 
