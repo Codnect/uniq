@@ -198,6 +198,9 @@ static void move_csr(void){
 
 /*
  * goto_xy ,verilen x ve y koordinatlarina gore imleci tasir.
+ * !dikkat, goto_xy ile belirlenen koordinata gidip islemlerinizi
+ * yaptiktan sonra goto_save_xy'yi cagirmayi unutmayin!. yoksa 
+ * koordinatlar farkli yerlere gidebilir.
  *
  * @param new_x : x koordinati
  * @param new_y : y koordinati
