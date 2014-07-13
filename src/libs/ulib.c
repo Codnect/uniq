@@ -35,6 +35,6 @@ int32_t max(int32_t x,int32_t y){
     return (x > y) ? x : y; 
 }
 
-int32_t min(int32_t a,int32_t b){
+int32_t min(int32_t x,int32_t y){
     return (x > y) ? y : x;
 }
