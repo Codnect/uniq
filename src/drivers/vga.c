@@ -149,7 +149,7 @@ void delete_line(uint8_t line_no){
 /*
  * change_line,satirdaki karakter dizisini degistirir
  * !dikkat : sadece 80 karakterlik bir karakter dizisi 
- * degistirilebilir.cunku bu islem sirasinda sonrandan
+ * degistirilebilir.cunku bu islem sirasinda sonradan
  * gelen satirlarin etkilenmesi soz konusu olabilir.
  *
  * @param line_no : satir numarasi
