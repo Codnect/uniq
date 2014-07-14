@@ -22,6 +22,6 @@
 
 void kmain(uintptr_t mboot_magic){
 
-
+	init_vga_console();
+	
 }
-
