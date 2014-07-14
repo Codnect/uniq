@@ -68,11 +68,11 @@ static inline uint8_t make_vga_color(uint8_t fcolor,uint8_t bcolor){
 /* varsayilan karakter ozelligi */
 #define DEFAULT_ATTR	make_vga_color(COLOR_LIGHT_GREY,COLOR_BLACK)
 
-void putstr_goto_xy(uint8_t new_x,uint8_t new_y,char *s,uint8_t attr);
+int putstr_goto_xy(uint8_t new_x,uint8_t new_y,char *s,uint8_t attr);
 void init_vga_console(void);
 void exit_vga_console(void);
 void reset_console(void);
-void putstr(const char *string,uint8_t attr);
+int putstr(const char *string,uint8_t attr);
 void putchar(const char c, uint8_t attr);
 void delete_line(uint8_t line_no);
 void change_line(uint8_t line_no,const char *s);
