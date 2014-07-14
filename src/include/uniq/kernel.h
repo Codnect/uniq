@@ -20,11 +20,10 @@
 #ifndef __UNIQ_KERNEL_H__
 #define __UNIQ_KERNEL_H__
 
-/* init/main.c */
-int print(const char *s);
-void print_char(const char c);
-int print_color(const char *s,uint8_t attr);
-int println(const char *s);
+/*
+ * drivers
+ */
+#include <drivers/vga.h>
 
 
 #endif /* __UNIQ_KERNEL_H__ */
