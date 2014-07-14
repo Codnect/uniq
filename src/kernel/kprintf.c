@@ -17,3 +17,21 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
  
+#include <uniq/types.h>
+#include <va_list.h>
+
+int sprintf(char *buf,size_t n,const char *fmt, ...){
+ 
+ 
+}
+
+
+int sprintf(char *buf, const char *fmt, ...){
+ 
+ 
+}
+
+int printf(const char *fmt, ...){
+
+
+}
