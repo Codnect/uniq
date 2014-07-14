@@ -18,6 +18,7 @@
  */
 
 #include <uniq/types.h>
+#include <uniq/kernel.>
 
 void kmain(uintptr_t mboot_magic){
 
