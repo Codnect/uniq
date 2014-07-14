@@ -30,3 +30,6 @@ clean:
 
 link:
 	$(LD) -m $(LDEMULATION) $(LDFLAGS) -o $(KERN_OUTPUT) -b $(TARGET) $(SOURCES)
+
+qemu-run:
+	qemu -kernel $(KERN_OUTPUT)
