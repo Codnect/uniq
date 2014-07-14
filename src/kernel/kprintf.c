@@ -20,16 +20,27 @@
 #include <uniq/types.h>
 #include <va_list.h>
 
-int snprintf(char *buf,size_t n,const char *fmt, ...){
+int vsnprintf(char *buf, size_t n , const char *fmt, va_list args){
  
  
 }
 
+
+int vsprintf(char *buf, const char *fmt, va_list args){
+ 
+ 
+}
 
 int sprintf(char *buf, const char *fmt, ...){
  
  
 }
+
+int snprintf(char *buf, size_t n, const char *fmt, ...){
+ 
+ 
+}
+
 
 int printf(const char *fmt, ...){
 
