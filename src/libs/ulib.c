@@ -18,6 +18,7 @@
  */
 
 #include <uniq/types.h>
+#include <ctype.h>
 
 void swap(int32_t *x,int32_t *y){
     
@@ -37,4 +38,13 @@ int32_t max(int32_t x,int32_t y){
 
 int32_t min(int32_t x,int32_t y){
     return (x > y) ? y : x;
+}
+
+int atoi(const char *s){
+
+	int i = 0;
+	while(isdigit(*s))
+		i = i * 10 + *s++ - '0';
+
+	return i;
 }
