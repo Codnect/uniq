@@ -20,6 +20,10 @@
 #ifndef __UNIQ_KPRINTF_H__
 #define __UNIQ_KPRINTF_H__
 
-
+extern int vsnprintf(char *buf, size_t n , const char *fmt, va_list args);
+extern int vsprintf(char *buf, const char *fmt, va_list args);
+extern int sprintf(char *buf, const char *fmt, ...);
+extern int snprintf(char *buf, size_t n, const char *fmt, ...);
+extern int printf(const char *fmt, ...);
 
 #endif /* __UNIQ_KPRINTF_H__ */
