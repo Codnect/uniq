@@ -20,7 +20,7 @@
 #include <uniq/types.h>
 #include <va_list.h>
 
-int sprintf(char *buf,size_t n,const char *fmt, ...){
+int snprintf(char *buf,size_t n,const char *fmt, ...){
  
  
 }
