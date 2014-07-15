@@ -57,82 +57,81 @@ int vasprintf(const char *fmt, va_list arg_list){
 	char *s,c;
 	bool cntrl = false;
 	i = printed = 0;
-	loop:
-		for( ;*fmt;++fmt){
-			if(*fmt != '%'){
-				putchar(*fmt,attr);
-				printed++;
-				continue;
-			}
-			fmt++;
+
+	for( ;*fmt;++fmt){
+		if(*fmt != '%'){
+			putchar(*fmt,attr);
+			printed++;
+			continue;
+		}
+		fmt++;
 			
-			flags = 0;
-			if(*fmt == '-')
-				flags |= LEFT;
-			else
-				flags |= PLUS;
+		flags = 0;
+		if(*fmt == '-')
+			flags |= LEFT;
+		else
+			flags |= PLUS;
 
-			if(flags & LEFT)
-				fmt++;
-			uint32_t arg_width,field_width;
-			arg_width = field_width = 0;
-			if(isdigit(*fmt))
-				field_width = skip_atoi(&fmt);			
+		if(flags & LEFT)
+			fmt++;
+		uint32_t arg_width,field_width;
+		arg_width = field_width = 0;
+		if(isdigit(*fmt))
+			field_width = skip_atoi(&fmt);			
 
-			if(*fmt == '.'){
-				flags |= DOT;
-				fmt++;
-				arg_width = skip_atoi(&fmt);
-			}
+		if(*fmt == '.'){
+			flags |= DOT;
+			fmt++;
+			arg_width = skip_atoi(&fmt);
+		}
 
-	
-			switch(*fmt){
-				case 'c':
-					c = (char)va_arg(arg_list,int);
-					flags |= CHAR;
-					break;
-				case 's':
-					s = (char*)va_arg(arg_list,char*);
-					if(!s)
-						s = "(null)";
-					flags |= STRING;
-					slen = strlen(s);
-					break;
-				case 'd':
-				case 'i':
-				case 'x':
-				case 'X':
-				case 'o':
-					d = (uint32_t)va_arg(arg_list,unsigned int);
-					if(*fmt == 'd' || *fmt == 'i')
-						flags |= INTEGER;
-					else if(*fmt == 'x'){
-						flags |= HEX;
-						flags |= SMALL;
-					}
-					else if(*fmt == 'X')
-						flags |= HEX;
-					else
-						flags |= OCTAL;										
-					break;
-				case 'C':
-					attr = (uint8_t)va_arg(arg_list,unsigned int);
-					flags |= COLOR;
-					break;
-				case '%':
-					putchar('%',attr);
-					flags |= SPECIAL;
-					break;
-				default:
-					putchar(*fmt,attr);
-					break;
+		switch(*fmt){
+			case 'c':
+				c = (char)va_arg(arg_list,int);
+				flags |= CHAR;
+				break;
+			case 's':
+				s = (char*)va_arg(arg_list,char*);
+				if(!s)
+					s = "(null)";
+				flags |= STRING;
+				slen = strlen(s);
+				break;
+			case 'd':
+			case 'i':
+			case 'x':
+			case 'X':
+			case 'o':
+				d = (uint32_t)va_arg(arg_list,unsigned int);
+				if(*fmt == 'd' || *fmt == 'i')
+					flags |= INTEGER;
+				else if(*fmt == 'x'){
+					flags |= HEX;
+					flags |= SMALL;
+				}
+				else if(*fmt == 'X')
+					flags |= HEX;
+				else
+					flags |= OCTAL;										
+				break;
+			case 'C':
+				attr = (uint8_t)va_arg(arg_list,unsigned int);
+				flags |= COLOR;
+				break;
+			case '%':
+				putchar('%',attr);
+				flags |= SPECIAL;
+				break;
+			default:
+				putchar(*fmt,attr);
+				break;
 
-			}
-			cntrl = false;
+		}
+		cntrl = false;
 				
-			if((flags & COLOR) || (flags & SPECIAL))		
-				goto loop;
-			begin:
+		if((flags & COLOR) || (flags & SPECIAL))		
+			continue;
+		begin:
 
 			if(flags & CHAR){
 				if(!cntrl){
@@ -195,7 +194,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 				}
 				cntrl = true;
 				goto begin;
-		}
+	}
 
 	return 0;
 }
