@@ -47,14 +47,63 @@ static int skip_atoi(const char **s){
 }
 
 
+static int hex_number(char *buf,uint32_t flags,uint32_t* nptr){
+
+	return 0;
+}
+
+static int dec_number(char *buf,uint32_t flags,uint32_t* nptr){
+
+	uint32_t decimal_n,count = 0;
+	bool neg = false;
+	if(flags & SIGN){
+		if((int32_t)*nptr < 0){
+			decimal_n = -(*nptr);
+			*buf = '-';
+			neg = true;
+			buf++;
+		}
+		else
+			decimal_n = *nptr;
+
+	}
+	else
+		decimal_n = *nptr;
+	if(decimal_n == 0)
+		*buf++ = decimal_n + '0';
+
+	
+	while(decimal_n > 0){
+		uint32_t temp = decimal_n % 10;
+		decimal_n /= 10;
+		*(buf++) = temp + '0';
+		count++;
+			
+	}
+	*buf = '\0';
+	if(count){
+		char *start = (char*)buf-count;
+		buf--;
+
+		for(int i=0;i<count/2;i++){
+			char temp = *(start+i);
+			*(start+i) = *(buf-i);
+			*(buf-i) = temp;
+		}
+	}
+
+	return (neg) ? count + 1 : count;
+}
+
 int vasprintf(const char *fmt, va_list arg_list){
 	
 	uint8_t attr = DEFAULT_ATTR;
-	int flags,base;
-	int len = strlen(fmt),slen;
-	int i,printed;
-	uint32_t d;
-	char *s,c;
+	uint32_t flags,i,u,printed;
+	uint32_t len = strlen(fmt),slen,buf_len;
+	int32_t d;
+	char *s;
+	char buf[32];
+	unsigned char c;
 	bool cntrl = false;
 	i = printed = 0;
 
@@ -87,7 +136,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 
 		switch(*fmt){
 			case 'c':
-				c = (char)va_arg(arg_list,int);
+				c = (unsigned char)va_arg(arg_list,int);
 				flags |= CHAR;
 				break;
 			case 's':
@@ -99,23 +148,25 @@ int vasprintf(const char *fmt, va_list arg_list){
 				break;
 			case 'd':
 			case 'i':
+				d = (int32_t)va_arg(arg_list,int);
+				flags |= INTEGER;
+				flags |= SIGN;													
+				break;
+			case 'u':
 			case 'x':
 			case 'X':
-			case 'o':
-				d = (uint32_t)va_arg(arg_list,unsigned int);
-				if(*fmt == 'd' || *fmt == 'i')
-					flags |= INTEGER;
-				else if(*fmt == 'x'){
+				u = (uint32_t)va_arg(arg_list,unsigned int);
+				if(*fmt == 'x'){
 					flags |= HEX;
 					flags |= SMALL;
 				}
 				else if(*fmt == 'X')
 					flags |= HEX;
 				else
-					flags |= OCTAL;										
+					flags |= INTEGER;	
 				break;
 			case 'C':
-				attr = (uint8_t)va_arg(arg_list,unsigned int);
+				attr = (uint8_t)va_arg(arg_list,int);
 				flags |= COLOR;
 				break;
 			case '%':
@@ -184,6 +235,54 @@ int vasprintf(const char *fmt, va_list arg_list){
 					goto blank;
 				continue;
 
+			}
+			else{
+				
+				if((flags & INTEGER) && !cntrl){
+					if(flags & SIGN)
+						buf_len = dec_number(buf,flags,&d);
+					else
+						buf_len = dec_number(buf,flags,&u);
+				}
+				else if((flags & HEX) && !cntrl)
+					buf_len = hex_number(buf,flags,&u);
+
+				s = buf;
+				
+				if(!cntrl){
+					/*
+					 * "%-10.3s"
+ 					 * %(+/-)field_width.arg_width(char)
+					 */
+					if(!arg_width){
+						if(field_width > buf_len)
+							field_width -= buf_len;
+						else
+							field_width = 0;
+					}
+					else if(field_width <= arg_width)
+						field_width = 0;
+					else{
+						if(arg_width && field_width)
+							field_width -=arg_width;
+					} 
+				}
+				if((flags & PLUS) && !cntrl)
+					goto blank;
+				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
+					if(!arg_width)
+						putstr(buf,attr);
+					else{
+						while(arg_width-- && *s){
+							putchar(*s++,attr);
+							printed++;
+						}
+					}
+				}
+				if((flags& LEFT) && !cntrl)
+					goto blank;
+				
+				continue;
 			}
 
 			blank:
