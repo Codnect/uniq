@@ -55,6 +55,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 	int i,printed;
 	uint32_t d;
 	char *s,c;
+	bool cntrl = false;
 	i = printed = 0;
 	loop:
 		for( ;*fmt;++fmt){
@@ -83,9 +84,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 				fmt++;
 				arg_width = skip_atoi(&fmt);
 			}
-					
-			//if((flags & DOT) && field_width)
-				//flags |= PLUS;
+
 	
 			switch(*fmt){
 				case 'c':
@@ -97,6 +96,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 					if(!s)
 						s = "(null)";
 					flags |= STRING;
+					slen = strlen(s);
 					break;
 				case 'd':
 				case 'i':
@@ -128,92 +128,73 @@ int vasprintf(const char *fmt, va_list arg_list){
 					break;
 
 			}
-			if(flags & PLUS)
-				fmt++;
+			cntrl = false;
 				
-			if((flags & COLOR) || (flags & SPECIAL)){		
+			if((flags & COLOR) || (flags & SPECIAL))		
 				goto loop;
-			}
+			begin:
 
-			if((flags & LEFT)){
-				if(flags & CHAR){
-					putchar(c,attr);
+			if(flags & CHAR){
+				if(!cntrl){
 					if(field_width)
 						field_width--;
 				}
-				else if(flags & STRING){
-					slen = strlen(s);
-					if((field_width >0 &&slen < field_width) ||( field_width >0 && arg_width)){
-						if(arg_width)
-							field_width -=arg_width;
+				if((flags & PLUS) && !cntrl)
+					goto blank;
+				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
+					putchar(c,attr);
+					printed++;
+				}
+				if((flags & LEFT) && !cntrl)
+					goto blank;
+				continue;
+			}
+			else if(flags & STRING){
+				if(!cntrl){
+					/*
+					 * "%-10.3s"
+ 					 * %(+/-)field_width.arg_width(char)
+					 */
+					if(!arg_width){
+						if(field_width > slen)
+							field_width -= slen;
 						else
-							field_width -=slen;
+							field_width = 0;
 					}
+					else if(field_width <= arg_width)
+						field_width = 0;
+					else{
+						if(arg_width && field_width)
+							field_width -=arg_width;
+					} 
+				}
+
+				if((flags & PLUS) && !cntrl)
+					goto blank;
+				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
 					if(!arg_width)
 						putstr(s,attr);
 					else{
-						while(arg_width-- && *s)
+						while(arg_width-- && *s){
 							putchar(*s++,attr);
-	
+							printed++;
+						}
 					}
-					
 				}
-				else if((flags & INTEGER) || (flags & HEX) || (flags & OCTAL)){
-					//print_integer_select(flags,arg_width,field,width,d)
-					goto loop;
-				}
-			
+				if((flags & LEFT) && !cntrl)
+					goto blank;
+				continue;
+
+			}
+
+			blank:
 				while(field_width && field_width >0){
 					putchar(' ',attr);
+					printed++;
 					field_width--;
 				}
-
-			}
-			else if((flags & PLUS) || !(flags & LEFT)){
-			
-				start:
-					if(flags & CHAR){
-						if(field_width--)
-							goto field;
-						putchar(c,attr);
-					}
-					else if(flags & STRING){
-						slen = strlen(s);
-						if((field_width >0 &&slen < field_width) ||( field_width >0 && arg_width)){
-							if(arg_width)
-								field_width -=arg_width;
-							else
-								field_width -=slen;
-						}
-						else
-							field_width = 0;
-						if(field_width > 0)
-							goto field;
-						if(!arg_width)
-							putstr(s,attr);
-						else{
-							while(arg_width-- && *s)
-								putchar(*s++,attr);
-						}
-					
-					}
-					else if((flags & INTEGER) || (flags & HEX) || (flags & OCTAL)){
-						//print_integer_select(flags,arg_width,field,width,d)
-						
-					}
-					goto loop;
-
-				field:
-					while(field_width && field_width >0){
-						putchar(' ',attr);
-						field_width--;
-					}
-				goto start;
-
-			}
-	
-				
-			
+				cntrl = true;
+				goto begin;
 		}
 
 	return 0;
