@@ -307,3 +307,6 @@ int printf(const char *fmt, ...){
 	return printed;
 
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
