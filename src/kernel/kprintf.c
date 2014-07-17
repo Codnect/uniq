@@ -457,6 +457,238 @@ static int vasprintf(const char *fmt, va_list arg_list){
 	return printed;
 }
 
+int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
+	
+	uint32_t flags,u,printed;
+	uint32_t len = strlen(fmt),slen,buf_len;
+	int32_t d;
+	char *s;
+	char buf[16];
+	unsigned char c;
+	bool cntrl = false;
+	uint32_t i = 0;
+
+	for( ;n | *fmt;++fmt){
+		if(*fmt != '%'){
+			*strbuf++ = *fmt; 
+			i++;
+			n--;
+			continue;
+		}
+		fmt++;
+			
+		flags = 0;
+		if(*fmt == '-')
+			flags |= LEFT;
+		else
+			flags |= PLUS;
+
+		if(flags & LEFT)
+			fmt++;
+		uint32_t arg_width,field_width;
+		arg_width = field_width = 0;
+		if(isdigit(*fmt))
+			field_width = skip_atoi(&fmt);			
+
+		if(*fmt == '.'){
+			flags |= DOT;
+			fmt++;
+			arg_width = skip_atoi(&fmt);
+		}
+
+		switch(*fmt){
+			case 'c':	/* karakter */
+				c = (unsigned char)va_arg(arg_list,int);
+				flags |= CHAR;
+				break;
+			case 's':	/* karakter dizisi */
+				s = (char*)va_arg(arg_list,char*);
+				if(!s)
+					s = "(null)";
+				flags |= STRING;
+				slen = strlen(s);
+				break;
+			case 'd':	/* signed */
+			case 'i':
+				d = (int32_t)va_arg(arg_list,int);
+				flags |= INTEGER;
+				flags |= SIGN;													
+				break;
+			case 'u':	/* unsigned */
+			case 'x':	/* hexadecimal */
+			case 'X':
+			case 'p':	/* pointer */
+			case 'P':
+				u = (uint32_t)va_arg(arg_list,unsigned int);
+				if(*fmt == 'x'){
+					flags |= HEX;
+					flags |= SMALL;
+				}
+				else if(*fmt == 'X')
+					flags |= HEX;
+				else if(*fmt == 'u')
+					flags |= INTEGER;
+				else if(*fmt == 'p'){
+					flags |= POINTER;
+					flags |= SMALL;
+				}
+				else
+					flags |= POINTER;
+				break;
+			case '%':
+				if(n)
+					*strbuf++ = '%';
+				i++;
+				n--;
+				flags |= SPECIAL;
+				break;
+			default:
+				break;
+
+		}
+		cntrl = false;
+				
+		if(flags & SPECIAL)		
+			continue;
+		begin:
+
+			if(flags & CHAR){
+				if(!cntrl){
+					if(field_width)
+						field_width--;
+				}
+				if((flags & PLUS) && !cntrl)
+					goto blank;
+				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl &&  n) ){
+					*strbuf++ = c;
+					i++;
+					n--;
+				}
+				if((flags & LEFT) && !cntrl)
+					goto blank;
+				continue;
+			}
+			else if(flags & STRING){
+				if(!cntrl){
+					/*
+					 * "%-10.3s"
+ 					 * %(+/-)field_width.arg_width(char)
+					 */
+					if(!arg_width){
+						if(field_width > slen)
+							field_width -= slen;
+						else
+							field_width = 0;
+					}
+					else if(field_width <= arg_width)
+						field_width = 0;
+					else{
+						if(arg_width && field_width)
+							field_width -=arg_width;
+					} 
+				}
+
+				if((flags & PLUS) && !cntrl)
+					goto blank;
+				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
+					if(!arg_width)
+						while(*s && n){
+							*strbuf++ = *s++;
+							i++;
+							n--;
+						}
+					else{
+						while(arg_width-- && *s && n){
+							*strbuf++ = *s++;
+							i++;
+							n--;
+						}
+					}
+				}
+				if((flags & LEFT) && !cntrl)
+					goto blank;
+				continue;
+
+			}
+			else{
+				
+				if((flags & INTEGER) && !cntrl){
+					if(flags & SIGN)
+						buf_len = dec_number(buf,flags,&d);
+					else
+						buf_len = dec_number(buf,flags,&u);
+				}
+				else if( ((flags & HEX) || (flags & POINTER)) && !cntrl)
+					buf_len = hex_number(buf,flags,&u);
+
+				s = buf;
+				
+				if(!cntrl){
+					/*
+					 * "%-10.3s"
+ 					 * %(+/-)field_width.arg_width(char)
+					 */
+					if(!arg_width){
+						if(field_width > buf_len)
+							field_width -= buf_len;
+						else
+							field_width = 0;
+					}
+					else if(field_width <= arg_width)
+						field_width = 0;
+					else{
+						if(arg_width && field_width)
+							field_width -=arg_width;
+					} 
+				}
+				if((flags & PLUS) && !cntrl)
+					goto blank;
+				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
+					if(!arg_width)
+						while(*s && n){
+							*strbuf++ = *s++;
+							i++;
+							n--;
+						}
+					else{
+						while(arg_width-- && *s && n){
+							*strbuf++ = *s++;
+							i++;
+							n--;
+						}
+					}
+				}
+				if((flags& LEFT) && !cntrl)
+					goto blank;
+				
+				continue;
+			}
+
+			blank:
+				while(field_width && field_width >0 && n){
+					*strbuf++ = ' ';
+					i++;
+					n--;
+					field_width--;
+				}
+				cntrl = true;
+				goto begin;
+	}
+	*strbuf = '\0';
+	return i;
+}
+
+int snprintf(char *buf,size_t n,const char *fmt, ...){
+	
+	va_list arg_list;
+	int i;
+
+	va_start(arg_list,fmt);
+	i = vsnprintf(buf,n,fmt,arg_list);
+	va_end(arg_list);
+	return i;
+}
+
 int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 	
 	uint32_t flags,u,printed;
@@ -536,6 +768,7 @@ int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 				break;
 			case '%':
 				*strbuf++ = '%';
+				i++;
 				flags |= SPECIAL;
 				break;
 			default:
