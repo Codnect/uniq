@@ -43,7 +43,9 @@
 #define DOT	0x400	/* nokta */
 #define POINTER	0x800	/* pointer */
 
-
+/*
+ * vga renklerinin ansi renklere cevrilmesi icin
+ */
 static const char vga_to_ansi[] = {
 	0, 4, 2, 6, 1, 5, 3, 7,
 	8,12,10,14, 9,13,11,15
@@ -457,6 +459,15 @@ static int vasprintf(const char *fmt, va_list arg_list){
 	return printed;
 }
 
+/* 
+ * vsnprintf,verilen karakter dizisine format'a gore argumanlari
+ * belirtilen boyuta kadar yerlestirir.
+ *
+ * @param strbuf : karakter dizisi adresi
+ * @param n : boyut
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 	
 	uint32_t flags,u,printed;
@@ -678,6 +689,16 @@ int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 	return i;
 }
 
+/* 
+ * snprintf,verilen karakter dizisine format'a gore argumanlari
+ * belirtilen boyuta kadar yerlestirecek olan vsnprintf fonksiyonu 
+ * cagirir.
+ *
+ * @param buf : karakter dizisi adresi
+ * @param n : boyut
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 int snprintf(char *buf,size_t n,const char *fmt, ...){
 	
 	va_list arg_list;
@@ -689,6 +710,14 @@ int snprintf(char *buf,size_t n,const char *fmt, ...){
 	return i;
 }
 
+/* 
+ * vsprintf,verilen karakter dizisine format'a gore argumanlari
+ * yerlestirir.
+ *
+ * @param strbuf : karakter dizisi adresi
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 	
 	uint32_t flags,u,printed;
@@ -901,6 +930,14 @@ int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 	return i;
 }
 
+/* 
+ * sprintf,verilen karakter dizisine format'a gore argumanlari
+ * yerlestirecek olan vsprintf fonksiyonu cagirir.
+ *
+ * @param buf : karakter dizisi adresi
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 int sprintf(char *buf, const char *fmt, ...){
 	
 	va_list arg_list;
