@@ -23,21 +23,28 @@
 #include <drivers/vga.h>
 #include <string.h>
 
+#define MAX_HEXDIGIT	8	/* 'FFFFFFFF' */
 
 /* flags */
-#define SIGN	0x001
-#define PLUS	0x002
-#define SMALL	0x004
-#define LEFT	0x008
-#define CHAR	0x010
-#define STRING	0x020
-#define INTEGER	0x040
-#define OCTAL	0x080
-#define HEX	0x100
-#define COLOR	0x200
-#define SPECIAL	0x400
-#define DOT	0x800
+#define SIGN	0x001	/* isaretli/isaretsiz tam sayi */
+#define PLUS	0x002	/* saga dayali */
+#define SMALL	0x004	/* '0xabdef' '0xABCDEF' */
+#define LEFT	0x008	/* sola dayali */
+#define CHAR	0x010	/* karakter */
+#define STRING	0x020	/* karakter dizisi */
+#define INTEGER	0x040	/* tam sayilar */
+#define HEX	0x080	/* hexadecimal sayilar */
+#define COLOR	0x100	/* renk */
+#define SPECIAL	0x200	/* ozel karakter icin */
+#define DOT	0x400	/* nokta */
+#define POINTER	0x800	/* pointer */
 
+/*
+ * skip_atoi, kendisine verilen karater dizisinde digit
+ * olanlari sayi haline getirir.
+ * !dikkat : ulib icindeki atoi'den farkli olarak aldigi
+ * karakter dizisinin adresini ilerletir.
+ */
 static int skip_atoi(const char **s){
 	int i = 0;
 	
@@ -46,12 +53,77 @@ static int skip_atoi(const char **s){
 	return i;
 }
 
-
+/*
+ * hex_number, decimal sayilari hexadecimal formatina cevirip karakter 
+ * dizisi haline getirir.
+ * 
+ * pointer ve normal hexadecimal sayilari yazarken farklilik soyle,
+ * ornegin sayi 32 decimal sayisi olsun
+ * hexadecimalde : 20
+ * pointer olarak ise : 0x00000020 olarak ekrana basilir
+ *
+ * @param buf : karakter dizisinin yazilacagi alan
+ * @param flags : flaglar
+ * @param nptr : sayinin adresi
+ */
 static int hex_number(char *buf,uint32_t flags,uint32_t* nptr){
+	
+	
+	int hdigit_count = 0;
+	char hex_digits[] = "0123456789ABCDEFabcdef";
+	char *tmptr;
+	char tmp_buf[8];
+	char c;
+	uint32_t number = *nptr;
 
-	return 0;
+	if(flags & POINTER){
+		strcpy(buf,"0x");
+		buf += 2;
+	}
+	
+	tmptr = tmp_buf;
+	
+	if((flags & HEX) && (number == 0)){
+		*buf++ = '0';
+		*buf = '\0';
+		return ++hdigit_count;
+	}
+
+	while(number != 0){
+			uint8_t tmp = number % 16;
+			number/=16;
+			hdigit_count++;
+			*tmptr++ = ((flags & SMALL) && !(tmp >= 0 && tmp <=9)) ? hex_digits[tmp + 6] : hex_digits[tmp];
+	}
+	
+	
+	*tmptr = '\0';
+	int8_t x = MAX_HEXDIGIT - hdigit_count;
+	if(flags & POINTER){
+		while(x--)
+			*buf++ = '0';
+	}
+
+	if(hdigit_count){
+		tmptr--;
+		while(hdigit_count--)
+			*buf++ = *tmptr--; 
+
+	}
+	
+	*buf = '\0';
+	
+	return (flags & HEX) ? hdigit_count : MAX_HEXDIGIT+2;
 }
 
+/*
+ * dec_number, decimal sayilari karakter dizisi formatina gore
+ * cevirir.
+ * 
+ * @param buf : karakter dizisinin yazilacagi alan
+ * @param flags : flaglar
+ * @param nptr : sayinin adresi
+ */
 static int dec_number(char *buf,uint32_t flags,uint32_t* nptr){
 
 	uint32_t decimal_n,count = 0;
@@ -69,9 +141,12 @@ static int dec_number(char *buf,uint32_t flags,uint32_t* nptr){
 	}
 	else
 		decimal_n = *nptr;
-	if(decimal_n == 0)
-		*buf++ = decimal_n + '0';
 
+	if(decimal_n == 0){
+		*buf++ = '0';
+		*buf ='\0';
+		return ++count;
+	}
 	
 	while(decimal_n > 0){
 		uint32_t temp = decimal_n % 10;
@@ -81,10 +156,11 @@ static int dec_number(char *buf,uint32_t flags,uint32_t* nptr){
 			
 	}
 	*buf = '\0';
+
 	if(count){
 		char *start = (char*)buf-count;
 		buf--;
-
+		/* sayiyi ters cevir */
 		for(int i=0;i<count/2;i++){
 			char temp = *(start+i);
 			*(start+i) = *(buf-i);
@@ -92,20 +168,28 @@ static int dec_number(char *buf,uint32_t flags,uint32_t* nptr){
 		}
 	}
 
+	/* negatifse sayi +1 olarak '-' karakteri ekle */
 	return (neg) ? count + 1 : count;
 }
 
-int vasprintf(const char *fmt, va_list arg_list){
+/*
+ * vasprintf, kendisine verilen format ve arguman listesine
+ * gore ekrana karakterleri basar.
+ *
+ * @param fmt : format
+ * @param arg_list : arguman listesi
+ */
+static int vasprintf(const char *fmt, va_list arg_list){
 	
 	uint8_t attr = DEFAULT_ATTR;
-	uint32_t flags,i,u,printed;
+	uint32_t flags,u,printed;
 	uint32_t len = strlen(fmt),slen,buf_len;
 	int32_t d;
 	char *s;
-	char buf[32];
+	char buf[16];
 	unsigned char c;
 	bool cntrl = false;
-	i = printed = 0;
+	printed = 0;
 
 	for( ;*fmt;++fmt){
 		if(*fmt != '%'){
@@ -135,26 +219,28 @@ int vasprintf(const char *fmt, va_list arg_list){
 		}
 
 		switch(*fmt){
-			case 'c':
+			case 'c':	/* karakter */
 				c = (unsigned char)va_arg(arg_list,int);
 				flags |= CHAR;
 				break;
-			case 's':
+			case 's':	/* karakter dizisi */
 				s = (char*)va_arg(arg_list,char*);
 				if(!s)
 					s = "(null)";
 				flags |= STRING;
 				slen = strlen(s);
 				break;
-			case 'd':
+			case 'd':	/* signed */
 			case 'i':
 				d = (int32_t)va_arg(arg_list,int);
 				flags |= INTEGER;
 				flags |= SIGN;													
 				break;
-			case 'u':
-			case 'x':
+			case 'u':	/* unsigned */
+			case 'x':	/* hexadecimal */
 			case 'X':
+			case 'p':	/* pointer */
+			case 'P':
 				u = (uint32_t)va_arg(arg_list,unsigned int);
 				if(*fmt == 'x'){
 					flags |= HEX;
@@ -162,10 +248,16 @@ int vasprintf(const char *fmt, va_list arg_list){
 				}
 				else if(*fmt == 'X')
 					flags |= HEX;
+				else if(*fmt == 'u')
+					flags |= INTEGER;
+				else if(*fmt == 'p'){
+					flags |= POINTER;
+					flags |= SMALL;
+				}
 				else
-					flags |= INTEGER;	
+					flags |= POINTER;
 				break;
-			case 'C':
+			case 'C':	/* renk */
 				attr = (uint8_t)va_arg(arg_list,int);
 				flags |= COLOR;
 				break;
@@ -223,7 +315,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 					goto blank;
 				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
 					if(!arg_width)
-						putstr(s,attr);
+						printed += putstr(s,attr);
 					else{
 						while(arg_width-- && *s){
 							putchar(*s++,attr);
@@ -244,7 +336,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 					else
 						buf_len = dec_number(buf,flags,&u);
 				}
-				else if((flags & HEX) && !cntrl)
+				else if( ((flags & HEX) || (flags & POINTER)) && !cntrl)
 					buf_len = hex_number(buf,flags,&u);
 
 				s = buf;
@@ -271,7 +363,7 @@ int vasprintf(const char *fmt, va_list arg_list){
 					goto blank;
 				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
 					if(!arg_width)
-						putstr(buf,attr);
+						printed += putstr(buf,attr);
 					else{
 						while(arg_width-- && *s){
 							putchar(*s++,attr);
@@ -295,9 +387,15 @@ int vasprintf(const char *fmt, va_list arg_list){
 				goto begin;
 	}
 
-	return 0;
+	return printed;
 }
 
+/*
+ * printf,formatli olarak ekrana cikti verir.
+ *
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 int printf(const char *fmt, ...){
 
 	va_list arg_list;
@@ -307,6 +405,7 @@ int printf(const char *fmt, ...){
 	return printed;
 
 }
+
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
