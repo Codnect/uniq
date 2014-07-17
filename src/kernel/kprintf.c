@@ -222,9 +222,9 @@ static int vasprintf(const char *fmt, va_list arg_list){
  		 * \033[aciklik;yazi_rengi;yazi_arkaplan_rengi ve sonuna
 		 * 'm' eki
 		 *
-		 * aciklik = 0-1
+		 * yazi renk acikligi = 0-1
 		 * yazi rengi = 30-37
-		 * arkaplan rengi = 40-47 degerlerini alir
+		 * arkaplan rengi = 40-55 degerlerini alir
 		 *	
 		 * yazi rengi :
 		 * -------------
@@ -234,6 +234,9 @@ static int vasprintf(const char *fmt, va_list arg_list){
 		 * --------------
 		 * 40 Black - 41 Red - 42 Green - 43 Yellow - 44 Blue
 		 * 45 Magenta - 46 Cyan - 47 White
+		 * 
+		 * daha detayli renk bilgisi icin uniq/ansi_color.h
+		 * dosyasina bakabilirsiniz.
 		 */
 
 		if(*fmt == '\033'){
@@ -261,7 +264,7 @@ static int vasprintf(const char *fmt, va_list arg_list){
 						attr = make_vga_color(vga_to_ansi[t],vga_to_ansi[bg]);
 					else if(t >= 0x1e && t<= 0x28)			/* \033[(30-37)m */
 						attr = make_vga_color(vga_to_ansi[t % 0x1e],vga_to_ansi[bg]);
-					else if(t >= 0x28 && t<= 0x2F)			/* \033[(40-47)m */
+					else if(t >= 0x28 && t<= 0x37)			/* \033[(40-54)m */
 						attr = make_vga_color(vga_to_ansi[fg],vga_to_ansi[t % 0x28]);
 					else
 						attr = make_vga_color(vga_to_ansi[(t * 0x8) + (fg % 0x1e)],vga_to_ansi[bg % 0x28]);
