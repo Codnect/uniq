@@ -15,6 +15,10 @@
  *
  *  You should have received a copy of the GNU General Public License along
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
+ *  --------------------------------------------------------------------------
+ *
+ *  printf'in bu versiyonu 64-bit'i desteklememektedir :/.
+ *
  */
  
 #include <uniq/types.h>
