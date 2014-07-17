@@ -237,30 +237,34 @@ static int vasprintf(const char *fmt, va_list arg_list){
 		 */
 
 		if(*fmt == '\033'){
-			uint8_t fg,bg,t1;
-			fg = bg = t1 = 0;
+			uint8_t fg,bg,t;
+			fg = bg = t = 0;
 			fmt++;
 			if(*fmt == '['){
 				fmt++;
 				if(isdigit(*fmt))
-					t1 = skip_atoi(&fmt) * 0x8;
+					t = skip_atoi(&fmt);
 				if(*fmt == ';'){
 					fmt++;
 					if(isdigit(*fmt))
-						fg = skip_atoi(&fmt) % 0x1e;
+						fg = skip_atoi(&fmt);
 				}
 
 				if(*fmt == ';'){
 					fmt++;
 					if(isdigit(*fmt))
-						bg = skip_atoi(&fmt) % 0x28;
+						bg = skip_atoi(&fmt);
 				} 
 				
 				if(*fmt == 'm'){
-					if(!bg && !fg)
-						attr = DEFAULT_ATTR;
+					if(!t)						/* \033[0m */
+						attr = make_vga_color(vga_to_ansi[t],vga_to_ansi[bg]);
+					else if(t >= 0x1e && t<= 0x28)			/* \033[(30-37)m */
+						attr = make_vga_color(vga_to_ansi[t % 0x1e],vga_to_ansi[bg]);
+					else if(t >= 0x28 && t<= 0x2F)			/* \033[(40-47)m */
+						attr = make_vga_color(vga_to_ansi[fg],vga_to_ansi[t % 0x28]);
 					else
-						attr = make_vga_color(vga_to_ansi[t1 + fg],vga_to_ansi[bg]);
+						attr = make_vga_color(vga_to_ansi[(t * 0x8) + (fg % 0x1e)],vga_to_ansi[bg % 0x28]);
 				}
 				
 			}
@@ -480,7 +484,7 @@ int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 	bool cntrl = false;
 	uint32_t i = 0;
 
-	for( ;n || *fmt;++fmt){
+	for( ;n && *fmt;++fmt){
 		if(*fmt != '%'){
 			*strbuf++ = *fmt; 
 			i++;
