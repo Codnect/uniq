@@ -947,7 +947,9 @@ int sprintf(char *buf, const char *fmt, ...){
 	
 	va_list arg_list;
 	int i;
-
+	if(sizeof(buf) < strlen(fmt))
+		return -1;
+	
 	va_start(arg_list,fmt);
 	i = vsprintf(buf,fmt,arg_list);
 	va_end(arg_list);
