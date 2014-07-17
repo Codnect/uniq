@@ -264,7 +264,7 @@ static int vasprintf(const char *fmt, va_list arg_list){
 						attr = make_vga_color(vga_to_ansi[t],vga_to_ansi[bg]);
 					else if(t >= 0x1e && t<= 0x28)			/* \033[(30-37)m */
 						attr = make_vga_color(vga_to_ansi[t % 0x1e],vga_to_ansi[bg]);
-					else if(t >= 0x28 && t<= 0x37)			/* \033[(40-54)m */
+					else if(t >= 0x28 && t<= 0x37)			/* \033[(40-55)m */
 						attr = make_vga_color(vga_to_ansi[fg],vga_to_ansi[t % 0x28]);
 					else
 						attr = make_vga_color(vga_to_ansi[(t * 0x8) + (fg % 0x1e)],vga_to_ansi[bg % 0x28]);
