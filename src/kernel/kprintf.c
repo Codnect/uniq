@@ -244,13 +244,13 @@ static int vasprintf(const char *fmt, va_list arg_list){
 				if(*fmt == ';'){
 					fmt++;
 					if(isdigit(*fmt))
-						fg = skip_atoi(&fmt) % 30;
+						fg = skip_atoi(&fmt) % 0x1e;
 				}
 
 				if(*fmt == ';'){
 					fmt++;
 					if(isdigit(*fmt))
-						bg = skip_atoi(&fmt) % 40;
+						bg = skip_atoi(&fmt) % 0x28;
 				} 
 				
 				if(*fmt == 'm'){
