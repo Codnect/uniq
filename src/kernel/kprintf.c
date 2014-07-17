@@ -26,6 +26,7 @@
 #include <va_list.h>
 #include <drivers/vga.h>
 #include <string.h>
+#include <uniq/module.h>
 
 #define MAX_HEXDIGIT	8	/* 'FFFFFFFF' */
 
