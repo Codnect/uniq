@@ -947,6 +947,13 @@ int sprintf(char *buf, const char *fmt, ...){
 	
 	va_list arg_list;
 	int i;
+	
+	/*
+	 * format uzunlugu, buf uzunlugundan buyuk olmamali
+	 * en azindan esit olmalidir. simdilik bug boylelikle
+	 * bir nebze onlendi. ileride daha iyi bir cozum
+	 * ayarlanabilir.
+	 */
 	if(sizeof(buf) < strlen(fmt))
 		return -1;
 	
