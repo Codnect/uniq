@@ -43,6 +43,12 @@
 #define DOT	0x400	/* nokta */
 #define POINTER	0x800	/* pointer */
 
+
+char vga_to_ansi[] = {
+	0, 4, 2, 6, 1, 5, 3, 7,
+	8,12,10,14, 9,13,11,15
+};
+
 /*
  * skip_atoi, kendisine verilen karater dizisinde digit
  * olanlari sayi haline getirir.
@@ -196,10 +202,68 @@ static int vasprintf(const char *fmt, va_list arg_list){
 	printed = 0;
 
 	for( ;*fmt;++fmt){
-		if(*fmt != '%'){
+		if(*fmt != '%' && *fmt != '\033'){
 			putchar(*fmt,attr);
 			printed++;
 			continue;
+		}
+
+		/*
+		 * normalde terminal ansi color boyle degil fakat
+		 * kendimce basitlik acisinda bu kadari yeterli gibi.
+		 * strtok kullanilmamasinin nedeni fmt'nin bozulmasiyla
+		 * sonuclanacagindan ve az bucuk yine ayni kod satiri
+		 * sayisi kadar olacagi icin gerek duymadim.
+		 *
+		 *
+ 		 * \033[aciklik;yazi_rengi;yazi_arkaplan_rengi ve sonuna
+		 * 'm' eki
+		 *
+		 * aciklik = 0-1
+		 * yazi rengi = 30-37
+		 * arkaplan rengi = 40-47 degerlerini alir
+		 *	
+		 * yazi rengi :
+		 * -------------
+    		 * 30 Black - 31 Red - 32 Green - 33 Yellow - 34 Blue
+ 		 * 35 Magenta - 36 Cyan - 37 White
+		 * yazi arkaplan rengi:
+		 * --------------
+		 * 40 Black - 41 Red - 42 Green - 43 Yellow - 44 Blue
+		 * 45 Magenta - 46 Cyan - 47 White
+		 */
+
+		if(*fmt == '\033'){
+			uint8_t fg,bg,t1;
+			fg = bg = t1 = 0;
+			fmt++;
+			if(*fmt == '['){
+				fmt++;
+				if(isdigit(*fmt))
+					t1 = skip_atoi(&fmt) * 0x8;
+				if(*fmt == ';'){
+					fmt++;
+					if(isdigit(*fmt))
+						fg = skip_atoi(&fmt) % 30;
+				}
+
+				if(*fmt == ';'){
+					fmt++;
+					if(isdigit(*fmt))
+						bg = skip_atoi(&fmt) % 40;
+				} 
+				
+
+				if(*fmt == 'm'){
+					if(!bg && !fg)
+						attr = DEFAULT_ATTR;
+					else
+						attr = make_vga_color(vga_to_ansi[t1 + fg],vga_to_ansi[bg]);
+				}
+				
+			}
+			continue;
+				
 		}
 		fmt++;
 			
@@ -409,7 +473,6 @@ int printf(const char *fmt, ...){
 	return printed;
 
 }
-
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
