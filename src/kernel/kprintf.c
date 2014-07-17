@@ -253,7 +253,6 @@ static int vasprintf(const char *fmt, va_list arg_list){
 						bg = skip_atoi(&fmt) % 40;
 				} 
 				
-
 				if(*fmt == 'm'){
 					if(!bg && !fg)
 						attr = DEFAULT_ATTR;
