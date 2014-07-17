@@ -950,12 +950,10 @@ int sprintf(char *buf, const char *fmt, ...){
 	
 	/*
 	 * format uzunlugu, buf uzunlugundan buyuk olmamali
-	 * en azindan esit olmalidir. simdilik bug boylelikle
-	 * bir nebze onlendi. ileride daha iyi bir cozum
-	 * ayarlanabilir.
+	 * en azindan esit olmalidir. bug duzeltidi gibi :/
+	 * gibi oldu diyelim. simdilik bu fonksiyonda bug
+	 * bulunuyor. dikkat!
 	 */
-	if(sizeof(buf) < strlen(fmt))
-		return -1;
 	
 	va_start(arg_list,fmt);
 	i = vsprintf(buf,fmt,arg_list);
