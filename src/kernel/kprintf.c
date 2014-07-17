@@ -468,7 +468,7 @@ int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 	bool cntrl = false;
 	uint32_t i = 0;
 
-	for( ;n | *fmt;++fmt){
+	for( ;n || *fmt;++fmt){
 		if(*fmt != '%'){
 			*strbuf++ = *fmt; 
 			i++;
