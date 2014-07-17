@@ -44,7 +44,7 @@
 #define POINTER	0x800	/* pointer */
 
 
-char vga_to_ansi[] = {
+static const char vga_to_ansi[] = {
 	0, 4, 2, 6, 1, 5, 3, 7,
 	8,12,10,14, 9,13,11,15
 };
