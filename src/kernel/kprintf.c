@@ -66,6 +66,72 @@ static int skip_atoi(const char **s){
 	return i;
 }
 
+static uint8_t make_ansi_color(const char **s){
+
+	/*
+	* normalde terminal ansi color boyle degil fakat
+	* kendimce basitlik acisinda bu kadari yeterli gibi.
+	* strtok kullanilmamasinin nedeni fmt'nin bozulmasiyla
+	* sonuclanacagindan ve az bucuk yine ayni kod satiri
+	* sayisi kadar olacagi icin gerek duymadim.
+	*
+	*
+ 	* \033[aciklik;yazi_rengi;yazi_arkaplan_rengi ve sonuna
+	* 'm' eki
+	*
+	* aciklik = 0-1
+	* yazi rengi = 30-37
+	* arkaplan rengi = 40-47 degerlerini alir
+	*	
+	* yazi rengi :
+	* -------------
+    	* 30 Black - 31 Red - 32 Green - 33 Yellow - 34 Blue
+ 	* 35 Magenta - 36 Cyan - 37 White
+	* yazi arkaplan rengi:
+	* --------------
+	* 40 Black - 41 Red - 42 Green - 43 Yellow - 44 Blue
+	* 45 Magenta - 46 Cyan - 47 White
+	*/
+	uint8_t attr;
+	if(**s == '\033'){
+			uint8_t fg,bg,t;
+			fg = bg = t = 0;
+			*((*s)++);
+			if(**s == '['){
+				*((*s)++);
+				if(isdigit(**s))
+					t = skip_atoi(s);
+				if(**s == ';'){
+					*((*s)++);
+					if(isdigit(**s))
+						fg = skip_atoi(s);
+				}
+
+				if(**s == ';'){
+					*((*s)++);
+					if(isdigit(**s))
+						bg = skip_atoi(s);
+				} 
+				
+				if(**s == 'm'){
+					if(!t)						/* \033[0m */
+						attr = make_vga_color(vga_to_ansi[t],vga_to_ansi[bg]);
+					else if(t >= 0x1e && t<= 0x28)			/* \033[(30-37)m */
+						attr = make_vga_color(vga_to_ansi[t % 0x1e],vga_to_ansi[bg]);
+					else if(t >= 0x28 && t<= 0x37)			/* \033[(40-54)m */
+						attr = make_vga_color(vga_to_ansi[fg],vga_to_ansi[t % 0x28]);
+					else
+						attr = make_vga_color(vga_to_ansi[(t * 0x8) + (fg % 0x1e)],vga_to_ansi[bg % 0x28]);
+				}
+				
+			}
+
+	}
+	
+
+	return attr;
+}
+
 /*
  * hex_number, decimal sayilari hexadecimal formatina cevirip karakter 
  * dizisi haline getirir.
@@ -85,7 +151,7 @@ static int hex_number(char *buf,uint32_t flags,uint32_t* nptr){
 	int hdigit_count = 0;
 	char hex_digits[] = "0123456789ABCDEFabcdef";
 	char *tmptr;
-	char tmp_buf[9];
+	char tmp_buf[8];
 	char c;
 	uint32_t number = *nptr;
 
@@ -211,66 +277,8 @@ static int vasprintf(const char *fmt, va_list arg_list){
 			continue;
 		}
 
-		/*
-		 * normalde terminal ansi color boyle degil fakat
-		 * kendimce basitlik acisinda bu kadari yeterli gibi.
-		 * strtok kullanilmamasinin nedeni fmt'nin bozulmasiyla
-		 * sonuclanacagindan ve az bucuk yine ayni kod satiri
-		 * sayisi kadar olacagi icin gerek duymadim.
-		 *
-		 *
- 		 * \033[aciklik;yazi_rengi;yazi_arkaplan_rengi ve sonuna
-		 * 'm' eki
-		 *
-		 * yazi renk acikligi = 0-1
-		 * yazi rengi = 30-37
-		 * arkaplan rengi = 40-55 degerlerini alir
-		 *	
-		 * yazi rengi :
-		 * -------------
-    		 * 30 Black - 31 Red - 32 Green - 33 Yellow - 34 Blue
- 		 * 35 Magenta - 36 Cyan - 37 White
-		 * yazi arkaplan rengi:
-		 * --------------
-		 * 40 Black - 41 Red - 42 Green - 43 Yellow - 44 Blue
-		 * 45 Magenta - 46 Cyan - 47 White
-		 * 
-		 * daha detayli renk bilgisi icin uniq/ansi_color.h
-		 * dosyasina bakabilirsiniz.
-		 */
-
 		if(*fmt == '\033'){
-			uint8_t fg,bg,t;
-			fg = bg = t = 0;
-			fmt++;
-			if(*fmt == '['){
-				fmt++;
-				if(isdigit(*fmt))
-					t = skip_atoi(&fmt);
-				if(*fmt == ';'){
-					fmt++;
-					if(isdigit(*fmt))
-						fg = skip_atoi(&fmt);
-				}
-
-				if(*fmt == ';'){
-					fmt++;
-					if(isdigit(*fmt))
-						bg = skip_atoi(&fmt);
-				} 
-				
-				if(*fmt == 'm'){
-					if(!t)						/* \033[0m */
-						attr = make_vga_color(vga_to_ansi[t],vga_to_ansi[bg]);
-					else if(t >= 0x1e && t<= 0x28)			/* \033[(30-37)m */
-						attr = make_vga_color(vga_to_ansi[t % 0x1e],vga_to_ansi[bg]);
-					else if(t >= 0x28 && t<= 0x37)			/* \033[(40-55)m */
-						attr = make_vga_color(vga_to_ansi[fg],vga_to_ansi[t % 0x28]);
-					else
-						attr = make_vga_color(vga_to_ansi[(t * 0x8) + (fg % 0x1e)],vga_to_ansi[bg % 0x28]);
-				}
-				
-			}
+			attr = make_ansi_color(&fmt);
 			continue;
 				
 		}
@@ -392,9 +400,20 @@ static int vasprintf(const char *fmt, va_list arg_list){
 					goto blank;
 				if( ((flags & PLUS) && cntrl) || ((flags & LEFT) && !cntrl) ){
 					if(!arg_width)
-						printed += putstr(s,attr);
+						while(*s){
+							if(*s == '\033'){
+								attr = make_ansi_color((const char**)(&s));
+								s++;
+							}
+							putchar(*s++,attr);
+							printed++;
+						}
 					else{
 						while(arg_width-- && *s){
+							if(*s == '\033'){
+								attr = make_ansi_color((const char**)(&s));
+								s++;
+							}
 							putchar(*s++,attr);
 							printed++;
 						}
