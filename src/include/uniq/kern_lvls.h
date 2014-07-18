@@ -20,5 +20,14 @@
 #ifndef __UNIQ_KERN_LVLS_H__
 #define __UNIQ_KERN_LVLS_H__
 
+typedef enum{
+	KERN_INFO = 0,		/* bilgilendirme */
+	KERN_NOTICE,		/* normal fakat onemli durum */
+	KERN_WARNING,		/* uyari durumlari */
+	KERN_ERROR,		/* hata durumlari */
+	KERN_CRITIC,		/* kritik durumlar */
+	KERN_ALERT,		/* derhal onlem alinmali */
+	KERN_EMERG		/* sistem kullanilamaz halde */
+}kern_levels_t;
 
 #endif /* __UNIQ_KERN_LVLS_H__ */
