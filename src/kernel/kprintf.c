@@ -379,9 +379,10 @@ static int vasprintf(const char *fmt, va_list arg_list){
 			for(int i=0;i<slen;i++){
 				if(s[i] == '\033'){
 					length++;
-					while(s[i++] != 'm' && s[i] != '\0')
+					while(s[i] != 'm' && s[i] != '\0'){
 						length++;
-					
+						i++;
+					}
 				}
 			}
 			slen -= length;
@@ -624,9 +625,10 @@ int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 			for(int i=0;i<slen;i++){
 				if(s[i] == '\033'){
 					length++;
-					while(s[i++] != 'm' && s[i] != '\0')
+					while(s[i] != 'm' && s[i] != '\0'){
 						length++;
-					
+						i++;
+					}
 				}
 			}
 			slen -= length;
@@ -885,9 +887,10 @@ int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 			for(int i=0;i<slen;i++){
 				if(s[i] == '\033'){
 					length++;
-					while(s[i++] != 'm' && s[i] != '\0')
+					while(s[i] != 'm' && s[i] != '\0'){
 						length++;
-					
+						i++;
+					}
 				}
 			}
 			slen -= length;
