@@ -66,6 +66,14 @@ static int skip_atoi(const char **s){
 	return i;
 }
 
+/*
+ * make_ansi_color, karakter dizisi seklinde verilmis karakter
+ * formatini okur ve ansi renklere cevirir.
+ *
+ * @param s : karakter dizisi
+ * !dikkat : yukaridaki skip_atoi gibi gonderilen karakter
+ * dizisinin adresi ilerler.
+ */
 static uint8_t make_ansi_color(const char **s){
 
 	/*
@@ -343,7 +351,7 @@ static int vasprintf(const char *fmt, va_list arg_list){
 					flags |= POINTER;
 				break;
 			case 'C':	/* renk */
-				attr = (uint8_t)va_arg(arg_list,int);
+				attr = (uint8_t)va_arg(arg_list,unsigned int);
 				flags |= COLOR;
 				break;
 			case '%':
@@ -356,6 +364,28 @@ static int vasprintf(const char *fmt, va_list arg_list){
 
 		}
 		cntrl = false;
+
+		/*
+		 * char buf[32] = "\033[1;32mDeneme\033[0m";
+		 * printf("%-10s",buf);
+		 *
+		 * yukaridaki ornekteki gibi renkli yazdirilirken hizalama
+		 * konusunda bir bug olusuyordu. bunu onlemek icin gelen
+		 * karakter dizileri icindeki renk kodlarinin karakter
+		 * adedi cikartiliyor.
+		 */
+		if((flags & STRING) && (*s == '\033')){
+			uint32_t length = 0;
+			for(int i=0;i<slen;i++){
+				if(s[i] == '\033'){
+					length++;
+					while(s[i++] != 'm')
+						length++;
+					
+				}
+			}
+			slen -= length;
+		}
 				
 		if((flags & COLOR) || (flags & SPECIAL))		
 			continue;
@@ -587,7 +617,21 @@ int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 
 		}
 		cntrl = false;
-				
+		
+		/* renk bug'i icin */
+		if((flags & STRING) && (*s == '\033')){
+			uint32_t length = 0;
+			for(int i=0;i<slen;i++){
+				if(s[i] == '\033'){
+					length++;
+					while(s[i++] != 'm')
+						length++;
+					
+				}
+			}
+			slen -= length;
+		}
+
 		if(flags & SPECIAL)		
 			continue;
 		begin:
@@ -834,7 +878,21 @@ int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 
 		}
 		cntrl = false;
-				
+		
+		/* renk bug'i icin */
+		if((flags & STRING) && (*s == '\033')){
+			uint32_t length = 0;
+			for(int i=0;i<slen;i++){
+				if(s[i] == '\033'){
+					length++;
+					while(s[i++] != 'm')
+						length++;
+					
+				}
+			}
+			slen -= length;
+		}
+
 		if(flags & SPECIAL)		
 			continue;
 		begin:
