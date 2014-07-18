@@ -27,6 +27,9 @@
 	kern_debug_mode_t kdebug_mode = KERN_DEBUG_OOPS;
 #endif
 
+/*
+ * debug seviyesi mesajlari
+ */
 static char *level_msgs[]={
 	"\033[1;32mINFO\033[0m",
 	"\033[1;37mNOTICE\033[0m",
@@ -37,6 +40,16 @@ static char *level_msgs[]={
 	"\033[1;36mEMERGENCY\033[0m"
 };
 
+/*
+ * _debug_print,kernel debug modundayken ekrana log kayitlarini
+ * yazdirmak icin kullanilir.
+ *
+ * @param file : dosya
+ * @param line : dosya satir numarasi
+ * @param level : kernel debug seviyesi
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 void _debug_print(char *file,int line,kern_levels_t level,const char *fmt,...){
 	
 	if((level == KERN_INFO) && (kdebug_mode == KERN_DEBUG_OOPS))
