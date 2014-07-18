@@ -34,7 +34,7 @@ void _debug_print(char *file,int line,kern_levels_t level,const char *fmt,...);
 	#define MODULE_NAME	__FILE__
 #endif
 
-/* module satir numarasi */
+/* modul satir numarasi */
 #ifndef MODULE_LINE
 	#define MODULE_LINE	__LINE__
 #endif
