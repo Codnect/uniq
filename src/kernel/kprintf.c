@@ -374,7 +374,7 @@ static int vasprintf(const char *fmt, va_list arg_list){
 		 * karakter dizileri icindeki renk kodlarinin karakter
 		 * adedi cikartiliyor.
 		 */
-		if((flags & STRING) && (*s == '\033')){
+		if(flags & STRING){
 			uint32_t length = 0;
 			for(int i=0;i<slen;i++){
 				if(s[i] == '\033'){
@@ -619,7 +619,7 @@ int vsnprintf(char *strbuf,size_t n,const char *fmt, va_list arg_list){
 		cntrl = false;
 		
 		/* renk bug'i icin */
-		if((flags & STRING) && (*s == '\033')){
+		if(flags & STRING){
 			uint32_t length = 0;
 			for(int i=0;i<slen;i++){
 				if(s[i] == '\033'){
@@ -880,7 +880,7 @@ int vsprintf(char *strbuf,const char *fmt, va_list arg_list){
 		cntrl = false;
 		
 		/* renk bug'i icin */
-		if((flags & STRING) && (*s == '\033')){
+		if(flags & STRING){
 			uint32_t length = 0;
 			for(int i=0;i<slen;i++){
 				if(s[i] == '\033'){
