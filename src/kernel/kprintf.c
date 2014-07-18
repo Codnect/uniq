@@ -85,7 +85,7 @@ static int hex_number(char *buf,uint32_t flags,uint32_t* nptr){
 	int hdigit_count = 0;
 	char hex_digits[] = "0123456789ABCDEFabcdef";
 	char *tmptr;
-	char tmp_buf[8];
+	char tmp_buf[9];
 	char c;
 	uint32_t number = *nptr;
 
