@@ -404,6 +404,7 @@ static int vasprintf(const char *fmt, va_list arg_list){
 							if(*s == '\033'){
 								attr = make_ansi_color((const char**)(&s));
 								s++;
+								continue;
 							}
 							putchar(*s++,attr);
 							printed++;
@@ -413,6 +414,7 @@ static int vasprintf(const char *fmt, va_list arg_list){
 							if(*s == '\033'){
 								attr = make_ansi_color((const char**)(&s));
 								s++;
+								continue;
 							}
 							putchar(*s++,attr);
 							printed++;
