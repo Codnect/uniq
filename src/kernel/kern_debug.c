@@ -51,7 +51,7 @@ void _debug_print(char *file,int line,kern_levels_t level,const char *fmt,...){
 	char *lvl_text;
 	
 	lvl_text = level_msgs[level];
-	printf("%-10s : [module = %s line = %d]\n %10s %s\n",lvl_text,file,line,"->",buffer);
+	printf("%s : [module = %s line = %d]\n\t%s %s\n",lvl_text,file,line,"->",buffer);
 	
 }
 
