@@ -104,19 +104,19 @@ static uint8_t make_ansi_color(const char **s){
 	if(**s == '\033'){
 			uint8_t fg,bg,t;
 			fg = bg = t = 0;
-			*((*s)++);
+			(*s)++;
 			if(**s == '['){
-				*((*s)++);
+				(*s)++;
 				if(isdigit(**s))
 					t = skip_atoi(s);
 				if(**s == ';'){
-					*((*s)++);
+					(*s)++;
 					if(isdigit(**s))
 						fg = skip_atoi(s);
 				}
 
 				if(**s == ';'){
-					*((*s)++);
+					(*s)++;
 					if(isdigit(**s))
 						bg = skip_atoi(s);
 				} 
