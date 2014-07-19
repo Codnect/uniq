@@ -20,6 +20,8 @@
 #ifndef __UNIQ_INLINE_ASM_H__
 #define __UNIQ_INLINE_ASM_H__
 
+#include <uniq/kern_debug.h>
+
 /* kesmeleri devre disi birak */
 static inline void cli(){
 	__asm__ volatile("cli");
