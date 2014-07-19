@@ -22,6 +22,7 @@
 #include <uniq/port.h>
 #include <uniq/types.h>
 #include <uniq/module.h>
+#include <uniq/kernel.h>
 #include <string.h>
 
 /*
@@ -362,6 +363,7 @@ void exit_vga_console(void){
 		reset_console();
 	#endif
 	
+	debug_print(KERN_INFO,"vga console was closed.");
 	vga_vram = NULL;
 	
 }
@@ -380,6 +382,7 @@ void init_vga_console(void){
 
 	vga_vram = (uint16_t*)(VGA_VRAM_START);
 	reset_console();
+	debug_print(KERN_INFO,"vga console was launched. vram = \033[1;37m%p",vga_vram);
 	
 }
 
