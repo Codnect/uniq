@@ -43,6 +43,6 @@ extern int printf(const char *fmt, ...);
 #include <uniq/kern_debug.h>
 void die(const char *fmt, ...);
 void _assert(const char *err);
-#define assert(statement) (statement) ? ((void)0) : _assert(#statement)
+#define assert(statement) 	(statement) ? ((void)0) : _assert(#statement)
 
 #endif /* __UNIQ_KERNEL_H__ */
