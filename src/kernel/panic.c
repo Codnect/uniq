@@ -21,6 +21,15 @@
 #include <uniq/kernel.h>
 #include <uniq/types.h>
 
+/*
+ * die,kendisine verilen formatli yada formatsiz karakter
+ * dizisini hata mesaji olarak ekrana yazdirir ve debug_print'i 
+ * direk kullanirken sistem calismaya devam ederken 'die' ile
+ * sistem durdurulur.
+ *
+ * @param fmt : format
+ * @param ... : argumanlar
+ */
 void die(const char *fmt, ...){
 
 	char err_msg[4096];
@@ -34,6 +43,13 @@ void die(const char *fmt, ...){
 
 }
 
+/*
+ * _assert ile ilgili uniq/kernel.h'deki tanimlanan macroya bakildiginda
+ * kullanimi hakkinda daha cok bilgiye sahip olabilirsiniz.(debug_print 
+ * seklinde yazdirildigi icin satir numarasi ve dosya'ya ihtiyac yoktur.)
+ *
+ * @param err : hata mesaji
+ */
 void _assert(const char *err){
 	
 	debug_print(KERN_EMERG, "Kernel Fault : %s",err);
