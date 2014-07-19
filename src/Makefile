@@ -15,7 +15,8 @@ ALLSOURCES = arch/i386/boot.o \
 	     init/main.o \
 	     kernel/kprintf.o \
 	     kernel/kern_debug.o \
-	     kernel/panic.o
+	     kernel/panic.o \
+	     kernel/version.o
 
 
 SOURCES = $(ALLSOURCES) $(LIBS) $(DRIVERS)
