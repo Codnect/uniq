@@ -20,14 +20,12 @@
 #ifndef __UNIQ_VERSION_H__
 #define __UNIQ_VERSION_H__
 
-#include <uniq/types.h>
-
 extern char * __kern_name;
 extern char * __kern_version_fmt;
 
-extern uint8_t __kern_version_major;
-extern uint8_t __kern_version_minor;
-extern uint8_t __kern_version_lower;
+extern int    __kern_version_major;
+extern int    __kern_version_minor;
+extern int    __kern_version_lower;
 extern char * __kern_version_suffix;
 extern char * __kern_version_codename;
 
