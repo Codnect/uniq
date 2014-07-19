@@ -40,7 +40,7 @@ void _debug_print(char *file,int line,kern_levels_t level,const char *fmt,...);
 #endif
 
 #if defined(KDEBUG_DEFAULT) || defined(KDEBUG_OOPS)
-	#define debug_print(level,...)		_debug_print(MODULE_NAME,MODULE_LINE,level,__VA_ARGS__);
+	#define debug_print(level,...)		_debug_print(MODULE_NAME,MODULE_LINE,level,__VA_ARGS__)
 #else
 	#define debug_print(level,...)
 #endif
