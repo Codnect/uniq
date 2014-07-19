@@ -17,14 +17,13 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <uniq/version.h>
 
 char * __kern_name = "uniq";
 char * __kern_version_format = "%d.%d.%d-%s";
 
-uint8_t __kern_version_major = 0;
-uint8_t __kern_version_minor = 0;
-uint8_t __kern_version_lower = 1;
+int __kern_version_major = 0;
+int __kern_version_minor = 0;
+int __kern_version_lower = 1;
 
 #ifdef KERN_SPEC_SUFFIX
 	#define STR(x) #x
