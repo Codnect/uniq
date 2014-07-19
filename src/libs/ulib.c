@@ -19,6 +19,7 @@
 
 #include <uniq/types.h>
 #include <ctype.h>
+#include <uniq/module.h>
 
 void swap(int32_t *x,int32_t *y){
     
@@ -48,3 +49,6 @@ int atoi(const char *s){
 
 	return i;
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
