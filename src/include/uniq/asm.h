@@ -23,16 +23,19 @@
 /* kesmeleri devre disi birak */
 static inline void cli(){
 	__asm__ volatile("cli");
+	debug_print(KERN_INFO,"Interrupts = \033[1;31mDisabled");
 }
 
 /* kesmeleri aktif hale getir */
 static inline void sti(){
 	__asm__ volatile("sti");
+	debug_print(KERN_INFO,"Interrupts = \033[1;32mEnabled");
 }
 
 /* sistemi durdur */
 static inline void hlt(){
 	__asm__ volatile("hlt");
+	debug_print(KERN_INFO,"System halted!");
 }
 
 /* islem yapmayi birak */
