@@ -288,7 +288,6 @@ static int vasprintf(const char *fmt, va_list arg_list){
 		if(*fmt == '\033'){
 			attr = make_ansi_color(&fmt);
 			continue;
-				
 		}
 		fmt++;
 			
