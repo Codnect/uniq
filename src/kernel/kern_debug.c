@@ -50,12 +50,12 @@ static char *level_msgs[]={
  * @param fmt : format
  * @param ... : argumanlar
  */
-void _debug_print(char *file,int line,kern_levels_t level,const char *fmt,...){
+void _debug_print(char *file,uint32_t line,kern_levels_t level,const char *fmt,...){
 	
 	if((level == KERN_INFO) && (kdebug_mode == KERN_DEBUG_OOPS))
 		return;
 
-	char buffer[1024];
+	char buffer[4096];
 	va_list arg_list;
 	va_start(arg_list,fmt);
 	vsnprintf(buffer,sizeof(buffer)-1,fmt,arg_list);
