@@ -19,7 +19,6 @@
  
 
 #include <drivers/vga.h>
-#include <uniq/port.h>
 #include <uniq/types.h>
 #include <uniq/module.h>
 #include <uniq/kernel.h>
