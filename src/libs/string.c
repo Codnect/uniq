@@ -19,6 +19,7 @@
 
 #include <uniq/types.h>
 #include <ctype.h>
+#include <uniq/module.h>
 
 /*
  * strlen, verilen karakter dizisinin uzunlugu verir.
@@ -659,3 +660,6 @@ char *strncasestr(char *s1,char *s2, size_t len){
 	}
 	return NULL;
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
