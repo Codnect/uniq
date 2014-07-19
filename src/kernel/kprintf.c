@@ -24,7 +24,7 @@
 #include <uniq/types.h>
 #include <ctype.h>
 #include <va_list.h>
-#include <drivers/vga.h>
+#include <uniq/kernel.h>
 #include <string.h>
 #include <uniq/module.h>
 
