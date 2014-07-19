@@ -58,3 +58,5 @@ void _assert(const char *err){
 
 }
 
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
