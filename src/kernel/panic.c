@@ -20,6 +20,7 @@
 #include <va_list.h>
 #include <uniq/kernel.h>
 #include <uniq/types.h>
+#include <uniq/module.h>
 
 /*
  * die,kendisine verilen formatli yada formatsiz karakter
