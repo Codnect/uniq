@@ -20,6 +20,7 @@
 #include <uniq/kern_debug.h>
 #include <uniq/kernel.h>
 #include <va_list.h>
+#include <uniq/module.h>
 
 #ifdef KDEBUG_DEFAULT
 	kern_debug_mode_t kdebug_mode = KERN_DEBUG_DEFAULT;
@@ -67,3 +68,6 @@ void _debug_print(char *file,uint32_t line,kern_levels_t level,const char *fmt,.
 	printf("%-10s: [module = %.40s line = %.6d]\n%s %s\n",lvl_text,file,line,"->",buffer);
 	
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
