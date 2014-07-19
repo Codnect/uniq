@@ -362,7 +362,7 @@ void exit_vga_console(void){
 		reset_console();
 	#endif
 	
-	debug_print(KERN_INFO,"vga console was closed.");
+	debug_print(KERN_INFO,"Shutting down the vga console.");
 	vga_vram = NULL;
 	
 }
@@ -381,7 +381,7 @@ void init_vga_console(void){
 
 	vga_vram = (uint16_t*)(VGA_VRAM_START);
 	reset_console();
-	debug_print(KERN_INFO,"vga console was launched. vram = \033[1;37m%p",vga_vram);
+	debug_print(KERN_INFO,"Initializing the vga console. vram = \033[1;37m%p",vga_vram);
 	
 }
 
