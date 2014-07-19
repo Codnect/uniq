@@ -22,6 +22,9 @@
 
 #include <va_list.h>
 
+#define STR(x)		#x
+#define STRSTR		STR(x)
+
 /* inline asm makrolari & diger*/
 #include <uniq/port.h>
 #include <uniq/asm.h>
@@ -39,5 +42,7 @@ extern int printf(const char *fmt, ...);
 /* panic.c & debug */
 #include <uniq/kern_debug.h>
 void die(const char *fmt, ...);
+void _assert(const char *err);
+#define assert(statement) (statement) ? ((void)0) : _assert(#statement)
 
 #endif /* __UNIQ_KERNEL_H__ */
