@@ -22,16 +22,17 @@
 
 #include <va_list.h>
 
-
 /* drivers */
 #include <drivers/vga.h>
 
 /* kprintf.c */
-extern int vsnprintf(char *buf, size_t n , const char *fmt, va_list arg_list);
-extern int vsprintf(char *buf, const char *fmt, va_list arg_list);
+extern int vsnprintf(char *strbuf, size_t n , const char *fmt, va_list args);
+extern int vsprintf(char *strbuf, const char *fmt, va_list args);
 extern int sprintf(char *buf, const char *fmt, ...);
 extern int snprintf(char *buf, size_t n, const char *fmt, ...);
 extern int printf(const char *fmt, ...);
 
+/* panic.c & debug */
+#include <uniq/kern_debug.h>
 
 #endif /* __UNIQ_KERNEL_H__ */
