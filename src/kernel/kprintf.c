@@ -31,18 +31,18 @@
 #define MAX_HEXDIGIT	8	/* 'FFFFFFFF' */
 
 /* flags */
-#define SIGN	0x001	/* isaretli/isaretsiz tam sayi */
-#define PLUS	0x002	/* saga dayali */
-#define SMALL	0x004	/* '0xabdef' '0xABCDEF' */
-#define LEFT	0x008	/* sola dayali */
-#define CHAR	0x010	/* karakter */
-#define STRING	0x020	/* karakter dizisi */
-#define INTEGER	0x040	/* tam sayilar */
-#define HEX	0x080	/* hexadecimal sayilar */
-#define COLOR	0x100	/* renk */
-#define SPECIAL	0x200	/* ozel karakter icin */
-#define DOT	0x400	/* nokta */
-#define POINTER	0x800	/* pointer */
+#define SIGN		0x001	/* isaretli/isaretsiz tam sayi */
+#define PLUS		0x002	/* saga dayali */
+#define SMALL		0x004	/* '0xabdef' '0xABCDEF' */
+#define LEFT		0x008	/* sola dayali */
+#define CHAR		0x010	/* karakter */
+#define STRING		0x020	/* karakter dizisi */
+#define INTEGER		0x040	/* tam sayilar */
+#define HEX		0x080	/* hexadecimal sayilar */
+#define COLOR		0x100	/* renk */
+#define SPECIAL		0x200	/* ozel karakter icin */
+#define DOT		0x400	/* nokta */
+#define POINTER		0x800	/* pointer */
 
 /*
  * vga renklerinin ansi renklere cevrilmesi icin
