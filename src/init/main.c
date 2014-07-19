@@ -22,6 +22,12 @@
 
 void kmain(uintptr_t mboot_magic){
 
+	/* vga konsol */
 	init_vga_console();
-	
+
+	if(mboot_magic != 0x2badb002)
+		debug_print(KERN_WARNING,"invalid magic number. magic number = \033[1;31m%P",mboot_magic);
+	else
+		debug_print(KERN_INFO,"magic number was checked. magic number = \033[1;37m%P",mboot_magic);
+
 }
