@@ -22,6 +22,10 @@
 
 #include <va_list.h>
 
+/* inline asm makrolari & diger*/
+#include <uniq/port.h>
+#include <uniq/asm.h>
+
 /* drivers */
 #include <drivers/vga.h>
 
@@ -34,5 +38,6 @@ extern int printf(const char *fmt, ...);
 
 /* panic.c & debug */
 #include <uniq/kern_debug.h>
+void die(const char *fmt, ...);
 
 #endif /* __UNIQ_KERNEL_H__ */
