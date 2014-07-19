@@ -52,7 +52,7 @@ void die(const char *fmt, ...){
  */
 void _assert(const char *err){
 	
-	debug_print(KERN_EMERG, "Kernel Fault : %s",err);
+	debug_print(KERN_ERROR, "Kernel Fault : %s",err);
 	disable_interrupts();
 	halt_system();
 
