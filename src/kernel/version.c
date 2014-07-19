@@ -17,6 +17,7 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <uniq/module.h>
 
 char * __kern_name = "uniq";
 char * __kern_version_format = "%d.%d.%d-%s";
@@ -46,3 +47,6 @@ char * __kern_build_time = __TIME__;
 #endif
 
 char * __kern_compiler_version = COMPILER_VERSION;
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
