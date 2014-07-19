@@ -20,7 +20,29 @@
 #ifndef __UNIQ_INLINE_ASM_H__
 #define __UNIQ_INLINE_ASM_H__
 
+/* kesmeleri devre disi birak */
+static inline void cli(){
+	__asm__ volatile("cli");
+}
 
+/* kesmeleri aktif hale getir */
+static inline void sti(){
+	__asm__ volatile("sti");
+}
+
+/* sistemi durdur */
+static inline void hlt(){
+	__asm__ volatile("hlt");
+}
+
+/* islem yapmayi birak */
+static inline void relax_cpu(){
+	__asm__ volatile("rep; nop");
+}
+
+#define disable_interrupts()		cli()
+#define enable_interrupts()		sti()
+#define halt_system()			hlt()
 
 
 #endif /* __UNIQ_INLINE_ASM_H__ */
