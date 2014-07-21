@@ -18,6 +18,7 @@
  */
 
 #include <uniq/module.h>
+#include <compiler.h>
 
 char * __kern_name = "uniq";
 char * __kern_version_format = "%d.%d.%d-%s";
@@ -39,12 +40,6 @@ char * __kern_version_codename = "nova";
 char * __kern_arch = "i386";
 char * __kern_build_date = __DATE__;
 char * __kern_build_time = __TIME__;
-
-#if (defined(__GNUC__) || defined(__GNUG__)) && !(defined(__clang__) || defined(__INTEL_COMPILER))
-	#define COMPILER_VERSION "gcc " __VERSION__
-#else
-	#define COMPILER_VERSION "unknown compiler"
-#endif
 
 char * __kern_compiler_version = COMPILER_VERSION;
 
