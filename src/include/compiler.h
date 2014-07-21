@@ -21,8 +21,11 @@
 #define __UNIQ_COMPILER_H__
 
 /* eger gnu c derleyicisi tanimliysa */
-#if defined(__GNUC__)
+#if (defined(__GNUC__) || defined(__GNUG__)) && !(defined(__clang__) || defined(__INTEL_COMPILER))
+	#define COMPILER_VERSION "gcc " __VERSION__
 	#include <compiler_gcc.h>
+#else
+	#define COMPILER_VERSION "unknown compiler"
 #endif
 
 #endif /* __UNIQ_COMPILER_H__ */
