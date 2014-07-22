@@ -16,4 +16,19 @@
  *  You should have received a copy of the GNU General Public License along
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+#include <uniq/types.h>
+struct gdt_entry{
+	u16 limit_low;
+	u16 base_low;
+	u8 base_middle;
+	u8 access;
+	u8 granularity;
+	u8 base_high;
+} __attribute__((packed));
+
+
+struct gdt_ptr {
+	u16 limit;
+	u32 base;
+} __attribute__((packed));
