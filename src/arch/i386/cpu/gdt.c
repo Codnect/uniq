@@ -18,6 +18,53 @@
  */
 
 #include <uniq/types.h>
+
+/*
+ * --- Genel bilgiler --- ***
+ * --------------------------------------------------------------------------------------------
+ *
+ * İşlemci ilk başlarken gerçek modda başlar. Gerçek modda 1 MiB'lik bellek
+ * adresleyebilirken, korumali modda 32 bitlik yani 4 GiB'lik bellegi adresler.
+ * Korumali modda bellek erisimi GDT,LDT tablolariyla gerceklesir.
+ *
+ * GDTR : Global Descriptor Table Register
+ * -----  (GDT)-Global tanimlayici tablosuna isaret eder.
+ *
+ * LDTR : Local Descriptor Table Register
+ * ----- LDTR, GDTR gibi direk tabloyu isaret etmez. GDT tablosundaki bir tanimlayiciya 
+ *	 isaret eder. (LDT)-Yerel tanimlayici tablosunun adresi bu tanimlayici icindedir.
+ *
+ * IDTR : Interrupt Descriptor Table Register
+ * -----  IDT tablosuna isaret eder ve kesmeleri yonetecek fonksiyonlarin adreslerini tutar.
+ *
+ * TR : Task Register
+ * ---	TSS yapisina isaret eder. TSS yapisi surec ile ilgili tum bilgileri icerir.
+ *
+ * !Not : GDT ve LDT tablolari en fazla 8192 tanimlayici icerebilir.
+ * -----
+ *
+ * CR0 : Control Register 0
+ * ----	Korumalı mod ve sayfalama mekanizmasi icin
+ *	CR0'in PG biti(31.bit) = 1 yapılırsa sayfalama aktif olur.
+ *	CR0'in PE biti(1.bit)  = 1 yapılırsa gercek moddan,korumali mod'a gecilir
+ *
+ * CR1 : Control Register 1
+ * ----	intel tarafinda rezerve edilmistir.
+ *
+ * CR2 : Control Register 2
+ * ----	sayfalama hatasi olustugunda olusan sayfa adresini tutar.
+ * 	!dikkat : sayfalama aktifse.
+ *
+ * CR3 : Control Register 3
+ *	sayfa dizin tablosunun fiziksel adresini tutar.
+ *
+ * CR4 : Control Register 4
+ * ----	intel icin.
+ *
+ * --------------------------------------------------------------------------------------------
+ *
+ */
+ 
 struct gdt_entry{
 	u16 limit_low;
 	u16 base_low;
