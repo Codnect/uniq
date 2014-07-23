@@ -153,7 +153,7 @@ static uint8_t make_ansi_color(const char **s){
  * @param flags : flaglar
  * @param nptr : sayinin adresi
  */
-static int hex_number(char *buf,uint32_t flags,uint32_t* nptr){
+static int hex_number(char *buf,uint32_t flags,uintptr_t *nptr){
 	
 	
 	int hdigit_count = 0;
