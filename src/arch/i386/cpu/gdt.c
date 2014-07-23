@@ -20,7 +20,7 @@
 #include <uniq/types.h>
 
 /*
- * --- Genel bilgiler --- ***
+ * -Genel bilgiler-
  * --------------------------------------------------------------------------------------------
  *
  * İşlemci ilk başlarken gerçek modda başlar. Gerçek modda 1 MiB'lik bellek
