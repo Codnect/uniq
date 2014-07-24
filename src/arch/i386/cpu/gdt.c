@@ -221,20 +221,21 @@
  * !Not: detayli inceleme icin "gdt_entry" yapisini inceleyebilirsiniz.
  * -----
  *
- * -----------------------------------------------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------------------------------------
  *  -"TYPE" 4 bitin detayli aciklamasi-
  * 
  * * Eger tanimlayici bir hafiza segmenti tanimliyorsa(kod,veri,yigin) *
  * 
  * 1.bit : 0 ise segment veri yada yigindir. 1 ise kod segmentidir.
+ * -------
  * 2.bit : eger segment kod segment degilse. veri mi? yigin mi? bu bit
- *	  bit sayesinde anlasilir.1 ise yigin 0 ise veri segmentidir.
+ * ------ bit sayesinde anlasilir.1 ise yigin 0 ise veri segmentidir.
  *
  *	  eger segment kod segmenti ise bu bit baska anlam tasir.
  *        bu bit 0 ise ayricalik duzeyi(DPL) kontrol edilmez. eger 1 ise
  *	  ayricalik duzeyi(DPL) kontrolu yapilir.
  *  3.bit : bu bit segmentin kod segmenti olup olmamasina bagli olarak farkli
- *	  anlam kazanir.
+ * ------- anlam kazanir.
  *	  
  *	  eger segment veri yada yigin segmenti ise bu bit yazma kontrol bitidir.
  *	  eger bu bit 1 ise o segment hem yazilir hem okunur,0 ise sadece okunur.
@@ -243,7 +244,7 @@
  *        bu bit 0 ise o kod segment calistirilabilir,ancak 1 ise veri segmenti 
  *	  gibi okunabilir de.
  * 4.bit : bu bit ortak ve islemci o segmente her eristiginde 1 yapilir. istatistik
- *	  amaciyla kullanilir.
+ * ------ amaciyla kullanilir.
  *
  * * Eger tanimlayici bir sistem segmenti tanimliyorsa *
  *
@@ -251,9 +252,9 @@
  *  4 bitlerine gore farkli yapilar olabilirler.
  *
  *  =========================================================================
- *  ==	               Sistem segment tanimlayicisi turleri               ==
+ *  ==	               Sistem segment tanimlayicisi turleri                ==
  *  =========================================================================
- *  = 0 = 0 = 0 = 0 = 		   rezerve edilmis                         =
+ *  = 0 = 0 = 0 = 0 = 		   rezerve edilmis                          =
  *  =========================================================================
  *  = 0 = 0 = 0 = 1 =              16 bit tss (hazir)                       =
  *  =========================================================================
@@ -269,17 +270,17 @@
  *  =========================================================================
  *  = 0 = 1 = 1 = 1 =              16 bit tuzak kapisi                      =
  *  =========================================================================
- *  = 1 = 0 = 0 = 0 = 		   rezerve edilmis                         =
+ *  = 1 = 0 = 0 = 0 = 		   rezerve edilmis                          =
  *  =========================================================================
  *  = 1 = 0 = 0 = 1 =              32 bit tss (hazir)                       =
  *  =========================================================================
- *  = 1 = 0 = 1 = 0 = 		   rezerve edilmis                         =
+ *  = 1 = 0 = 1 = 0 = 		   rezerve edilmis                          =
  *  =========================================================================
  *  = 1 = 0 = 1 = 1 =             32 bit tss (mesgul)                       =
  *  =========================================================================
  *  = 1 = 1 = 0 = 0 =              32 bit cagri kapisi                      =
  *  =========================================================================
- *  = 1 = 1 = 0 = 1 = 		   rezerve edilmis                         =
+ *  = 1 = 1 = 0 = 1 = 		   rezerve edilmis                          =
  *  =========================================================================
  *  = 1 = 1 = 1 = 0 =             32 bit kesme kapisi                       =
  *  =========================================================================
@@ -289,6 +290,8 @@
  *  !Not: LDTR'n LDT'yi dogrudan gostermedigini biliyoruz, onun GDT tablosunda
  *  ----- bir index'i gosterdigini soyledik. Eger tanimlayicinin "DT" biti 0 ise
  *        ve "TYPE" biti LDT ise o tanimlayici LDT'yi gosterir.
+ *
+ * -------------------------------------------------------------------------------------------------------------
  *
  */
  
