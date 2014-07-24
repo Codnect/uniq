@@ -156,6 +156,70 @@
  * boyunta olup kalan 12 biti offset olarak kullanicaktik 2^12 = 4096 ile sayfanin her bitine erisilebilir.
  * - Tum bu islemlerle fiziksel adrese erisilir,fakat bu asamalar gerceklesirken bircok koruma testi de yapilir.
  *
+ * ------------------------------------------------------------------------------------------------------------
+ *
+ * -Tanimlayicilar-
+ * GDT ve LDT tablolarinin her bir elemaninin bir segment tanimlayicisiydi. Segment tanimlayicisi segment icin
+ * gerekli tum bilgileri barindirir. 64 bit boyutunda olup en fazla 8192 tanimlayici icerebilir.
+ *
+ * ==============================================================================================
+ * =  base_high  =  granularity  =   access =   base_middle  = 	  base_low     =   limit_low    =
+ * =   24-31     =	         =	    =     16-23      =      0-15       =       0-15     =
+ * ==============================================================================================
+ *     8 bit          8 bit          8 bit          8 bit           16 bit             16 bit
+ *
+ * limit_low : segmentin taban adresinden itibaren boyutunu tutat 20 bitlik bolumunun 0-15 arasindaki
+ * ----------- 16 biti
+ * 
+ * base_low :  segmentin taban adresinin ilk 16 biti
+ * -----------
+ *
+ * base_middle: segmentin taban adresinin 16-23 arasindaki 8 biti
+ * ------------
+ *
+ * access :  access bayt formati,erisim ile ilgili bilgileri icerir.
+ * --------  
+ *          7     6      5 4      3    0
+ *	    ============================
+ *	    =  P =  DPL  =  DT  = TYPE =
+ *	    ============================
+ *
+ *	    -> Type = segment, kod segmenti mi? veri segmenti mi?
+ *	    ---------
+ *	    -> DT   = eger segment normal bir hafiza segmentiyse(kod,veri,yigin) 1 degerini alir.
+ *	    ---------
+ *	    -> DPL  = segment ayricalik seviyesini belirtir.
+ *	    ---------
+ *	    -> P    = segmentin o an bellekte olup olmadigi belirtir. eger segment bellekte ise bu
+ *	    --------- bit 1 olur. eger 0 iken segmente erisilmeye calisilirsa "segment not present"
+ *		      hatasi olusur.
+ *
+ * granularity: segment ile ilgili diger bilgileri icerir.
+ * ------------
+ *
+ *          7     6      5    4      3            0
+ *	    ========================================
+ *	    =  G  =  D  =  O  =  A  =    segment   =
+ *	    =     =     =     =     =      19:16   =
+ *	    ========================================
+ *	    
+ *	    -> segment = segment limitinin son 4 biti toplamda 20 bit oldugunu belirtmistik.
+ *	    ------------
+ *	    -> A       = isletim sistemi icin kullanilabilir/kullanilmayabilirde.
+ *          ------------
+ *	    -> O       = rezerve edilmistir. Daima sifirdir. A biti ile birlestirilip kullanilabilir.
+ *	    ------------
+ *	    -> D       = segment 16 bitlik mi ? 32 bitlik mi ? (0 = 16bit, 1 = 32bit)
+ *	    ------------
+ *	    -> G       = bu bit limit ile gosterilen sayinin bayt mi yoksa sayfa mi oldugunu belirtir.
+ *	    ------------ limit sahasi toplam 20 bittir ve eger bayt olarak kullanilirsa en fazla 1 MiB (2^20)
+ *		         olabilir. Sayfa olursa 2^20*4096 = 4 GiB gibi bir limit tanimlanabilir.
+ *
+ * base_high: segment taban adresinin son 8 biti. toplamda 32 bit.
+ * ----------
+ *
+ * !Not: detayli inceleme icin "gdt_entry" yapisini inceleyebilirsiniz.
+ * -----
  *
  */
  
