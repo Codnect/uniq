@@ -122,10 +122,10 @@
  * ise bu lineer adresin fiziksel adresi donusmesi icin sayfa dizini ve sayfa tablosu kullanilir.
  *
  * Sayfa tablosu : Sayfalarin( 4 KiB) bellekteki fiziksel adres karsiliklarini tutar. Kısaca bir adres
- * tablosudur.
+ * -------------- tablosudur.
  *
  * Sayfa dizini : Sayfa tablolarinin bellekteki fiziksel adreslerini tutar.
- *
+ * -------------
  * -----------------------------------------------------------------------------------------------------------
  *
  * !Not : Her surecin bir adet sayfa dizini vardir ancak birden fazla sayfa tablosu olabilir. Her
