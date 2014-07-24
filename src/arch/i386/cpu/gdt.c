@@ -293,6 +293,22 @@
  *
  * -------------------------------------------------------------------------------------------------------------
  *
+ *  - segment yazmaclari -
+ *
+ *  segment yazmaclari 16 bittir.bu 16 bitin ilk iki bitip RPL degerini tasir.
+ *  3.bit ise o selektorun neyi gosterdigini belirler.bit 0 ise index GDT tablosunun
+ *  1 ise LDT tablosunundur. geriye 13 bit kaldi, (2^13 = 8192) ile yazilabilecek
+ *  en buyuk sayi budur. bu yuzden GDT ve LDT tablolari en fazla 8192 eleman 
+ *  alabilir.
+ *
+ *  15                                 3   2     0
+ *  ==============================================
+ *  =               index             = TI = RPL =
+ *  ==============================================
+ *  (TI = tanimlayici tablosu)
+ *
+ * --------------------------------------------------------------------------------------------------------------
+ *
  */
  
 struct gdt_entry{
