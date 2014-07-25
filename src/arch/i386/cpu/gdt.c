@@ -456,7 +456,27 @@ struct gdt_ptr_t{
  *
  * ------------------------------------------------------------------------------------------
  */
- 
+
+
+/*
+ * ayricalik seviyeleri
+ * ---------------------
+ * DPL0 = kernel modu
+ * DPL1,DPL2 genellikle kullanilmaz.
+ * DPL3 = kullanici modu
+ */
+#define SEGMENT_DPL0		0x00
+#define SEGMENT_DPL1		0x20
+#define SEGMENT_DPL2		0x40
+#define SEGMENT_DPL3		0x60
+
+/*
+ * diger
+ */
+#define SEGMENT_PRESENT 	0x80	/* segment bellekte mi ? */
+#define SEGMENT_NORMAL		0x10	/* segment normal bir hafiza segmenti mi? */
+
+
 /*
  * init_gdt
  */
