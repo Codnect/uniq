@@ -18,6 +18,7 @@
  */
 
 #include <uniq/types.h>
+#include <uniq/module.h>
 
 /*
  * -Genel bilgiler-
@@ -484,3 +485,6 @@ void init_gdt(void){
 	
 	
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
