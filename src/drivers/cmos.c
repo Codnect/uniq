@@ -16,3 +16,8 @@
  *  You should have received a copy of the GNU General Public License along
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+#include <uniq/module.h>
+ 
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
