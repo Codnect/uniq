@@ -400,17 +400,67 @@
  *
  */
  
-struct gdt_entry{
-	u16 limit_low;
-	u16 base_low;
-	u8 base_middle;
-	u8 access;
-	u8 granularity;
-	u8 base_high;
+
+/*
+ * gdt tablosu icin girdi yapisi yani diger adiyla soylersek
+ * tanimlayici.
+ */
+struct gdt_entry_t{
+	uint16_t limit_low;	/* limitin ilk 16 biti */
+	uint16_t base_low;	/* taban adresin ilk 16 biti */
+	uint8_t base_middle;	/* taban adresin diger 8 biti */
+	uint8_t access;		/* erisim flaglari */
+	uint8_t granularity;	/* diger flaglar */
+	uint8_t base_high;	/* taban adresin son 8 biti */
 } __attribute__((packed));
 
 
-struct gdt_ptr {
-	u16 limit;
-	u32 base;
+/*
+ * gdt_ptr_t bahsettigimiz selektor ve adres yapisidir.
+ */
+struct gdt_ptr_t{
+	uint16_t limit;		/* selektor limit */
+	uint32_t base;		/* ilk gdt_entry_t adresi */
 } __attribute__((packed));
+
+
+/*
+ * ------------------------------------------------------------------------------------------
+ *
+ *  __attribute__((packed)) nedir?
+ * bunu ornekle aciklamak daha iyi olucak gibime geliyor. ornegin elimizde asagidaki
+ * gibi struct var.
+ *
+ * struct deneme{
+ *	int a;
+ *	char b;
+ *	char c;
+ *  );
+ *
+ * struct boyutunu hesaplayalim simdi.
+ * sizeof(a) + sizeof(b) + sizeof(c) =  4 + 1 + 1 = 6 bayt olmasi lazim. fakat
+ * struct'in boyutunu hesapladigimizda 8 bayt cikacaktir. cunku 4 bayt bloklar
+ * halinde sinirlandirilmaktadir. yani 4 bayt katlari seklinde olur. bos kalan
+ * 2 baytida kendi tamamlayarak 4 baytin kati olmasi saglanir.
+ *
+ * struct deneme{
+ *	int a;
+ *	char b;
+ *	char c;
+ *  ) __attribute__((packed));
+ *
+ * bu struct'in ise boyutunu hesapladigimizda daha once boyle cikmasi lazimdi 
+ * dedigimiz cikar. ve 4 baytla sinirlandirilmazlar. yani 4 baytin kati
+ * olmaz. bi nevi bu direktifle struct'i oldugu gibi kabul et diyoruz.
+ * anlatabildigim kadariyla ;).
+ *
+ * ------------------------------------------------------------------------------------------
+ */
+ 
+/*
+ * init_gdt
+ */
+void init_gdt(void){
+	
+	
+}
