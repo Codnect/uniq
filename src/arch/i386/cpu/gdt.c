@@ -49,7 +49,7 @@
  *	CR0'in PE biti(1.bit)  = 1 yapılırsa gercek moddan,korumali mod'a gecilir
  *
  * CR1 : Control Register 1
- * ----	intel tarafinda rezerve edilmistir.
+ * ----	intel tarafindan rezerve edilmistir.
  *
  * CR2 : Control Register 2
  * ----	sayfalama hatasi olustugunda olusan sayfa adresini tutar.
@@ -380,7 +380,7 @@
  *	    
  *	    -> PCD     = islemcinin L1,L2 cahcelerinin sayfa tablolari icin kullanip kullanilmayacagini
  *	    ------------ belirtir. PCD 0 ise islemci cacheleri kullanilir.
- *	    -> PWT     = cacha mekanizmasi ile ilgilidir. PWT 0 isee icsel tampodan okuma yazma yapilabilir.
+ *	    -> PWT     = cacha mekanizmasi ile ilgilidir. PWT 0 isee icsel tampondan okuma yazma yapilabilir.
  *	    ------------
  *	    -> A       = her erisimde set edilir. istatistik icin kullanililabilir.
  *           ------------
