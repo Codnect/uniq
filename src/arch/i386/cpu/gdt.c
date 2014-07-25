@@ -309,6 +309,95 @@
  *
  * --------------------------------------------------------------------------------------------------------------
  *
+ * - sayfa dizini ve sayfa tablosu girdileri-
+ *
+ * sayfa tablosu ve sayfa dizini girdileri 32 bittir. sayfa tablosu ve sayfa dizinin 1024 girdi
+ * alabildiginden bahsetmistik. bu girdiler 32 bit yani 4 bayttir. sayfa tablosu ve sayfa dizinlerinin
+ * toplamda 4 KiB boyutundadir. Sayfa tablolarinda her girdinin 4 KiB boyutundaki sayfalari gosterdiginden
+ * bahsettik ve bu tablolar 1024 girdiye sahip olduguna gore 4*1024*1024 = 4 MiB yani bir sayfa tablosuyla
+ * 4 MiB bellek adreslenebilir. Sayfa dizinleride 1024 girdiye sahipti ve her girdiside bir sayfa tablosuna
+ * isaret ediyordu.1024*4 MiB = 4 GiB toplamda bellegin adreslenebileceginide boylece tekrar aciklamis
+ * olduk.
+ *
+ *                                 sayfa dizin girdisi - 32bit
+ *  =========================================================================================
+ *  =     sayfa tablosu adresi     =   sistem  = G = PS = 0 = A = PCD = PWT = U/S = R/W = P =
+ *  ========================================================================================= 
+ *              20 bit                  3bit     1   1    1   1    1     1     1     1    1
+ *
+ *           -> P biti  = eger bit 1 ise sayfa tablosu bellektedir,0 ise degildir.	
+ *	    ------------
+ *	    -> R/W     = sayfa tablosunun okunup yazilabilirligi belirtir.
+ *          ------------
+ *	    -> U/S     = sayfa tablosunun uygulama programcilari icin erisimini belirler.
+ *	    ------------ asagidaki tablodan izinleri kontrol edebilirsiniz.
+ *		
+ *			=======================================================================
+ *		        =   U/S   =   R/W   =  uygulama programcisi  =  sistem programcisi    =
+ *			=======================================================================
+ *			=    0    =    0    =        erisemez        =  okuyabilir/yazabilir  =
+ *			=    0    =    1    =        erisemez        =  okuyabilir/yazabilir  =
+ *			=    1    =    0    =   yalniz okuyabilir    =  okuyabilir/yazabilir  =
+ *			=    1    =    1    =  okuyabilir/yazabilir  =  okuyabilir/yazabilir  =
+ *			=======================================================================
+ *	    
+ *	    -> PCD     = islemcinin L1,L2 cahcelerinin sayfa tablolari icin kullanip kullanilmayacagini
+ *	    ------------ belirtir. PCD 0 ise islemci cacheleri kullanilir.
+ *	    -> PWT     = cacha mekanizmasi ile ilgilidir. PWT 0 isee icsel tampodan okuma yazma yapilabilir.
+ *	    ------------
+ *	    -> A       = her erisimde set edilir. istatistik icin kullanililabilir.
+ *           ------------
+ *	    -> D       = her yazmada set edilir. istatistik icin kullanilabilir.
+ *	    ------------
+ *	    -> PS      = sayfa boyutunu belirler. eger bu bit 0 ise 4 KiB,1 ise 4 MiB sayfa
+ *           ------------ boyutu kullanir.
+ *	    -> G biti  = sayfanin global olmasini saglar. sayfa dizin tablosu icin anlamsizdir.
+ *          ------------
+ *          -> sistem  = isletim sistemi icin ayrilmistir.
+ *          ------------
+ *
+ *	    			   sayfa tablosu girdisi - 32bit
+ *  =========================================================================================
+ *  =     sayfa   adresi           =   sistem  = G = 0  = D = A = PCD = PWT = U/S = R/W = P =
+ *  ========================================================================================= 
+ *              20 bit                  3bit     1   1    1   1    1     1     1     1    1
+ *
+ *           -> P biti  = eger bit 1 ise sayfa bellektedir,0 ise degildir.	
+ *	    ------------
+ *	    -> R/W     = sayfanin okunup yazilabilirligi belirtir.
+ *           ------------
+ *	    -> U/S     = sayfaya uygulama programcilari icin erisimini belirler.
+ *	    ------------ asagidaki tablodan izinleri kontrol edebilirsiniz.
+ *		
+ *			=======================================================================
+ *		        =   U/S   =   R/W   =  uygulama programcisi  =  sistem programcisi    =
+ *			=======================================================================
+ *			=    0    =    0    =        erisemez        =  okuyabilir/yazabilir  =
+ *			=    0    =    1    =        erisemez        =  okuyabilir/yazabilir  =
+ *			=    1    =    0    =   yalniz okuyabilir    =  okuyabilir/yazabilir  =
+ *			=    1    =    1    =  okuyabilir/yazabilir  =  okuyabilir/yazabilir  =
+ *			=======================================================================
+ *	    
+ *	    -> PCD     = islemcinin L1,L2 cahcelerinin sayfa tablolari icin kullanip kullanilmayacagini
+ *	    ------------ belirtir. PCD 0 ise islemci cacheleri kullanilir.
+ *	    -> PWT     = cacha mekanizmasi ile ilgilidir. PWT 0 isee icsel tampodan okuma yazma yapilabilir.
+ *	    ------------
+ *	    -> A       = her erisimde set edilir. istatistik icin kullanililabilir.
+ *           ------------
+ *	    -> D       = her yazmada set edilir. istatistik icin kullanilabilir.
+ *	    ------------
+ *	    -> PS      = sayfa boyutunu belirler. eger bu bit 0 ise 4 KiB,1 ise 4 MiB sayfa
+ *          ------------ boyutu kullanir.
+ *	    -> G biti  = sayfanin global olmasini saglar. sayfa dizin tablosu icin anlamsizdir.
+ *	    ------------
+ *          -> sistem  = isletim sistemi icin ayrilmistir.
+ *          ------------
+ *
+ *   !Not : sayfa tablosu ve sayfa adresinin 20 bit olmasinin sebebi 4 KiB katlari seklinde olmasidir.
+ *   ------ kacinci 4 KiB'likta oldugunu gosterir.
+ *
+ * ----------------------------------------------------------------------------------------------------------------------
+ *
  */
  
 struct gdt_entry{
