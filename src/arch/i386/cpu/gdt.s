@@ -16,3 +16,20 @@
 ;  You should have received a copy of the GNU General Public License along
 ;  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
 ;
+
+global gdt_flush
+
+gdt_flush:
+   mov eax, [esp+4]
+   lgdt [eax]
+
+   mov ax, 0x10
+   mov ds, ax
+   mov es, ax
+   mov fs, ax
+   mov gs, ax
+   mov ss, ax
+   jmp 0x08:.flush
+
+.flush:
+   ret
