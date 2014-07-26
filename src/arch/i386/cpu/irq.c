@@ -17,3 +17,8 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
  
+#include <uniq/module.h>
+
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
