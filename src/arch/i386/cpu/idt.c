@@ -20,7 +20,7 @@
 #include <uniq/module.h>
 #include <uniq/types.h>
 
-struct idt_entry_t {
+struct idt_entry_t{
 	uint16_t base_low;
 	uint16_t sel;
 	uint8_t zero;
@@ -29,7 +29,7 @@ struct idt_entry_t {
 } __attribute__((packed));
 
 
-struct idt_ptr_t {
+struct idt_ptr_t{
 	uint16_t limit;
 	uint32_t base;
 } __attribute__((packed));
