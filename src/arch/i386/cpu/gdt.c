@@ -474,8 +474,10 @@ struct gdt_ptr_t{
 /*
  * diger flaglar
  */
-#define SEGMENT_PRESENT 	0x80	/* segment bellekte mi ? */
-#define SEGMENT_NORMAL		0x10	/* segment normal bir hafiza segmenti mi? */
+#define SEGMENT_PRESENT 	0x80		/* segment bellekte mi ? */
+#define SEGMENT_NORMAL		0x10		/* segment normal bir hafiza segmenti mi? */
+#define SEGMENT_NORMAL_GRAN	0xCF		/* normal hafiza segmenti gran byte'i */
+#define SEGMENT_MAX_LIMIT	0xFFFFFFFF	/* segment maksimum limiti 4 GiB */
 
 /*
  * asagidaki flaglar segmentin normal bir hafiza segmenti
@@ -490,6 +492,11 @@ struct gdt_ptr_t{
 #define SEGMENT_DATA_RW		0x2	/* veri segmenti hem okunur hem de yazilabilir */
 #define SEGMENT_ACCESSED	0x1	/* segment'e erisim saglandi mi ? */
 
+#define NULL_SEGMENT		0x0
+#define KERNEL_CODE_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL0 | SEGMENT_NORMAL | SEGMENT_CODE_EXECR
+#define KERNEL_DATA_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL0 | SEGMENT_NORMAL | SEGMENT_DATA_RW
+#define USER_CODE_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_CODE_EXECR
+#define USER_DATA_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_DATA_RW
 
 /*
  * gdt_set_gate
