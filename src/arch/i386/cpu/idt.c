@@ -20,6 +20,22 @@
 #include <uniq/module.h>
 #include <uniq/types.h>
 
+/*
+ * -Genel bilgiler-
+ * --------------------------------------------------------------------------------------------
+ *
+ * IDTR : Interrupt Descriptor Table Register
+ * -----  IDT tablosuna isaret eder ve kesmeleri yonetecek fonksiyonlarin adreslerini tutar.
+ *
+ * IDTR yazmaci asagidaki gibidir.
+ *
+ * 47								16 15			     0	
+ * ===========================================================================================
+ * =                         taban adres 			 =	   limit	     =
+ * ===========================================================================================
+ *
+ */
+
 struct idt_entry_t{
 	uint16_t base_low;	/* atlanicak fonksiyonunun taban adresinin ilk 16 biti */
 	uint16_t sel;		/* kernel segment selektor */
