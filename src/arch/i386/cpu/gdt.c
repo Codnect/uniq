@@ -417,10 +417,13 @@ struct gdt_entry_t{
 
 
 /*
- * gdt_ptr_t bahsettigimiz selektor ve adres yapisidir.
+ * gdt_ptr_t, islemcinin gdt tablosuna nereden ulasacagi yani adresini
+ * ve gdt limitini tutan ozel bir yapidir.
+ *
+ * detayli inceleme icin init_gdt fonksiyonuna bakiniz.
  */
 struct gdt_ptr_t{
-	uint16_t limit;		/* selektor limit */
+	uint16_t limit;		/* gdt tablosunun uzunlugu tutar */
 	uint32_t base;		/* ilk gdt_entry_t adresi */
 } __attribute__((packed));
 
@@ -498,6 +501,9 @@ struct gdt_ptr_t{
 #define USER_CODE_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_CODE_EXECR	/* 0xFA */
 #define USER_DATA_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_DATA_RW	/* 0xF2 */
 
+struct gdt_entry_t	gdt_entry[6];
+struct gdt_ptr_t	gdt_ptr;
+
 /*
  * gdt_set_gate
  *
@@ -510,6 +516,7 @@ struct gdt_ptr_t{
  */
 void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran){
 	
+	
 } 
 
 /*
@@ -517,7 +524,16 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
  */
 void init_gdt(void){
 	
-	/* null segment */
+	/*
+	 * peki neden sizeof(struct gdt_entry_t), yani 8 bayt ile
+	 * carpiyoruz? cunku segment tanimlayicilari 8 bayt uzunlugunda
+	 * ve limit degeri gdt tablosunun toplam uzunlugunu tutuyor.
+	 * kisaca gdt limiti diyebiliriz.
+	 */
+	gdt_ptr.limit = (sizeof(struct gdt_entry_t) * 5) - 1;
+	gdt_ptr.base = (uint32_t)&gdt_entry;
+	
+	/* null segment olmali */
 	gdt_set_gate(0, 0, 0, 0, 0);
 	/* kernel kod segmenti */
 	gdt_set_gate(1, 0, SEGMENT_MAX_LIMIT, KERNEL_CODE_SEGMENT, SEGMENT_NORMAL_GRAN);
