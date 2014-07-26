@@ -480,11 +480,12 @@ struct gdt_ptr_t{
 /*
  * gdt_set_gate
  *
- * @param num :
- * @param base :
- * @param limit :
- * @param access :
- * @param gran :
+ * @param num : ayarlanacak tanimlayici icin numara, kisaca tanimlayici numarasi
+ *              diyebiliriz.
+ * @param base : taban adres
+ * @param limit : limit
+ * @param access : erisim izinleri
+ * @param gran : diger flaglar
  */
 void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran){
 	
