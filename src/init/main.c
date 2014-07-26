@@ -29,5 +29,8 @@ void kmain(uintptr_t mboot_magic){
 		debug_print(KERN_WARNING,"Invalid the magic number. Magic number = \033[1;31m%P",mboot_magic);
 	else
 		debug_print(KERN_INFO,"Valid the magic number. Magic number = \033[1;37m%P",mboot_magic);
+		
+	/* gdt tablosu */
+	init_gdt();
 
 }
