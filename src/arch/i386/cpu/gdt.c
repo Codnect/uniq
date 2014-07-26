@@ -433,7 +433,7 @@ struct gdt_entry_t{
  */
 struct gdt_ptr_t{
 	uint16_t limit;		/* gdt tablosunun uzunlugu tutar */
-	uint32_t base;		/* ilk gdt_entry_t adresi */
+	uint32_t base;		/* ilk gdt_entry_t adresi,yani gdt'nin taban adresi */
 } __attribute__((packed));
 
 
