@@ -563,11 +563,11 @@ void init_gdt(void){
 	/* kullanici veri segmenti */
 	gdt_set_gate(4, 0, SEGMENT_MAX_LIMIT, USER_DATA_SEGMENT, SEGMENT_NORMAL_GRAN);
 	
-	/* son ayarlarimizi yapalim...
+	/*
+	 * son ayarlarimizi yapalim...
 	 * go go go ;)
 	 */
 	gdt_flush((u32int_t)&gdt_ptr);
-	
 	debug_print(KERN_INFO,"Initializing the gdt.");
 	
 }
