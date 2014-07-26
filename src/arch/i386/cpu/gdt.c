@@ -492,7 +492,7 @@ struct gdt_ptr_t{
 #define SEGMENT_DATA_RW		0x2	/* veri segmenti hem okunur hem de yazilabilir */
 #define SEGMENT_ACCESSED	0x1	/* segment'e erisim saglandi mi ? */
 
-#define NULL_SEGMENT		0x0
+/* erisim */
 #define KERNEL_CODE_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL0 | SEGMENT_NORMAL | SEGMENT_CODE_EXECR	/* 0x9A */
 #define KERNEL_DATA_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL0 | SEGMENT_NORMAL | SEGMENT_DATA_RW	/* 0x92 */
 #define USER_CODE_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_CODE_EXECR	/* 0xFA */
@@ -517,6 +517,16 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
  */
 void init_gdt(void){
 	
+	/* null segment */
+	gdt_set_gate(0, 0, 0, 0, 0);
+	/* kernel kod segmenti */
+	gdt_set_gate(1, 0, SEGMENT_MAX_LIMIT, KERNEL_CODE_SEGMENT, SEGMENT_NORMAL_GRAN);
+	/* kernel veri segmenti */
+	gdt_set_gate(2, 0, SEGMENT_MAX_LIMIT, KERNEL_DATA_SEGMENT, SEGMENT_NORMAL_GRAN);
+	/* kullanici kod segmenti */
+	gdt_set_gate(3, 0, SEGMENT_MAX_LIMIT, USER_CODE_SEGMENT, SEGMENT_NORMAL_GRAN);
+	/* kullanici veri segmenti */
+	gdt_set_gate(4, 0, SEGMENT_MAX_LIMIT, USER_DATA_SEGMENT, SEGMENT_NORMAL_GRAN);
 	
 }
 
