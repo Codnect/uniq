@@ -501,7 +501,7 @@ struct gdt_ptr_t{
 #define USER_CODE_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_CODE_EXECR	/* 0xFA */
 #define USER_DATA_SEGMENT	SEGMENT_PRESENT | SEGMENT_DPL3 | SEGMENT_NORMAL | SEGMENT_DATA_RW	/* 0xF2 */
 
-struct gdt_entry_t	gdt_entry[6];
+struct gdt_entry_t	gdt_entry[5];
 struct gdt_ptr_t	gdt_ptr;
 
 /*
@@ -516,6 +516,20 @@ struct gdt_ptr_t	gdt_ptr;
  */
 void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran){
 	
+	/* taban adres */
+	gdt_entry[num].base_low    	= (base & 0xFFFF);
+	gdt_entry[num].base_middle 	= (base >> 16) & 0xFF;
+	gdt_entry[num].base_high  	= (base >> 24) & 0xFF;
+
+	/* limit */
+	gdt_entry[num].limit_low 	= (limit & 0xFFFF);
+	gdt_entry[num].granularity 	= (limit >> 16) & 0x0F;
+
+	/* diger flaglar */
+	gdt_entry[num].granularity 	|= (gran & 0xF0);
+
+	/* erisim flaglari */
+	gdt_entry[num].access 	= access;	
 	
 } 
 
