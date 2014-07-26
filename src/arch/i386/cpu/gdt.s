@@ -20,16 +20,22 @@
 global gdt_flush
 
 gdt_flush:
-   mov eax, [esp+4]
-   lgdt [eax]
+   mov eax, [esp+4]	; gonderilen parametreyi al
+   lgdt [eax]		; gdt isaretcisi yukle
 
-   mov ax, 0x10
+   ; korumali modda segment yazmaclarinin selektor degerlerini
+   ; tuttugunu soylemistik, bunlari ayarlayalim.
+
+   mov ax, 0x10		; 0x10 bizim veri segmentinin gdt'nin basindan itibaren
+			; uzakligidir, yani 16 bayt(0x10).
    mov ds, ax
    mov es, ax
    mov fs, ax
    mov gs, ax
    mov ss, ax
-   jmp 0x08:.flush
+
+   ; cs(kod segment) yazmacinin biraz daha farkli oluyor.
+   jmp 0x08:.flush	; 0x8 gdt'nin basindan beri kod segment'in uzakligidir.
 
 .flush:
    ret
