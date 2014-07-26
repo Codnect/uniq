@@ -477,6 +477,18 @@ struct gdt_ptr_t{
 #define SEGMENT_PRESENT 	0x80	/* segment bellekte mi ? */
 #define SEGMENT_NORMAL		0x10	/* segment normal bir hafiza segmenti mi? */
 
+/*
+ * gdt_set_gate
+ *
+ * @param num :
+ * @param base :
+ * @param limit :
+ * @param access :
+ * @param gran :
+ */
+void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran){
+	
+} 
 
 /*
  * init_gdt
