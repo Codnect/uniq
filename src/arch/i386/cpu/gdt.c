@@ -32,6 +32,16 @@
  * GDTR : Global Descriptor Table Register
  * -----  (GDT)-Global tanimlayici tablosuna isaret eder.
  *
+ *
+ * GDTR yazmaci asagidaki gibidir.
+ *
+ * 47								16 15			     0	
+ * ===========================================================================================
+ * =								 =			     =
+ * =                         taban adres 			 =	   limit	     =
+ * =								 =			     =
+ * ===========================================================================================
+ *
  * LDTR : Local Descriptor Table Register
  * ----- LDTR, GDTR gibi direk tabloyu isaret etmez. GDT tablosundaki bir tanimlayiciya 
  *	 isaret eder. (LDT)-Yerel tanimlayici tablosunun adresi bu tanimlayici icindedir.
