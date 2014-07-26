@@ -21,18 +21,34 @@
 #include <uniq/types.h>
 
 struct idt_entry_t{
-	uint16_t base_low;
-	uint16_t sel;
-	uint8_t zero;
-	uint8_t flags;
-	uint16_t base_high;
+	uint16_t base_low;	/* atlanicak fonksiyonunun taban adresinin ilk 16 biti */
+	uint16_t sel;		/* kernel segment selektor */
+	uint8_t zero;		/* her zaman sifir */
+	uint8_t flags;		/* flaglar */
+	uint16_t base_high;	/* atlanicak fonksiyonun taban adresini son 16 biti */
 } __attribute__((packed));
 
 
 struct idt_ptr_t{
-	uint16_t limit;
-	uint32_t base;
+	uint16_t limit;		/* idt'nin uzunlugu(bayt olarak) */
+	uint32_t base;		/* idt'nin taban adresi */
 } __attribute__((packed));
+
+
+/*
+ * idt_set_gate
+ *
+ * @param num :
+ * @param base :
+ * @param sel :
+ * @param flags :
+ */
+void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags){
+	
+	
+}
+
+
 
 /*
  * init_idt
