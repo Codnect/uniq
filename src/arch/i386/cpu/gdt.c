@@ -506,7 +506,7 @@ struct gdt_entry_t	gdt_entry[5];
 struct gdt_ptr_t	gdt_ptr;
 
 /*
- * gdt_set_gate
+ * gdt_set_gate, gdt tablosunun girdilerinin ayarlanmasini saglar.
  *
  * @param num : ayarlanacak tanimlayici icin numara, kisaca tanimlayici numarasi
  *              diyebiliriz.
@@ -535,7 +535,8 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
 } 
 
 /*
- * init_gdt
+ * init_gdt, gdt tablosunun hazirlanmasi ve yuklenmesi islemleri 
+ * gerceklestirir.
  */
 void init_gdt(void){
 	
@@ -548,7 +549,10 @@ void init_gdt(void){
 	gdt_ptr.limit = (sizeof(struct gdt_entry_t) * 5) - 1;
 	gdt_ptr.base = (uint32_t)&gdt_entry;
 	
-	/* null segment olmali */
+	/*
+	 * gdt ve ldt tablolarinda bir tane bos diger bir tabirle null
+	 * segment olmasi gerekmektedir.
+	 */
 	gdt_set_gate(0, 0, 0, 0, 0);
 	/* kernel kod segmenti */
 	gdt_set_gate(1, 0, SEGMENT_MAX_LIMIT, KERNEL_CODE_SEGMENT, SEGMENT_NORMAL_GRAN);
