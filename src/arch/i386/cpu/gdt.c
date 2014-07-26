@@ -472,10 +472,24 @@ struct gdt_ptr_t{
 #define SEGMENT_DPL3		0x60
 
 /*
- * diger
+ * diger flaglar
  */
 #define SEGMENT_PRESENT 	0x80	/* segment bellekte mi ? */
 #define SEGMENT_NORMAL		0x10	/* segment normal bir hafiza segmenti mi? */
+
+/*
+ * asagidaki flaglar segmentin normal bir hafiza segmenti
+ * oldugunda kullanilabilecek olanlardir. sistem segmentiyse
+ * yukaridan turlerine bakabilirsiniz
+ */
+#define SEGMENT_CODE_EXEC	0x8	/* sadece calistirilabilir */
+#define SEGMENT_CODE_EXECR	0xA	/* kod segmenti hem calistirilir hem de okunabilir */
+#define SEGMENT_STACK_R		0x4	/* yigin sadece okunabilir */
+#define SEGMENT_STACK_RW	0x6	/* yigin hem okunur hem yazilabilir */
+#define SEGMENT_DATA_R		0x0	/* veri segmenti sadece okunur */
+#define SEGMENT_DATA_RW		0x2	/* veri segmenti hem okunur hem de yazilabilir */
+#define SEGMENT_ACCESSED	0x1	/* segment'e erisim saglandi mi ? */
+
 
 /*
  * gdt_set_gate
