@@ -302,6 +302,23 @@
  *        ve "TYPE" biti LDT ise o tanimlayici LDT'yi gosterir.
  *
  * -------------------------------------------------------------------------------------------------------------
+ 
+ * -peki bu kapi olayi nedir?-
+ *
+ * kapilar basit olarak tanimlamak istersek farkli ayricalik seviyesindeki segmentlerin
+ * birbirleriyle bazen iletisim kurmasi gerekmektedir ve bunu saglamak amaciyla dusunulmus
+ * yapilardir diyebiliriz. ornegin kullanici modundaki bir programin kernel modda calisan
+ * servislere ihtiyac duyar ve bu servislere erisme isini sistem cagrilariyla yapar. sistem 
+ * cagrilarida kapilar yardimiyla olmaktadir. anlatabildigim kadariyla artik ;). simdi gelelim 
+ * kapi cesitleri yukarida sistem segment turleri arasinda zaten gozukuyorlar ama aciklamakta 
+ * yarar var.
+ *
+ * -> kesme kapilari(interrupt gates)
+ * -> gorev kapilari(task gates)
+ * -> cagirma kapilari(call gates)
+ * -> yazilim kesme kapilari/tuzak kapilari(trap gates)
+ *
+ * -------------------------------------------------------------------------------------------------------------
  *
  *  - segment yazmaclari -
  *
