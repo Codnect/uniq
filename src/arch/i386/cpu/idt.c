@@ -156,7 +156,8 @@
  * --kesme kapilari--
  * yapi olarak cagirma kapilariyla cok benzerdir. yapisi asagidaki gibidir ve cagirma
  * kapilarinda farkindan bahsetmek gerekirse yukaridaki tablodan goruldugu gibi TYPE
- * kismi "1 1 1 0" olmali ve count kismi reserve edilmistir.
+ * kismi "1 1 1 0" olmali ve count kismi reserve edilmistir.ve son olarak kesme kapilari
+ * "int" komutu yada donanim kesmeleriyle meydana gelebilir.
  *
  * ========================================================================================================
  * =       base_high       =     flags     =     zero    =       selector        =        base_low        =
@@ -173,10 +174,15 @@
  *	    =  0 0 0     =   reserved    =
  *	    ==============================
  *
- * --tuzak kapilari--
+ * --tuzak kapilari(yazilim kesmeleri)--
  * yapi olarak cagirma ve kesme kapilariyla cok benzerdir. yapisi asagidaki gibidir ve cagirma
  * kapilarinda farkindan bahsetmek gerekirse yukaridaki tablodan goruldugu gibi TYPE
- * kismi "1 1 1 1" olmali ve count kismi reserve edilmistir.
+ * kismi "1 1 1 1" olmali ve count kismi reserve edilmistir.ve kesme kapilarinda oldugu gibi 
+ * "int" komutu  yada donanim kesmeleriyle meydana gelebilir.son olarak sundan da bahsetmek 
+ * istiyorum. ikiside EFLAGS yazmacındaki IF flagini farkli sekilde degistirirler. kesme kapilari
+ * EFLAGS yazmaci yigina atildiktan sonra IF(Interrupt Enabled) flagini sifirlar,boylece kesme
+ * kapisindayken bir donanim kesmesinin meydana gelmesini engeller. tuzak kapilarinda ise sifirlama
+ * olmadigi icin bir kesme olusabilir.
  *
  * ========================================================================================================
  * =       base_high       =     flags     =     zero    =       selector        =        base_low        =
@@ -198,7 +204,7 @@
  *
  * ---------------------------------------------------------------------------------------------------------------
  *
- * -Kesme ve istisnalarin yonetimi-
+ * -kesme ve istisnalarin yonetimi-
  *
  *
  *
