@@ -19,9 +19,9 @@
 
 BITS 32
 
-global gdt_flush
+global gdt_load
 
-gdt_flush:
+gdt_load:
    mov eax, [esp+4]	; gonderilen parametreyi al
    lgdt [eax]		; gdt isaretcisi yukle
 
@@ -37,7 +37,7 @@ gdt_flush:
    mov ss, ax
 
    ; cs(kod segment) yazmacinin biraz daha farkli oluyor.
-   jmp 0x08:.flush	; 0x8 gdt'nin basindan beri kod segment'in uzakligidir.
+   jmp 0x08:.finish	; 0x8 gdt'nin basindan beri kod segment'in uzakligidir.
 
-.flush:
+.finish:
    ret
