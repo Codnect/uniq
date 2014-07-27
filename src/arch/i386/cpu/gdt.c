@@ -45,7 +45,7 @@
  *	 isaret eder. (LDT)-Yerel tanimlayici tablosunun adresi bu tanimlayici icindedir.
  *
  * IDTR : Interrupt Descriptor Table Register
- * -----  IDT tablosuna isaret eder ve kesmeleri yonetecek fonksiyonlarin adreslerini tutar.
+ * -----  IDT tablosuna isaret eder ve IDT kesmeleri yonetecek fonksiyonlarin adreslerini tutar.
  *
  * TR : Task Register
  * ---	TSS yapisina isaret eder. TSS yapisi surec ile ilgili tum bilgileri icerir.
