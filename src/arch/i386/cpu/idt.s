@@ -16,3 +16,10 @@
 ;  You should have received a copy of the GNU General Public License along
 ;  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
 ;
+
+global idt_flush]
+
+idt_flush:
+   mov eax, [esp+4]  ; idt isaretcisini al
+   lidt [eax]        ; idt isaretcisini ukle
+   ret
