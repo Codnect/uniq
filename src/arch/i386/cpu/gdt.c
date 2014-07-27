@@ -311,7 +311,9 @@
  * servislere ihtiyac duyar ve bu servislere erisme isini sistem cagrilariyla yapar. sistem 
  * cagrilarida kapilar yardimiyla olmaktadir. anlatabildigim kadariyla artik ;). simdi gelelim 
  * kapi cesitleri yukarida sistem segment turleri arasinda zaten gozukuyorlar ama aciklamakta 
- * yarar var.
+ * yarar var. asagida kapi cesitleri gorebilirsiniz on bilgi olarak, detayli bilgi icin "idt.c"
+ * kod dosyasindaki yorum satirlarina bakabilirsiniz, orda bahsetmek daha iyi olacak gibi 
+ * gozukuyor.
  *
  * -> kesme kapilari(interrupt gates)
  * -> gorev kapilari(task gates)
