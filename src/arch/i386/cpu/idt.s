@@ -17,6 +17,8 @@
 ;  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
 ;
 
+BITS 32
+
 global idt_flush]
 
 idt_flush:
