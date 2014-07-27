@@ -381,7 +381,7 @@ void init_vga_console(void){
 
 	vga_vram = (uint16_t*)(VGA_VRAM_START);
 	reset_console();
-	debug_print(KERN_INFO,"Initializing the vga console. The vga ram address = \033[1;37m%p",vga_vram);
+	debug_print(KERN_INFO,"Initializing the vga console. The vga ram address is \033[1;37m%p",vga_vram);
 	
 }
 
