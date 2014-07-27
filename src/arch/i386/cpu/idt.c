@@ -205,6 +205,8 @@
  * ---------------------------------------------------------------------------------------------------------------
  *
  * -kesme ve istisnalarin yonetimi-
+ * herhangi bir kesme oldugunda kesme numarasi "struct idt_entry_t" boyutu yani 8 baytla carpilir
+ * ve IDT'ten tanimliyiciya ulasilir. IDT girdilerinin (idt_entry_t) 8 bayt oldugunu unutmayin :).
  * sistemde bir kesme olustugunda EFLAGS,CS ve EIP yazmaclari yigitta saklanir bunun yaninda
  * bir hata kodu dondurulurse o da yigitta saklanir. eger bu kesme ayni ayricalik seviyesinde
  * olusursa kesme yoneticisinin yigitida asagidaki gibidir.
@@ -213,7 +215,7 @@
  *  
  *  kesmeyle askiya alan fonksiyonun yigiti
  *  ============
- *  =          =
+ *  =          =  <-- kesme cagrimindan once "esp
  *  ============
  *  = EFLAGS   =
  *  ============
@@ -228,14 +230,20 @@
  *
  * -> farkli ayricalik duzeyi olursa
  * bu sefer olay biraz degisir ayni ayricalik duzeyinde olmayacagi icin bir yigit degisimi
- * olmalidir.
+ * olmalidir. islemci kesme oldugunda kesme yoneticisi cagirir ve yukarida bahsettigimiz
+ * saklanan degerler kesme yoneticisinin yigitindadir. ve kesme yoneticisi islemi bittiginda
+ * askiya alinan fonksiyonun yigitin SS,ESP,EFLAGS,CS,EIP ve hata kodu degerlerini kopyalar.
+ * bu guvenlik acigi olusturabilir bu yuzden kesme yoneticisini sonlandirmak icin "int(interrupt
+ * return)" kullanilir. "iret", ile CS, EIP, EFLAGS, SS, and ESP degerleri yuklenerek yigittan
+ * alinir ve bu problemde boyle cozulmus olur. dikkat edilmesi gerek diger bir konuda yigit
+ * degisiminin oldugu durumlarda "iret" kullanilmalidir.
  *
  *
  *  kesmeyle askiya alan fonksiyonun yigiti                     kesme yoneticisinin yigiti
  *  ============						============		
- *  =          =						=          =
+ *  =          =  <-- kesme cagrimindan once "esp"		=          =
  *  ============						============
- *  =   SS     = <-- kesme cagrimindan once "esp"		=    SS    =
+ *  =   SS     = 						=    SS    =
  *  ============						============
  *  =   ESP    =						=   ESP    =
  *  ============						============
@@ -250,8 +258,15 @@
  *  =          =						=          =
  *  ============						============
  *
+ * ---------------------------------------------------------------------------------------------------------------
+ *
  */
 
+
+/*
+ * idt_entry_t, idt tablosunun girdi yada diger bir tabirler
+ * tanimlayici yapisidir.
+ */
 struct idt_entry_t{
 	uint16_t base_low;	/* atlanicak fonksiyonunun taban adresinin ilk 16 biti */
 	uint16_t sel;		/* kernel segment selektor */
@@ -261,6 +276,10 @@ struct idt_entry_t{
 } __attribute__((packed));
 
 
+/*
+ * idt_ptr_t, idt tablosunun adresini ve limitini tutan ozel
+ * bir yapidir. IDTR yazmacina dikkat edin :).
+ */
 struct idt_ptr_t{
 	uint16_t limit;		/* idt'nin uzunlugu(bayt olarak) */
 	uint32_t base;		/* idt'nin taban adresi */
