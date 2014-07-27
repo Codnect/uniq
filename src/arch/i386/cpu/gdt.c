@@ -532,7 +532,7 @@ struct gdt_ptr_t{
 struct gdt_entry_t	gdt_entry[5];
 struct gdt_ptr_t	gdt_ptr;
 
-extern void gdt_flush(u32int_t gdt_ptr);
+extern void gdt_flush(uint32_t gdt_ptr);
 
 /*
  * gdt_set_gate, gdt tablosunun girdilerinin ayarlanmasini saglar.
@@ -598,7 +598,7 @@ void init_gdt(void){
 	 * son ayarlarimizi yapalim...
 	 * go go go ;)
 	 */
-	gdt_flush((u32int_t)&gdt_ptr);
+	gdt_flush((uint32_t)&gdt_ptr);
 	
 }
 
