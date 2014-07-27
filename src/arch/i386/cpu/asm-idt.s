@@ -19,9 +19,9 @@
 
 BITS 32
 
-global idt_flush]
+global idt_load
 
-idt_flush:
+idt_load:
    mov eax, [esp+4]     ; idt isaretcisini al.
    lidt [eax]           ; idt isaretcisini yukle.
    ret
