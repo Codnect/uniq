@@ -21,13 +21,14 @@
 #define __UNIQ_KERN_DEBUG_H__
 
 #include <uniq/kern_lvls.h>
+#include <uniq/kernel.h>
 
 typedef enum{
 	KERN_DEBUG_DEFAULT = 0,	/* tum log durumlarini icerir. */
 	KERN_DEBUG_OOPS		/* bilgilendirme log durumlari haric. */
 }kern_debug_mode_t;
 
-void _debug_print(char *file,int line,kern_levels_t level,const char *fmt,...);
+void _debug_print(char *file,uint32_t line,kern_levels_t level,const char *fmt,...);
 
 /* modul ismi */
 #ifndef MODULE_NAME
