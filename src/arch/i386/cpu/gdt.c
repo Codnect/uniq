@@ -569,6 +569,8 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
  */
 void init_gdt(void){
 	
+	debug_print(KERN_INFO,"Initializing the gdt.");
+	
 	/*
 	 * peki neden sizeof(struct gdt_entry_t), yani 8 bayt ile
 	 * carpiyoruz? cunku segment tanimlayicilari 8 bayt uzunlugunda
@@ -597,7 +599,6 @@ void init_gdt(void){
 	 * go go go ;)
 	 */
 	gdt_flush((u32int_t)&gdt_ptr);
-	debug_print(KERN_INFO,"Initializing the gdt.");
 	
 }
 
