@@ -532,7 +532,7 @@ struct gdt_ptr_t{
 struct gdt_entry_t	gdt_entry[5];
 struct gdt_ptr_t	gdt_ptr;
 
-extern void gdt_flush(uint32_t gdt_ptr);
+extern void gdt_load(uint32_t gdt_ptr);
 
 /*
  * gdt_set_gate, gdt tablosunun girdilerinin ayarlanmasini saglar.
@@ -569,7 +569,7 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
  */
 void init_gdt(void){
 	
-	debug_print(KERN_INFO,"Initializing the gdt.");
+	debug_print(KERN_INFO,"Initializing the GDT. GDT table address is \033[1;37m%P",(uint32_t)&gdt_entry);
 	
 	/*
 	 * peki neden sizeof(struct gdt_entry_t), yani 8 bayt ile
@@ -598,7 +598,7 @@ void init_gdt(void){
 	 * son ayarlarimizi yapalim...
 	 * go go go ;)
 	 */
-	gdt_flush((uint32_t)&gdt_ptr);
+	gdt_load((uint32_t)&gdt_ptr);
 	
 }
 
