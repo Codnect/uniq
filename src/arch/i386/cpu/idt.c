@@ -19,6 +19,7 @@
 
 #include <uniq/module.h>
 #include <uniq/types.h>
+#include <uniq/kernel.h>
 
 /*
  * -Genel bilgiler-
