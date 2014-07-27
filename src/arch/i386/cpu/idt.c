@@ -153,6 +153,48 @@
  *  = 1 = 1 = 1 = 1 =              32 bit tuzak kapisi                      =
  *  =========================================================================
  *
+ * --kesme kapilari--
+ * yapi olarak cagirma kapilariyla cok benzerdir. yapisi asagidaki gibidir ve cagirma
+ * kapilarinda farkindan bahsetmek gerekirse yukaridaki tablodan goruldugu gibi TYPE
+ * kismi "1 1 1 0" olmali ve count kismi reserve edilmistir.
+ *
+ * ========================================================================================================
+ * =       base_high       =     flags     =     zero    =       selector        =        base_low        =
+ * =                       =               =	         =                       =                        =
+ * ========================================================================================================
+ *          16 bit              8 bit          8 bit               16 bit                 16 bit
+ *
+ * flags: flags yapisi cagirim kapilariyla ayni oldugu icin bahsetmeye gerek yok.
+ * -----
+ *
+ * zero:    
+ * ----     7           5 4              0
+ *	    ==============================
+ *	    =  0 0 0     =   reserved    =
+ *	    ==============================
+ *
+ * --tuzak kapilari--
+ * yapi olarak cagirma ve kesme kapilariyla cok benzerdir. yapisi asagidaki gibidir ve cagirma
+ * kapilarinda farkindan bahsetmek gerekirse yukaridaki tablodan goruldugu gibi TYPE
+ * kismi "1 1 1 1" olmali ve count kismi reserve edilmistir.
+ *
+ * ========================================================================================================
+ * =       base_high       =     flags     =     zero    =       selector        =        base_low        =
+ * =                       =               =	         =                       =                        =
+ * ========================================================================================================
+ *          16 bit              8 bit          8 bit               16 bit                 16 bit
+ *
+ * flags: flags yapisi cagirim kapilariyla ayni oldugu icin bahsetmeye gerek yok.
+ * -----
+ *
+ * zero: zero yapisi kesme kapilariyla ayni oldugu icin bahsetmeye gerek yok.
+ * -----
+ *
+ * --gorev kapilari--
+ * bu kapilarin anlatilmasinin su anlik yeri degil gibi yeri ve zamani geldigi zaman aciklama
+ * satirlari halinde gorebilirsiniz :). yukaridaki tablodan goruldugu gibi TYPE kismi "0 1 0 1"
+ * olacagini soylesek simdilik yeterli gibi.
+ *
  *
  * ---------------------------------------------------------------------------------------------------------------
  *
