@@ -20,6 +20,7 @@
 #include <uniq/module.h>
 #include <uniq/types.h>
 #include <uniq/kernel.h>
+#include <string.h>
 
 /*
  * -Genel bilgiler-
@@ -286,29 +287,48 @@ struct idt_ptr_t{
 	uint32_t base;		/* idt'nin taban adresi */
 } __attribute__((packed));
 
+#define IDT_MAX_ENTRY	256
+#define DPL3		0x60
+
+struct idt_entry_t idt_entry[IDT_MAX_ENTRY];
+struct idt_ptr_t idt_ptr;
+
+
+
+extern void idt_load(uint32_t idt_ptr);
 
 /*
- * idt_set_gate
+ * idt_set_gate,idt tablosunun girdilerinin ayarlanmasini saglar.
  *
- * @param num :
- * @param base :
- * @param sel :
- * @param flags :
+ * @param num : idt tablo kesme index'i
+ * @param base : kesme icin ayarlanan fonksiyonun adresi 
+ * @param sel : kod segmenti offset (0x08)
+ * @param flags : flaglar
  */
 void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags){
 	
+	idt_entry[num].base_low		= ((uint32_t)base & 0xFFFF);
+	idt_entry[num].base_high 	= ((uint32_t)base >> 16) & 0xFFFF;
+	idt_entry[num].sel 		= sel;
+	idt_entry[num].zero 		= 0;
+	idt_entry[num].flags 		= flags /* | DPL3 */;
 	
 }
 
 
 
 /*
- * init_idt
+ * init_idt,idt tablosunun hazirlanmasi ve yuklenmesi islemleri 
+ * gerceklestirir.
  */
 void init_idt(void){
 	
- 	debug_print(KERN_INFO,"Initializing the idt.");
+ 	debug_print(KERN_INFO,"Initializing the IDT. IDT table address is \033[1;37m%P",(uint32_t)&idt_entry);
 
+	idt_ptr.limit = (sizeof(struct idt_entry_t) * IDT_MAX_ENTRY) - 1;
+	idt_ptr.base = (uint32_t)&idt_entry;
+	memset(&idt_entry, 0, sizeof(struct idt_entry_t) * IDT_MAX_ENTRY);
+	idt_load((uint32_t)&idt_ptr);
 }
 
 MODULE_AUTHOR("Burak Köken");
