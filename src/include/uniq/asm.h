@@ -23,25 +23,22 @@
 #include <uniq/kern_debug.h>
 
 /* kesmeleri devre disi birak */
-static inline void cli(){
+static inline void cli(void){
 	__asm__ volatile("cli");
-	debug_print(KERN_INFO,"Interrupts = \033[1;31mDisabled");
 }
 
 /* kesmeleri aktif hale getir */
-static inline void sti(){
+static inline void sti(void){
 	__asm__ volatile("sti");
-	debug_print(KERN_INFO,"Interrupts = \033[1;32mEnabled");
 }
 
 /* sistemi durdur */
-static inline void hlt(){
+static inline void hlt(void){
 	__asm__ volatile("hlt");
-	debug_print(KERN_INFO,"System halted!");
 }
 
 /* islem yapmayi birak */
-static inline void relax_cpu(){
+static inline void relax_cpu(void){
 	__asm__ volatile("rep; nop");
 }
 
