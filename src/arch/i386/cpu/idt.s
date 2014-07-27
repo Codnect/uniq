@@ -20,6 +20,5 @@
 global idt_flush]
 
 idt_flush:
-   mov eax, [esp+4]  ; idt isaretcisini al
-   lidt [eax]        ; idt isaretcisini ukle
-   ret
+   mov eax, [esp+4]     ; idt isaretcisini al.
+   lidt [eax]           ; idt isaretcisini yukle.
