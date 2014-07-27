@@ -446,7 +446,7 @@ struct gdt_entry_t{
 
 /*
  * gdt_ptr_t, islemcinin gdt tablosuna nereden ulasacagi yani adresini
- * ve gdt limitini tutan ozel bir yapidir.
+ * ve gdt limitini tutan ozel bir yapidir. GDTR yazmacina dikkat edin ;).
  *
  * detayli inceleme icin init_gdt fonksiyonuna bakiniz.
  */
