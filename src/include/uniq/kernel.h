@@ -47,5 +47,6 @@ void _assert(const char *err);
 
 /* gdt,idt & isr */
 extern void init_gdt(void);
+extern void init_idt(void);
 
 #endif /* __UNIQ_KERNEL_H__ */
