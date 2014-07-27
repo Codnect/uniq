@@ -18,7 +18,6 @@
  */
  
 #include <uniq/kern_debug.h>
-#include <uniq/kernel.h>
 #include <va_list.h>
 #include <uniq/module.h>
 
