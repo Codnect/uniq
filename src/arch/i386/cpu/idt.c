@@ -205,9 +205,50 @@
  * ---------------------------------------------------------------------------------------------------------------
  *
  * -kesme ve istisnalarin yonetimi-
+ * sistemde bir kesme olustugunda EFLAGS,CS ve EIP yazmaclari yigitta saklanir bunun yaninda
+ * bir hata kodu dondurulurse o da yigitta saklanir. eger bu kesme ayni ayricalik seviyesinde
+ * olusursa kesme yoneticisinin yigitida asagidaki gibidir.
+ *
+ * -> ayni ayricalik duzeyi
+ *  
+ *  kesmeyle askiya alan fonksiyonun yigiti
+ *  ============
+ *  =          =
+ *  ============
+ *  = EFLAGS   =
+ *  ============
+ *  =   CS     =
+ *  ============
+ *  =   EIP    =
+ *  ============
+ *  = ErrCode  =  <-- kesme yoneticisi sonlandirildiktan sonraki "esp"
+ *  ============
+ *  =          =
+ *  ============
+ *
+ * -> farkli ayricalik duzeyi olursa
+ * bu sefer olay biraz degisir ayni ayricalik duzeyinde olmayacagi icin bir yigit degisimi
+ * olmalidir.
  *
  *
- *
+ *  kesmeyle askiya alan fonksiyonun yigiti                     kesme yoneticisinin yigiti
+ *  ============						============		
+ *  =          =						=          =
+ *  ============						============
+ *  =   SS     = <-- kesme cagrimindan once "esp"		=    SS    =
+ *  ============						============
+ *  =   ESP    =						=   ESP    =
+ *  ============						============
+ *  = EFLAGS   =						=  EFLAGS  =
+ *  ============						============
+ *  =   CS     =						=   CS     =
+ *  ============						============
+ *  =   EIP    =						=   EIP    =
+ *  ============						============
+ *  = ErrCode  = 	Kesme yoneticisinin islemlerinden -->	= ErrCode  =
+ *  ============			sonra "esp"		============
+ *  =          =						=          =
+ *  ============						============
  *
  */
 
