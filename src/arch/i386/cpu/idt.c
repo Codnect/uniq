@@ -311,7 +311,7 @@ void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags){
 	idt_entry[num].base_high 	= ((uint32_t)base >> 16) & 0xFFFF;
 	idt_entry[num].sel 		= sel;
 	idt_entry[num].zero 		= 0;
-	idt_entry[num].flags 		= flags /* | DPL3 */;
+	idt_entry[num].flags 		= flags | DPL3 ;
 	
 }
 
@@ -329,6 +329,7 @@ void init_idt(void){
 	idt_ptr.base = (uint32_t)&idt_entry;
 	memset(&idt_entry, 0, sizeof(struct idt_entry_t) * IDT_MAX_ENTRY);
 	idt_load((uint32_t)&idt_ptr);
+	
 }
 
 MODULE_AUTHOR("Burak Köken");
