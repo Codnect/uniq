@@ -18,6 +18,37 @@
  */
 
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * fault_err
+ *
+ * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
+ *		 icin register_t yapisini inceleyin.
+ */
+void fault_err(struct registers_t *regs){
+
+	
+}
+
+/*
+ * fault_handler
+ *
+ * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
+ *		 icin register_t yapisini inceleyin.
+ */
+void fault_handler(struct registers_t *regs){
+
+	
+}
+
+/*
+ * init_isr
+ */
+void init_isr(void){
+	
+	
+}
 
 	
 MODULE_AUTHOR("Burak Köken");
