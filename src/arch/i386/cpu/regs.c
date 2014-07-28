@@ -18,7 +18,15 @@
  */
 
 #include <uniq/module.h>
+#include <uniq/kernel.h>
 
+/*
+ * dump_regs
+ */
+void dump_regs(){
+ 
+  
+}
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
