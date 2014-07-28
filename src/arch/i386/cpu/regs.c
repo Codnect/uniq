@@ -23,7 +23,7 @@
 /*
  * dump_regs
  */
-void dump_regs(){
+void dump_regs(struct register_t *regs){
  
   
 }
