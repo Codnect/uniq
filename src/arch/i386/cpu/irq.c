@@ -19,6 +19,20 @@
  
 #include <uniq/module.h>
 
+/*
+ * irq_remap
+ */
+void irq_remap(void){
+ 
+}
+
+/*
+ * init_irq
+ */
+void init_irq(void){
+ 
+}
+
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
