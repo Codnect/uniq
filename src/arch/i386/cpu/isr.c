@@ -24,7 +24,7 @@
  * fault_err
  *
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
- *		 icin register_t yapisini inceleyin.
+ *		 icin registers_t yapisini inceleyin.
  */
 void fault_err(struct registers_t *regs){
 
@@ -35,7 +35,7 @@ void fault_err(struct registers_t *regs){
  * fault_handler
  *
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
- *		 icin register_t yapisini inceleyin.
+ *		 icin registers_t yapisini inceleyin.
  */
 void fault_handler(struct registers_t *regs){
 
