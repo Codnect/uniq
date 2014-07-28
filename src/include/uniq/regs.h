@@ -20,5 +20,15 @@
 #ifndef __UNIQ_REGS_H__
 #define __UNIQ_REGS_H__
 
+#include <uniq/types.h>
+
+struct registers_t {
+	uint32_t gs, fs, es, ds;                          /* selektorler; ds = veri segmenti, es = extra segment,
+	                                                  * gs, fs diger segment yazmaclari.
+	                                                  */
+	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;  /* pusha ile stack'a atilir. */
+	uint32_t int_num, err_code;                       /* int_num : kesme numarasi , err_code : hata kodu */
+	uint32_t eip, cs, eflags, useresp, ss;            /* islemci tarafindan stack'a atilir. */
+};
 
 #endif /* __UNIQ_REGS_H__ */
