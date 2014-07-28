@@ -20,26 +20,35 @@
 #ifndef __UNIQ_KERNEL_H__
 #define __UNIQ_KERNEL_H__
 
-#include <va_list.h>
 
 #define STR(x)		#x
 #define STRSTR		STR(x)
 
-/* inline asm makrolari & diger*/
+/* 
+ * inline asm makrolari & diger
+ */
+#include <va_list.h>
+#include <uniq/types.h>
 #include <uniq/port.h>
 #include <uniq/asm.h>
 
-/* drivers */
+/*
+ * drivers 
+ */
 #include <drivers/vga.h>
 
-/* kprintf.c */
+/* 
+ * kprintf.c 
+ */
 extern int vsnprintf(char *strbuf, size_t n , const char *fmt, va_list args);
 extern int vsprintf(char *strbuf, const char *fmt, va_list args);
 extern int sprintf(char *buf, const char *fmt, ...);
 extern int snprintf(char *buf, size_t n, const char *fmt, ...);
 extern int printf(const char *fmt, ...);
 
-/* panic.c & debug */
+/*
+ * panic.c & debug
+ */
 #include <uniq/kern_debug.h>
 void die(const char *fmt, ...);
 void _assert(const char *err);
@@ -50,6 +59,8 @@ void _assert(const char *err);
  */
 #include <uniq/regs.h>
 extern void init_gdt(void);
+extern void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran);
 extern void init_idt(void);
+extern void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags);
 
 #endif /* __UNIQ_KERNEL_H__ */
