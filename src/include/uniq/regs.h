@@ -31,6 +31,6 @@ struct registers_t {
 	uint32_t eip, cs, eflags, useresp, ss;            /* islemci tarafindan stack'a atilir. */
 };
 
-void dump_regs(struct register_t *regs);
+void dump_regs(struct registers_t *regs);
 
 #endif /* __UNIQ_REGS_H__ */
