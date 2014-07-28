@@ -18,12 +18,30 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * irq_set_gates
+ */
+void irq_set_gates(void){
+ 
+ 
+}
 
 /*
  * irq_remap
  */
 void irq_remap(void){
  
+ 
+}
+
+/*
+ * irq_handler
+ */
+void irq_handler(struct registers_t *regs){
+
+
 }
 
 /*
@@ -31,8 +49,8 @@ void irq_remap(void){
  */
 void init_irq(void){
  
+ 
 }
-
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
