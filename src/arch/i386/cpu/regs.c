@@ -22,6 +22,10 @@
 
 /*
  * dump_regs
+ * 
+ * @param regs : kaydediciler yada yazmaclar hala hangi soylemi kullanicagimi
+ *               kullansam bilmiyorum ama kaydedici demek kulaga daha hos
+ *               geliyor ;).
  */
 void dump_regs(struct register_t *regs){
  
