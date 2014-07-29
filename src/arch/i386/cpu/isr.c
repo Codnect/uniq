@@ -23,7 +23,40 @@
 /*
  * istisna kesmeleri mesaj listesi
  */
-static const char *exception_msglist[];
+static const char *exception_msglist[] = {
+	"Division by zero",				/* 0 */
+	"Debug",					/* 1 */
+	"Non-maskable interrupt",			/* 2 */
+	"Breakpoint",					/* 3 */
+	"Overflow",					/* 4 */
+	"Bound Range Exceeded",				/* 5 */
+	"Invalid opcode",				/* 6 */
+	"No coprocessor",				/* 7 */
+	"Double fault",					/* 8 */
+	"Coprocessor segment overrun",			/* 9 */
+	"Invalid TSS",					/* 10 */
+	"Segment not present",				/* 11 */
+	"Stack Segment Fault",				/* 12 */
+	"General protection fault",			/* 13 */
+	"Page fault",					/* 14 */
+	"Unknown interrupt",				/* 15 */
+	"Coprocessor fault",				/* 16 */
+	"Alignment check",				/* 17 */
+	"Machine check",				/* 18 */
+	"Reserved",
+	"Reserved",			
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved"
+};
 
 /*
  * istisna kesmeleri isleyicileri
