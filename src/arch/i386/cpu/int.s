@@ -146,7 +146,7 @@ isr_common_entry:
 	
 	mov eax, esp          ; stack pointer'i eax kaydedicisine kopyala
 	push eax              ; sakla
-	call fault_handler    ; hata isleyicisini cagir
+	call isr_handler      ; istisna isleyicisini cagir
 	
 	; en son olarak stack'a attigimiz deger fault_handler fonksiyonunun
 	; parametresi olan isaretcinin adresiydi yukarida bahsettigimiz gibi
