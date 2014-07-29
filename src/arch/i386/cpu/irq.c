@@ -50,9 +50,9 @@ extern void _irq15(void);
 static int_handler_t irq_handlers[MAX_IRQ] = { NULL };
 
 /*
- * irq_add_handler
+ * irq_add_handler, irq isleyicisi ekler.
  *
- * @param irq_no :
+ * @param irq_no : irq numarasi
  */
 void irq_add_handler(uint8_t irq_no, int_handler_t handler) {
 	
@@ -64,9 +64,9 @@ void irq_add_handler(uint8_t irq_no, int_handler_t handler) {
 }
 
 /*
- * irq_remove_handler
+ * irq_remove_handler, irq isleyicisini kaldirir.
  *
- * @param irq_no :
+ * @param irq_no : irq numarasi
  */
 void irq_remove_handler(uint8_t irq_no) {
 
@@ -102,7 +102,7 @@ void irq_set_gates(void){
 }
 
 /*
- * irq_remap
+ * irq_remap, irq kesmeleri icin PIC'yi ayarlar.
  */
 void irq_remap(void){
  
@@ -110,7 +110,7 @@ void irq_remap(void){
 }
 
 /*
- * irq_eoi
+ * irq_eoi, PIC'lere kesme sonu sinyali gonderir.
  * 
  * @param irq_num : irq numarasi
  */
@@ -144,7 +144,10 @@ void irq_handler(struct registers_t *regs){
  */
 void init_irq(void){
  
- 
+	irq_remap();
+	irq_set_gates();
+	enable_interrupts();
+
 }
 
 MODULE_AUTHOR("Burak Köken");
