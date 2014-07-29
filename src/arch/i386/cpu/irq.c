@@ -127,14 +127,13 @@ void irq_eoi(uint8_t irq_num){
  */
 void irq_handler(struct registers_t *regs){
 
-	int_handler_t handler;
+	int_handler_t handler = NULL;
 	
-	if(regs->int_num > 0x2F /* 47 */ || regs->int_num < 0x20 /* 32 */)
-		handler = NULL;
+	if(regs->int_num > 31  && regs->int_num < 48)
+		handler = irq_handlers[regs->int_num - 32];
 	
-	handler = irq_handlers[regs->int_num - 0x20];
 	if(!handler)
-		irq_eoi(regs->int_num - 0x20);
+		irq_eoi(regs->int_num - 32);
 	handler(regs);
 	
 }
