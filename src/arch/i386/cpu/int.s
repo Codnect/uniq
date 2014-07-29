@@ -49,7 +49,7 @@ isr_common_entry:
 	; aliyor yani adresini en son kaldigimiz yer bizim registers_t
 	; yapisinin adresi olacaktir. ve adreside stack'a atiyoruz.
 	; fonksiyon cagrildiginda parametre olarak bir isaretci lazimdi
-	; ve bunu parametre olarak aliyor. 
+	; ve bunu parametre olarak aliyor
 	
 	mov eax, esp          ; stack pointer'i eax kaydedicisine kopyala
 	push eax              ; sakla
