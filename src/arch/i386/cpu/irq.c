@@ -73,7 +73,7 @@ void irq_remove_handler(uint8_t irq_no) {
 	if(irq_no >= MAX_IRQ)
 		return;
 		
-	irq_handlers[irq_no] = handler;
+	irq_handlers[irq_no] = NULL;
 	
 }
 
