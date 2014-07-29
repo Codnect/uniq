@@ -27,7 +27,7 @@
  *               kullansam bilmiyorum ama kaydedici demek kulaga daha hos
  *               geliyor ;).
  */
-void dump_regs(struct register_t *regs){
+void dump_regs(struct registers_t *regs){
  
   
 }
