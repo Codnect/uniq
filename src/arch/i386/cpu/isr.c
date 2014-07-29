@@ -18,7 +18,8 @@
  */
 
 #include <uniq/module.h>
-#include <uniq/kernel.h>
+#include <uniq/regs.h>
+#include <uniq/types.h>
 
 /*
  * istisna kesmeleri mesaj listesi
@@ -95,6 +96,27 @@ extern void _isr30(void);
 extern void _isr31(void);
 
 /*
+ * isr_add_handler
+ *
+ * @param isr_no : istisna kesme numarasi
+ * @param handler : kesme isleyicisi
+ */
+void isr_add_handler(uint8_t isr_no, interrupt_handler_t handler){
+	
+	
+}
+
+/*
+ * isr_remove_handler
+ *
+ * @param isr_no :
+ */
+void isr_remove_handler(uint8_t isr_no){
+	
+	
+}
+
+/*
  * fault_err
  *
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
@@ -106,13 +128,20 @@ void fault_err(struct registers_t *regs){
 }
 
 /*
- * fault_handler
+ * isr_handler
  *
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
  *		 icin registers_t yapisini inceleyin.
  */
-void fault_handler(struct registers_t *regs){
+void isr_handler(struct registers_t *regs){
 
+	
+}
+
+/*
+ * isr_load 
+ */
+void isr_load(void){
 	
 }
 
