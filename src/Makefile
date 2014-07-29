@@ -18,6 +18,7 @@ ALLSOURCES = arch/i386/boot.o \
 	     arch/i386/cpu/idt.o \
 	     arch/i386/cpu/isr.o \
 	     arch/i386/cpu/regs.o \
+             arch/i386/cpu/irq.o \
 	     init/main.o \
 	     kernel/kprintf.o \
 	     kernel/kern_debug.o \
