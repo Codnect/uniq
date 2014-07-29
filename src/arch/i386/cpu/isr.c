@@ -128,25 +128,35 @@ void isr_remove_handler(uint8_t isr_no){
 }
 
 /*
- * fault_err
+ * isr_fault, kesme servislerinde hata olusursa kesme numarasi,hata aciklmasi
+ * ve kaydediciler ekrana yazdirilir.
  *
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
  *		 icin registers_t yapisini inceleyin.
  */
-void fault_err(struct registers_t *regs){
-
+static void isr_fault(struct registers_t *regs){
+	
+	debug_print(KERN_EMERG, "Unhandled exception: [interrupt number = %u] %s", regs->int_num
+										 , fault_msglist[regs->int_num]);
+	dump_regs(regs);
 	
 }
 
 /*
- * isr_handler
+ * isr_handler, kesme servisi isleyicisidir.
  *
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
  *		 icin registers_t yapisini inceleyin.
  */
 void isr_handler(struct registers_t *regs){
-
 	
+	int_handler_t handler = isr_handlers[regs->int_num];
+	
+	if(!handler)
+		isr_fault(regs);
+		
+	handler(regs);
+		
 }
 
 /*
