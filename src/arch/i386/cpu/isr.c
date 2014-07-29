@@ -95,13 +95,16 @@ extern void _isr29(void);
 extern void _isr30(void);
 extern void _isr31(void);
 
+#define MAX_ISR_HANDLER		256
+int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
+
 /*
  * isr_add_handler
  *
  * @param isr_no : istisna kesme numarasi
  * @param handler : kesme isleyicisi
  */
-void isr_add_handler(uint8_t isr_no, interrupt_handler_t handler){
+void isr_add_handler(uint8_t isr_no, int_handler_t handler){
 	
 	
 }
