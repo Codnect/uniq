@@ -42,7 +42,7 @@ extern void _irq14(void);
 extern void _irq15(void);
 
 #define MAX_IRQ  16
-static int_handler_t irq_list[MAX_IRQ] = { NULL };
+static int_handler_t irq_handlers[MAX_IRQ] = { NULL };
 
 /*
  * irq_add_handler
