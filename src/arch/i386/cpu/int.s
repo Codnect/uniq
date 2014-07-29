@@ -154,7 +154,7 @@ isr_common_entry:
 	; fonksiyonun isi bittigine gore stack'tan alalim artik.
 	pop eax
 	
-	; orjinal yada eski desek daha mi iyi olur bilmiyorum ama segment selektorleri
+	; orjinal yada eski mi desek daha mi iyi olur bilmiyorum ama segment selektorleri
 	; stack'tan alalim.
 	pop gs
 	pop fs
@@ -221,7 +221,7 @@ irq_common_entry:
 	; fonksiyonun isi bittigine gore stack'tan alalim artik.
 	pop eax
 	
-	; orjinal yada eski desek daha mi iyi olur bilmiyorum ama segment selektorleri
+	; orjinal yada eski mi desek daha mi iyi olur bilmiyorum ama segment selektorleri
 	; stack'tan alalim.
 	pop gs
 	pop fs
