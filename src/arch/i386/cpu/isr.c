@@ -19,7 +19,8 @@
 
 #include <uniq/module.h>
 #include <uniq/regs.h>
-#include <uniq/types.h>
+#include <string.h>
+#include <uniq/kernel.h>
 
 /*
  * istisna kesmeleri mesaj listesi
@@ -96,6 +97,11 @@ extern void _isr30(void);
 extern void _isr31(void);
 
 #define MAX_ISR_HANDLER		256
+#define INT_GATE_TYPE		0xE
+#define INT_PRESENT		0x80
+#define INT_GATE		INT_PRESENT | INT_GATE_TYPE
+#define KERN_CODE_SEGMENT	0x8
+
 static int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
 
 /*
@@ -144,18 +150,53 @@ void isr_handler(struct registers_t *regs){
 }
 
 /*
- * isr_load 
+ * isr_load,kesme servisi isleyicilerini iddt tablosuna ekler.
  */
-void isr_load(void){
+static void isr_load(void){
+	
+	idt_set_gate(0,  _isr0,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(1,  _isr1,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(2,  _isr2,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(3,  _isr3,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(4,  _isr4,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(5,  _isr5,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(6,  _isr6,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(7,  _isr7,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(8,  _isr8,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(9,  _isr9,  KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(10, _isr10, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(11, _isr11, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(12, _isr12, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(13, _isr13, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(14, _isr14, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(15, _isr15, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(16, _isr16, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(17, _isr17, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(18, _isr18, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(19, _isr19, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(20, _isr20, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(21, _isr21, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(22, _isr22, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(23, _isr23, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(24, _isr24, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(25, _isr25, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(26, _isr26, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(27, _isr27, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(28, _isr28, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(29, _isr29, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(30, _isr30, KERN_CODE_SEGMENT, INT_GATE);
+	idt_set_gate(31, _isr31, KERN_CODE_SEGMENT, INT_GATE);
 	
 }
 
 /*
- * init_isr
+ * init_isr, kesme servisi rutinleri baslatir.
  */
 void init_isr(void){
 	
-	
+	debug_print(KERN_INFO,"Initializing the interrupt service routines.");
+	memset(isr_handlers,0,sizeof(isr_handlers));
+	isr_load();
 }
 
 /*
