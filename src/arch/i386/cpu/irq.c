@@ -134,7 +134,8 @@ void irq_handler(struct registers_t *regs){
 	
 	if(!handler)
 		irq_eoi(regs->int_num - 32);
-	handler(regs);
+	else
+		handler(regs);
 	
 }
 
