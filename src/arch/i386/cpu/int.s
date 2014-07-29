@@ -24,7 +24,7 @@ extern fault_handler
 ; standart x86 kesme servisi rutinleri icin ortak giris
 isr_common_entry:
   
-  ; edi,esi,ebp,esp,ebx,edx,ecx,eax'leri sakla
+  	; edi,esi,ebp,esp,ebx,edx,ecx,eax'leri sakla
 	pusha
 	
 	; selektorleri sakla
@@ -35,7 +35,7 @@ isr_common_entry:
 	
 	; user modda cagrildiginda veri segmenti selektorleri 
 	; farkli segmentleri gosterecekleri icin onlari yukarida
-  ; stack'a attik. ve kernel mod veri segmentini tanimlayicisini
+  	; stack'a attik. ve kernel mod veri segmentini tanimlayicisini
 	; ayarliyoruz.
 	;
 	mov ax, 0x10
