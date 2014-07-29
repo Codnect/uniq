@@ -41,3 +41,10 @@ gdt_load:
 
 .finish:
    ret
+
+global idt_load
+
+idt_load:
+   mov eax, [esp+4]     ; idt isaretcisini al.
+   lidt [eax]           ; idt isaretcisini yukle.
+   ret
