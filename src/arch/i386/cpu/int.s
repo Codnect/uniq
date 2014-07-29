@@ -37,7 +37,6 @@ isr_common_entry:
 	; farkli segmentleri gosterecekleri icin onlari yukarida
   	; stack'a attik. ve kernel mod veri segmentini tanimlayicisini
 	; ayarliyoruz.
-	;
 	mov ax, 0x10
 	mov ds, ax
 	mov es, ax
@@ -104,7 +103,6 @@ irq_common_entry:
 	; farkli segmentleri gosterecekleri icin onlari yukarida
   	; stack'a attik. ve kernel mod veri segmentini tanimlayicisini
 	; ayarliyoruz.
-	;
 	mov ax, 0x10
 	mov ds, ax
 	mov es, ax
