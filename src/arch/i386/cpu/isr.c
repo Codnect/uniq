@@ -91,6 +91,13 @@ void init_isr(void){
 	
 }
 
+/*
+ * int_test
+ */
+void __int_test(void){
 	
+	
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
