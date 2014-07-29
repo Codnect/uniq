@@ -27,9 +27,10 @@ int __kern_version_major = 0;
 int __kern_version_minor = 0;
 int __kern_version_lower = 1;
 
+#define STR(x) #x
+#define STRSTR(x) STR(x)
+
 #ifdef KERN_SPEC_SUFFIX
-	#define STR(x) #x
-	#define STRSTR(x) STR(x)
 	#define KERN_VERSION_SUFFIX STRSTR(KERN_SPEC_SUFFIX)	/* ozel ekler icin */
 #else
 	#define KERN_VERSION_SUFFIX "beta"			/* beta,final */
