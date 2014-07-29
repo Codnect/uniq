@@ -106,6 +106,7 @@ static int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
  */
 void isr_add_handler(uint8_t isr_no, int_handler_t handler){
 	
+	isr_handlers[isr_no] = handler;
 	
 }
 
@@ -116,6 +117,7 @@ void isr_add_handler(uint8_t isr_no, int_handler_t handler){
  */
 void isr_remove_handler(uint8_t isr_no){
 	
+	isr_handlers[isr_no] = NULL;
 	
 }
 
