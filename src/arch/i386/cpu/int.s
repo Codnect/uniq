@@ -73,7 +73,7 @@ isr_common_entry:
 	; kesme numarasi ve hata kodunu kaldir.("idt.c'yi inceleyin")
 	add esp, 8
 	
-	; iret'ten bahsetmistik bir kesme oldugunda calismakta olan fonksiyon
+	; iret'ten bahsetmistik. bir kesme oldugunda calismakta olan fonksiyon
 	; askiya alinir ve kesme yoneticisi cagrilir,islemci otomatik olarak kesme
 	; yoneticisinin yigitina eip, cs, eflags, esp, ss kaydedicilerini atar. eger
 	; askiya alinan fonksiyon ve kesme yoneticisi ayni ayricalik duzeyine sahip
