@@ -200,7 +200,7 @@ static void isr_load(void){
 }
 
 /*
- * init_isr, kesme servisi rutinleri baslatir.
+ * init_isr, kesme servisi rutinlerini baslatir.
  */
 void init_isr(void){
 	
