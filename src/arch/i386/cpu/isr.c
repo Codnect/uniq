@@ -99,7 +99,7 @@ extern void _isr31(void);
 #define MAX_ISR_HANDLER		256
 #define INT_GATE_TYPE		0xE
 #define INT_PRESENT		0x80
-#define INT_GATE		INT_PRESENT | INT_GATE_TYPE
+#define INT_GATE		INT_PRESENT | INT_GATE_TYPE	/* kesme kapisi */
 #define KERN_CODE_SEGMENT	0x8
 
 static int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
