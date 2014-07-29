@@ -51,6 +51,10 @@ static int_handler_t irq_handlers[MAX_IRQ] = { NULL };
  */
 void irq_add_handler(uint8_t irq_no, int_handler_t handler) {
 	
+	if(irq_no >= MAX_IRQ)
+		return;
+		
+	irq_handlers[irq_no] = handler;
 	
 }
 
@@ -61,6 +65,10 @@ void irq_add_handler(uint8_t irq_no, int_handler_t handler) {
  */
 void irq_remove_handler(uint8_t irq_no) {
 
+	if(irq_no >= MAX_IRQ)
+		return;
+		
+	irq_handlers[irq_no] = handler;
 	
 }
 
