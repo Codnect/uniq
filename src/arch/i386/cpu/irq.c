@@ -18,7 +18,8 @@
  */
  
 #include <uniq/module.h>
-#include <uniq/kernel.h>
+#include <uniq/types.h>
+#include <uniq/regs.h>
 
 /*
  * irq isleyicileri
@@ -40,6 +41,28 @@ extern void _irq13(void);
 extern void _irq14(void);
 extern void _irq15(void);
 
+#define MAX_IRQ  16
+static int_handler_t irq_list[MAX_IRQ] = { NULL };
+
+/*
+ * irq_add_handler
+ *
+ * @param irq_no :
+ */
+void irq_add_handler(uint8_t irq_no, int_handler_t handler) {
+	
+	
+}
+
+/*
+ * irq_remove_handler
+ *
+ * @param irq_no :
+ */
+void irq_remove_handler(uint8_t irq_no) {
+
+	
+}
 
 /*
  * irq_set_gates
