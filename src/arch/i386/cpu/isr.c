@@ -96,7 +96,7 @@ extern void _isr30(void);
 extern void _isr31(void);
 
 #define MAX_ISR_HANDLER		256
-int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
+static int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
 
 /*
  * isr_add_handler
