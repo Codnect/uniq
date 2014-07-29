@@ -41,17 +41,19 @@
  * 5.Overflow (Tuzak)
  * 6.Bound Range Exceeded (Hata)
  * 7.Invalid Opcode (Hata)
- * 8.Device Not Available (Hata)
+ * 8.No coprocessor (Hata)
  * 9.Double fault (Bozulma)
- * 10.Coprocessor (Bozulma)
+ * 10.Coprocessor segment overrun (Bozulma)
  * 11.Invalid TSS (Hata)
  * 12.Segment not present (Hata)
  * 13.Stack Segment Fault (Hata)
- * 14.General Protectionn (Hata)
+ * 14.General Protection (Hata)
  * 15.Page Fault(Hata)
- * 16.Rezerved
- * 17.Floating Point Fault (Hata)
- * 18–32.Rezerved
+ * 16.Unknown interrupt
+ * 17.Coprocessor fault (Hata)
+ * 18.Alignment check exception
+ * 19.Machine check exception
+ * 20-32 Reserved
  *
  * Bozulma : ciddi istisna durumlaridir.
  * ---------
