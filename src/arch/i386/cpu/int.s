@@ -19,6 +19,44 @@
 
 BITS 32
 
+
+; isr ve irq makrolari
+; tum isr ve irq'lara ayri ayri kod yazicagimiza isimizi
+; makrolarlar halledelim ;)
+
+; hata kodu icermeyen istisna kesmeleri icin macro
+%macro ISR_NOERR 1			; 1 sayisi 1 adet parametre aldigini gosteriyor
+	global _isr%1			; %1 , 1. parametre
+	_isr%1:	
+		cli			; kesmeleri devre disi birak
+		push byte 0		; bos hata kodu stack'a atilir,registers_t yi 
+					; alirken sikinti yasanmamasi icin
+		push byte %1		; kesme numarasini sakla.
+		jmp isr_common_entry	; ortak kesme servisi girisine zipla
+%endmacro
+
+; hata kodu iceren istisna kesmeleri icin macro
+%macro ISR_ERR 1			; 1 sayisi 1 adet parametre aldigini gosteriyor
+	global _isr%1			; %1 , 1. parametre
+	_isr%1:
+		cli			; kesmeleri devre disi birak
+					; yukarida bos hata kodunu saklamistik,burda 
+					; otomatik olarak hata kodu zaten islemci
+					; tarafindan saklaniyor
+		push byte %1		; kesme numarasini sakla
+		jmp isr_common_stub	; ortak kesme servisi girisine zipla
+%endmacro
+
+; irq'lar icin macro
+%macro IRQ_ENTRY 2			; 2 parametre aliyor
+	global _irq%1			; %1,  1. parametre
+	_irq%1:
+		cli			; kesmeleri devre disi birak
+		push byte 0		; bos hata kodu sakla
+		push byte %2		; %2, 2.parametre. kesme numarasini sakla
+		jmp irq_common_entry    ; irq'lar icin ortak girise zipla
+%endmacro
+
 extern fault_handler
 
 ; standart x86 kesme servisi rutinleri icin ortak giris
