@@ -105,11 +105,10 @@
  *	    --------- olacaktir.yani (1 1 0 0)
  *	    -> DT   = sistem segmenti oldugu icin 0 degerini alicak.
  *	    ---------
- *	    -> DPL  = segment ayricalik seviyesini belirtir.
+ *	    -> DPL  = kesme ayricalik seviyesini belirtir.
  *	    ---------
- *	    -> P    = segmentin o an bellekte olup olmadigi belirtir. eger segment bellekte ise bu
- *	    --------- bit 1 olur. eger 0 iken segmente erisilmeye calisilirsa "segment not present"
- *		      hatasi olusur.
+ *	    -> P    = kesmenin o an bellekte olup olmadigi belirtir. eger kesme bellekte ise bu
+ *	    --------- bit 1 olur, degilse  0 olur.
  *
  * zero:    
  * ----     7           5 4              0
