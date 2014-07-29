@@ -32,5 +32,6 @@ struct registers_t {
 };
 
 void dump_regs(struct registers_t *regs);
+typedef void (*interrupt_handler_t) (struct registers_t *);
 
 #endif /* __UNIQ_REGS_H__ */
