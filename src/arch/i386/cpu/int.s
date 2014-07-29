@@ -44,7 +44,7 @@ BITS 32
 					; otomatik olarak hata kodu zaten islemci
 					; tarafindan saklaniyor
 		push byte %1		; kesme numarasini sakla
-		jmp isr_common_stub	; ortak kesme servisi girisine zipla
+		jmp isr_common_entry	; ortak kesme servisi girisine zipla
 %endmacro
 
 ; irq'lar icin macro
