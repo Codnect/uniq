@@ -154,8 +154,8 @@ void isr_handler(struct registers_t *regs){
 	
 	if(!handler)
 		isr_fault(regs);
-		
-	handler(regs);
+	else
+		handler(regs);
 		
 }
 
