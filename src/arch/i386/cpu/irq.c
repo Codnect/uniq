@@ -129,7 +129,7 @@ void irq_handler(struct registers_t *regs){
 
 	int_handler_t handler;
 	
-	if(regs->int_num > 0x2F /* 47 */ && regs->int_num < 0x20 /* 32 */)
+	if(regs->int_num > 0x2F /* 47 */ || regs->int_num < 0x20 /* 32 */)
 		handler = NULL;
 	
 	handler = irq_handlers[regs->int_num - 0x20];
