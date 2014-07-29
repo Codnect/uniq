@@ -12,10 +12,12 @@ LIBS = 	libs/string.o \
 DRIVERS = drivers/vga.o
 
 ALLSOURCES = arch/i386/boot.o \
+	     arch/i386/cpu/asm-cpu.o \
+	     arch/i386/cpu/int.o \
 	     arch/i386/cpu/gdt.o \
-	     arch/i386/cpu/asm-gdt.o \
 	     arch/i386/cpu/idt.o \
-	     arch/i386/cpu/asm-idt.o \
+	     arch/i386/cpu/isr.o \
+	     arch/i386/cpu/regs.o \
 	     init/main.o \
 	     kernel/kprintf.o \
 	     kernel/kern_debug.o \
