@@ -23,7 +23,7 @@
 /*
  * istisna kesmeleri mesaj listesi
  */
-static const char *exception_msglist[] = {
+static const char *fault_msglist[] = {
 	"Division by zero",				/* 0 */
 	"Debug",					/* 1 */
 	"Non-maskable interrupt",			/* 2 */
