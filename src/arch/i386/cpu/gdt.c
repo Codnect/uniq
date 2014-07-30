@@ -567,7 +567,7 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
  * init_gdt, gdt tablosunun hazirlanmasi ve yuklenmesi islemleri 
  * gerceklestirir.
  */
-void init_gdt(void){
+void gdt_init(void){
 	
 	debug_print(KERN_INFO,"Initializing the GDT. GDT table address is \033[1;37m%P",(uint32_t)&gdt_entry);
 	
