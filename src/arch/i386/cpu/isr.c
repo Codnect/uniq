@@ -201,9 +201,9 @@ static void isr_load(void){
 }
 
 /*
- * init_isr, kesme servisi rutinlerini baslatir.
+ * isr_init, kesme servisi rutinlerini baslatir.
  */
-void init_isr(void){
+void isr_init(void){
 	
 	debug_print(KERN_INFO,"Initializing the interrupt service routines.");
 	memset(isr_handlers,0,sizeof(isr_handlers));
