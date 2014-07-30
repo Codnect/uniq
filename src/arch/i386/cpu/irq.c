@@ -22,6 +22,57 @@
 #include <uniq/kernel.h>
 
 /*
+ * teorik bilgiler
+ * ---------------------------------------------------------------------------------------------------------
+ *
+ * 8259 PIC nedir?
+ * 8259 PIC, IBM firmasi tarafindan uretilmis bir kesme denetleyicisidir. PIC( Programmable Interrupt 
+ * Controller )'i turkce ifadesiyle programlanabilir kesme denetleyicisidir. IBM firmasi tarafindan ilk
+ * uretildiginde 8 kesmeye kadar destekliyordu fakat donanim araclarin gelismesi ve artmasiyla  bi 8 tane 
+ * kesme eklenerek bu model cikartilmistir. gunumuzde ise bu kadar kesmenin yetmeyecegi dusunulerek intel
+ * tarafindan APIC yani gelismis kesme denetleyicisi cikarilmistir yanlis hatirlamiyorsam 240 adet kesmeyi
+ * destekliyor. 8259 PIC'te master ve slave PIC olarak iki PIC bulunmakadir. bunlardan master'i birincil
+ * PIC olarak slave PIC'den ise ikincil PIC olarak bahsetmek bahsetmek daha iyi gibi duruyor :). herneyse
+ * her ikisi soylemide soylesek yanlis olmaz dimi.
+ *
+ * peki bu kesme listesine bi goze atalim.
+ *
+ *      Master PIC
+ *     ===============================================================================
+ *     = 8259 PIN = Kesme Numarasi = Aciklama					     = 
+ *     ===============================================================================
+ *     = IRQ0	  = 0x08	   = Zamanlayici				     =
+ *     = IRQ1	  = 0x09	   = Klavye					     =
+ *     = IRQ2	  = 0x0A           = Slave PIC baglantisi icin			     =
+ *     = IRQ3     = 0x0B           = Serial port 2 (COM2)			     =
+ *     = IRQ4	  = 0x0C	   = Serial port 1 (COM1)			     =
+ *     = IRQ5	  = 0x0D	   = LPT(LinePrinTer)
+ *     = IRQ6     = 0x0E	   = Disket surucusu				     =
+ *     = IRQ7	  = 0x0F	   = Paralel Port 1				     =
+ *     ===============================================================================
+ *
+ * *   Slave PIC
+ *     ===============================================================================
+ *     = 8259 PIN = Kesme Numarasi = Aciklama					     = 
+ *     ===============================================================================
+ *     = IRQ8/IRQ0  =	0x70	   = CMOS - Gercek zaman saati                       =
+ *     = IRQ9/IRQ1  =	0x71	   = Reserve edilmis				     =
+ *     = IRQ10/IRQ2 =	0x72	   = Reserve Edilmis				     =
+ *     = IRQ11/IRQ3 =	0x73	   = Reserve Edilmis				     =
+ *     = IRQ12/IRQ4 =	0x74	   = Mouse					     =
+ *     = IRQ13/IRQ5 =	0x75	   = FPU					     =
+ *     = IRQ14/IRQ6 =	0x76	   = Hard disk denetleyicisi 1			     =
+ *     = IRQ15/IRQ7 =	0x77	   = Hard disk denetleyicisi 2			     =
+ *     ===============================================================================
+ *
+ *  !Not : kesme numaralari varsayilandir, irq numaralarini duzenleyecegiz. Ve IRQ2
+ *  ------ aslinda bir kesme degildir Slave PIC'in baglantisi yapmak icin ayrilmistir.
+ *	   boylelikle slave PIC'i kullanabiliriz.
+ * ---------------------------------------------------------------------------------------------------------
+ */
+
+
+/*
  * irq isleyicileri
  */
 extern void _irq0(void);
@@ -41,11 +92,44 @@ extern void _irq13(void);
 extern void _irq14(void);
 extern void _irq15(void);
 
-#define MAX_IRQ  16
-#define INT_GATE_TYPE		0xE
-#define INT_PRESENT		0x80
-#define INT_GATE		INT_PRESENT | INT_GATE_TYPE	/* kesme kapisi */
-#define KERN_CODE_SEGMENT	0x8
+#define MAX_IRQ  			16
+#define INT_GATE_TYPE			0xE
+#define INT_PRESENT			0x80
+#define INT_GATE			INT_PRESENT | INT_GATE_TYPE	/* kesme kapisi */
+#define KERN_CODE_SEGMENT		0x8
+
+/*
+ * PIC tanimlamalari
+ * PIC'leri ayarlamak icin toplamda 4 adet ICW'vardir.ICW
+ * kesme kontrol olarak aklinizda tutabilirsiniz.
+ *
+ */
+#define PIC_MASTER_COMMAND		0x20
+#define PIC_MASTER_DATA			0x21
+#define PIC_SLAVE_COMMAND		0xA0
+#define PIC_SLAVE_DATA			0xA1
+
+/*
+ * ICW'ler
+ */
+#define ICW1_ICW4			0x01	/* ICW4'de var */
+#define ICW1_SINGLE			0x02	/* tek PIC */
+#define ICW1_INIT			0x10	/* baslatma icin gerekli */
+#define ICW1				ICW1_ICW4 | ICW1_INIT
+#define ICW2_MASTER_PIC_OFFSET		0x20	/* ilk donanim kesme numarasinin 0x20(32) oldugunu
+						 * hatirlayin :)
+						 */
+#define ICW2_SLAVE_PIC_OFFSET		0x28	/* 8 kesme sonrasi slave PIC kesmelerinin baslama
+						 * noktasi
+						 */
+#define ICW3_MASTER_PIC			0x04	/* IRQ2'nin kesme numarasini kadar bit sola kaydirilmis
+						 * hali  "0 1 0 0". IRQ2 nin slave PIC ile master PIC
+					 	 * baglanti noktasi oldugunu hatirlayin.
+					 	*/
+#define ICW3_SLAVE_PIC			0x02	/* IRQ2'nin kesme numarasinin binary formati = "2" */
+#define ICW4_8086_MODE			0x01	/* x86 modu */
+#define ICW4				ICW4_8086_MODE
+#define ICW_NULL			0x0
 
 static int_handler_t irq_handlers[MAX_IRQ] = { NULL };
 
@@ -105,7 +189,26 @@ void irq_set_gates(void){
  * irq_remap, irq kesmeleri icin PIC'yi ayarlar.
  */
 void irq_remap(void){
- 
+	
+	/* PIC'leri baslat - ICW1 */
+	outportb(PIC_MASTER_COMMAND, ICW1);
+	outportb(PIC_SLAVE_COMMAND, ICW1);
+	
+	/* kesme offsetlerini ayarla - ICW2 */
+	outportb(PIC_MASTER_DATA, ICW2_MASTER_PIC_OFFSET);
+	outportb(PIC_SLAVE_DATA, ICW2_SLAVE_PIC_OFFSET);
+	
+	/* */
+	outportb(PIC_MASTER_DATA, ICW3_MASTER_PIC);
+	outportb(PIC_SLAVE_DATA, ICW3_SLAVE_PIC);
+	
+	/* x86 modu - ICW4 */
+	outportb(PIC_MASTER_DATA, ICW4);
+	outportb(PIC_SLAVE_DATA, ICW4);
+	
+	/* null - ICW_NULL */
+	outportb(PIC_MASTER_DATA, ICW_NULL);
+	outportb(PIC_SLAVE_DATA, ICW_NULL);
  
 }
 
