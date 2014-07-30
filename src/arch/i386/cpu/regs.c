@@ -40,7 +40,7 @@ void dump_regs(struct registers_t *regs){
 				"\t\033[0mfs  = \033[1;37m%10P \033[0m gs  = \033[1;37m%10P\n"
 				"\t\033[0mcs  = \033[1;37m%10P \033[0m ss  = \033[1;37m%10P\n"
 				"\033[0mOther:\n"
-				"\t\033[0merror Code  = \033[1;37m%10P\n"
+				"\t\033[0merror code  = \033[1;37m%10P\n"
 				"\t\033[0muser esp    = \033[1;37m%10P\n"
 				"\t\033[0meip         = \033[1;37m%10P\n"
 				"\t\033[0meflags      = \033[1;37m%10P",
