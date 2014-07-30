@@ -34,11 +34,11 @@ void timer_handler(struct registers_t *regs){
 }
 
 /*
- * timer_frequency
+ * timer_set_freq
  *
  * @param hz : hertz
  */
-static void timer_frequency(uint32_t hertz){
+static void timer_set_freq(uint32_t hertz){
  
  
 }
@@ -51,7 +51,7 @@ void init_timer(void){
 	debug_print(KERN_INFO,"Initializing the timer.");
 	irq_add_handler(TIMER_IRQ_NUM,timer_handler);
 	/* 100 hz'e ayarla */
-	timer_frequency(100);
+	timer_set_freq(100);
  
 }
 
