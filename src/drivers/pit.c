@@ -20,8 +20,12 @@
 #include <uniq/module.h>
 #include <uniq/kernel.h>
 
-#define TIMER_IRQ_NUM  0
-
+#define TIMER_IRQ_NUM	0
+#define PIT_CHANNEL0	0x40	/* veri portu */
+#define PIT_CHANNEL1 	0x41	/* veri portu */
+#define PIT_CHANNEL2 	0x42	/* veri portu */
+#define PIT_CNTRL	0x43
+#define PIT_HZ		100
 
 /*
  * timer_handler
@@ -48,10 +52,10 @@ static void timer_set_freq(uint32_t hertz){
  */
 void init_timer(void){
  
-	debug_print(KERN_INFO,"Initializing the timer.");
+	debug_print(KERN_INFO,"Initializing the timer. Hz = \033[1;37m%u",PIT_HZ);
 	irq_add_handler(TIMER_IRQ_NUM,timer_handler);
 	/* 100 hz'e ayarla */
-	timer_set_freq(100);
+	timer_set_freq(PIT_HZ);
  
 }
 
