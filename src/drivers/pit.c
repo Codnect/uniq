@@ -18,7 +18,43 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+#define TIMER_IRQ_NUM  0
+
+
+/*
+ * timer_handler
+ *
+ * @param regs : kaydediciler.
+ */
+void timer_handler(struct registers_t *regs){
  
+ 
+}
+
+/*
+ * timer_frequency
+ *
+ * @param hz : hertz
+ */
+static void timer_frequency(uint32_t hertz){
+ 
+ 
+}
+
+/*
+ * init_timer
+ */
+void init_timer(void){
+ 
+	debug_print(KERN_INFO,"Initializing the timer.");
+	irq_add_handler(TIMER_IRQ_NUM,timer_handler);
+	/* 100 hz'e ayarla */
+	timer_frequency(100);
+ 
+}
+
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
