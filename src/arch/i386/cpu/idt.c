@@ -319,7 +319,7 @@ void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags){
 
 
 /*
- * init_idt,idt tablosunun hazirlanmasi ve yuklenmesi islemleri 
+ * idt_init,idt tablosunun hazirlanmasi ve yuklenmesi islemleri 
  * gerceklestirir.
  */
 void idt_init(void){
