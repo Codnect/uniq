@@ -564,7 +564,7 @@ void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t
 } 
 
 /*
- * init_gdt, gdt tablosunun hazirlanmasi ve yuklenmesi islemleri 
+ * gdt_init, gdt tablosunun hazirlanmasi ve yuklenmesi islemleri 
  * gerceklestirir.
  */
 void gdt_init(void){
