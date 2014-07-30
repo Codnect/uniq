@@ -242,7 +242,7 @@ void irq_remap(void){
 void irq_eoi(uint8_t irq_num){
 
 	if (irq_num >= 8) 
-		outb(PIC_SLAVE_COMMAND, PIC_EOI);
+		outbyte(PIC_SLAVE_COMMAND, PIC_EOI);
 		
 	outbyte(PIC_MASTER_COMMAND, PIC_EOI);
 	
