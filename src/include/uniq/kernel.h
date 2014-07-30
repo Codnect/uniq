@@ -62,5 +62,14 @@ extern void init_gdt(void);
 extern void gdt_set_gate(size_t num,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran);
 extern void init_idt(void);
 extern void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags);
+extern void init_isr(void);
+extern void isr_add_handler(uint8_t isr_num, int_handler_t handler);
+extern void isr_remove_handler(uint8_t isr_num);
+extern void __int_test(void);
+extern void init_irq(void);
+extern void irq_eoi(uint8_t irq_num);
+extern void irq_add_handler(uint8_t irq_num, int_handler_t handler);
+extern void irq_remove_handler(uint8_t irq_num);
+
 
 #endif /* __UNIQ_KERNEL_H__ */
