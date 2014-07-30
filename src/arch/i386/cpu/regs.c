@@ -21,7 +21,7 @@
 #include <uniq/kernel.h>
 
 /*
- * dump_regs
+ * dump_regs, kaydedicilerin dokumunu ekrana yazdirir.
  * 
  * @param regs : kaydediciler yada yazmaclar hala hangi soylemi kullanicagimi
  *               kullansam bilmiyorum ama kaydedici demek kulaga daha hos
