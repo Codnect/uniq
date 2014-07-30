@@ -112,7 +112,7 @@ IRQ_ENTRY 14, 46
 IRQ_ENTRY 15, 47
 
 
-extern fault_handler
+extern isr_handler
 
 ; standart x86 kesme servisi rutinleri icin ortak giris
 isr_common_entry:
