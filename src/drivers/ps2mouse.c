@@ -18,6 +18,29 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * mouse_handler, mouse isleyicisi
+ *
+ * @param regs : kaydediciler.
+ */
+void mouse_handler(struct registers_t *regs){
  
+
+}
+
+
+
+/*
+ * mouse_init
+ */
+void mouse_init(void){
+ 
+
+ 
+}
+
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
