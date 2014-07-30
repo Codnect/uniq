@@ -183,7 +183,7 @@ void irq_remove_handler(uint8_t irq_num){
 /*
  * irq_set_gates, donanim kesmelerini idt tablosuna ekler.
  */
-void irq_set_gates(void){
+static void irq_set_gates(void){
 	
 	idt_set_gate(32, _irq0, KERN_CODE_SEGMENT, INT_GATE);
 	idt_set_gate(33, _irq1, KERN_CODE_SEGMENT, INT_GATE);
@@ -207,7 +207,7 @@ void irq_set_gates(void){
 /*
  * irq_remap, irq kesmeleri icin PIC'yi ayarlar.
  */
-void irq_remap(void){
+static void irq_remap(void){
 	
 	debug_print(KERN_INFO,"Initializing the Master & Slave PIC.");
 	/* PIC'leri baslat - ICW1 */
