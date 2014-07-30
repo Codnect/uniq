@@ -61,11 +61,10 @@ void _debug_print(char *file,uint32_t line,kern_levels_t level,const char *fmt,.
 	vsnprintf(buffer,sizeof(buffer)-1,fmt,arg_list);
 	va_end(arg_list);
 	
-	char *lvl_text;
-	
 	if(level == KERN_NULL)
 		printf("%s\n",buffer);
 	else{
+		char *lvl_text;
 		lvl_text = level_msgs[level];
 		printf("%-10s: [module = %.40s line = %.6d]\n%s %s\n",lvl_text,file,line,"->",buffer);
 	}
