@@ -18,6 +18,29 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * kbd_handler, keyboard isleyicisi
+ *
+ * @param regs : kaydediciler.
+ */
+void kbd_handler(struct registers_t *regs){
  
+
+}
+
+
+
+/*
+ * kbd_init
+ */
+void kbd_init(void){
+ 
+
+ 
+}
+
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
