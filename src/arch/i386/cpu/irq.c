@@ -276,7 +276,7 @@ void init_irq(void){
  	debug_print(KERN_INFO,"Initializing the IRQ.");
 	irq_remap();
 	irq_set_gates();
-	enable_interrupts();
+	enable_irq();
 
 }
 
