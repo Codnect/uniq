@@ -20,5 +20,6 @@
 #ifndef __UNIQ_PIT_H__
 #define __UNIQ_PIT_H__
 
+void init_timer(void);
 
 #endif /* __UNIQ_PIT_H__ */
