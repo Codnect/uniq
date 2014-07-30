@@ -39,7 +39,7 @@ void die(const char *fmt, ...){
 	vsnprintf(err_msg,sizeof(err_msg)-1,fmt,arg_list);
 	debug_print(KERN_EMERG,"%s",err_msg);
 	va_end(arg_list);
-	disable_interrupts();
+	disable_irq();
 	halt_system();
 
 }
@@ -54,7 +54,7 @@ void die(const char *fmt, ...){
 void _assert(const char *err){
 	
 	debug_print(KERN_EMERG, "Kernel Fault : %s",err);
-	disable_interrupts();
+	disable_irq();
 	halt_system();
 
 }
