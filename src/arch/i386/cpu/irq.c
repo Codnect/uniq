@@ -269,9 +269,9 @@ void irq_handler(struct registers_t *regs){
 }
 
 /*
- * init_irq, irq-donanim kesmelerini baslatir.
+ * irq_init, irq-donanim kesmelerini baslatir.
  */
-void init_irq(void){
+void irq_init(void){
  
  	debug_print(KERN_INFO,"Initializing the IRQ.");
 	irq_remap();
