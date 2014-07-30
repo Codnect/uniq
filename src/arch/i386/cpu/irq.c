@@ -67,7 +67,24 @@
  *
  *  !Not : kesme numaralari varsayilandir, irq numaralarini duzenleyecegiz. Ve IRQ2
  *  ------ aslinda bir kesme degildir Slave PIC'in baglantisi yapmak icin ayrilmistir.
- *	   boylelikle slave PIC'i kullanabiliriz.
+ *	   boylelikle slave PIC'i kullanabiliriz. Asagidaki sekildeki gibidir.
+ *
+ *									Slave PIC
+ * 							=======================================
+ *							= 8 = 9 = 10 = 11 = 12 = 13 = 14 = 15 =
+ *							=======================================
+ * 						       |
+ *						       |
+ *	Master PIC				       |
+ *   =================================		       |
+ *   = 0 = 1 = 2 = 3 = 4 = 5 = 6 = 7 =		       |
+ *   =================================		       |
+ *             |				       |
+ *             |---------------------------------------|
+ *
+ *  ve son olarak kesme oncelikleri asagidaki gibidir.
+ *  0 > 1 > 8 > 9 > 10 > 11 > 12 > 13 > 14 > 15 > 3 > 4 > 5 > 6 > 7 
+ *
  * ---------------------------------------------------------------------------------------------------------
  */
 
@@ -192,6 +209,7 @@ void irq_set_gates(void){
  */
 void irq_remap(void){
 	
+	debug_print(KERN_INFO,"Initializing the Master & Slave PIC.");
 	/* PIC'leri baslat - ICW1 */
 	outbyte(PIC_MASTER_COMMAND, ICW1);
 	outbyte(PIC_SLAVE_COMMAND, ICW1);
