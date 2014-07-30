@@ -137,7 +137,8 @@ static int_handler_t irq_handlers[MAX_IRQ] = { NULL };
 /*
  * irq_add_handler, irq isleyicisi ekler.
  *
- * @param irq_no : irq numarasi
+ * @param irq_num : irq numarasi
+ * @param handler : kesme isleyicisi
  */
 void irq_add_handler(uint8_t irq_num, int_handler_t handler){
 	
@@ -151,7 +152,7 @@ void irq_add_handler(uint8_t irq_num, int_handler_t handler){
 /*
  * irq_remove_handler, irq isleyicisini kaldirir.
  *
- * @param irq_no : irq numarasi
+ * @param irq_num : irq numarasi
  */
 void irq_remove_handler(uint8_t irq_num){
 
