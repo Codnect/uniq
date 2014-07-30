@@ -119,7 +119,7 @@ static void timer_set_freq(uint32_t hertz){
  * init_timer, timer'i irq isleyici listesine ekler ve ayarlayip
  * baslatir.
  */
-void init_timer(void){
+void timer_init(void){
  
 	debug_print(KERN_INFO,"Initializing the timer. Timer frequency is \033[1;37m%u Hz",PIT_HZ);
 	irq_add_handler(TIMER_IRQ_NUM,timer_handler);
