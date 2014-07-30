@@ -28,7 +28,7 @@ typedef enum{
 	KERN_CRITIC,		/* kritik durumlar */
 	KERN_ALERT,		/* derhal onlem alinmali */
 	KERN_EMERG,		/* sistem kullanilamaz halde */
-	KERN_NULL		/* devamli ciktilarda kullanmak icin */
+	KERN_DUMP		/* devamli ciktilarda kullanmak icin */
 }kern_levels_t;
 
 #endif /* __UNIQ_KERN_LVLS_H__ */
