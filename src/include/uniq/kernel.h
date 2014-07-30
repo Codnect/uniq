@@ -36,6 +36,7 @@
  * drivers 
  */
 #include <drivers/vga.h>
+#include <drivers/pit.h>
 
 /* 
  * kprintf.c 
