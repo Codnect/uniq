@@ -74,11 +74,11 @@
 /* bcd */
 #define PIT_16BITBIN		0x00	/* 16 bitlik sayi seklinde verimizi gonderecegiz */
 #define PIT_BCD			0x01
-#define PIT_SET_BYTE		PIT_CHANNEL0 | PIT_RW_HIGH_LOW | PIT_MODE3 | PIT_16BITBIN			
+#define PIT_SET_BYTE		PIT_CHANNEL0 | PIT_RW_HIGHLOW | PIT_MODE3 | PIT_16BITBIN			
 #define GET_LOW_BYTE(x)		(x & 0xFF)
 #define GET_HIGH_BYTE(x)	((x >> 8) & 0xFF)
 
-
+uint32_t timer_ticks = 0;
 /*
  * timer_handler, timer isleyicisi
  *
@@ -86,6 +86,14 @@
  */
 void timer_handler(struct registers_t *regs){
  
+	timer_ticks++;
+	irq_eoi(TIMER_IRQ_NUM);	/* kesme sonu sinyali gondererek kesmenin sona
+				 * erdigini bildiriyoruz, disable_irq ile karistirmayin.
+				 * disable_irq irq kesmelerini durdururken, irq_eoi ise timer
+				 * icin konusursak timer isleyicisinin isi bittigin sadece
+				 * bildiriyor fakat hala irqlar aktif oldugu icin timer
+				 * isleyicisi tekrar tekrar cagrilir.
+				 */
  
 }
 
@@ -113,7 +121,7 @@ static void timer_set_freq(uint32_t hertz){
  */
 void init_timer(void){
  
-	debug_print(KERN_INFO,"Initializing the timer. Hz = \033[1;37m%u",PIT_HZ);
+	debug_print(KERN_INFO,"Initializing the timer. Timer frequency is \033[1;37m%u Hz",PIT_HZ);
 	irq_add_handler(TIMER_IRQ_NUM,timer_handler);
 	/*
 	 * 100 hz'e ayarla
