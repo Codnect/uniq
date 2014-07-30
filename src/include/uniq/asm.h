@@ -42,8 +42,8 @@ static inline void relax_cpu(void){
 	__asm__ volatile("rep; nop");
 }
 
-#define disable_interrupts()		cli()
-#define enable_interrupts()		sti()
+#define disable_irq()			cli()
+#define enable_irq()			sti()
 #define halt_system()			hlt()
 
 
