@@ -107,23 +107,23 @@ static int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
 /*
  * isr_add_handler
  *
- * @param isr_no : istisna kesme numarasi
+ * @param isr_num : istisna kesme numarasi
  * @param handler : kesme isleyicisi
  */
-void isr_add_handler(uint8_t isr_no, int_handler_t handler){
+void isr_add_handler(uint8_t isr_num, int_handler_t handler){
 	
-	isr_handlers[isr_no] = handler;
+	isr_handlers[isr_num] = handler;
 	
 }
 
 /*
  * isr_remove_handler
  *
- * @param isr_no :
+ * @param isr_num : istisna kesme numarasi
  */
-void isr_remove_handler(uint8_t isr_no){
+void isr_remove_handler(uint8_t isr_num){
 	
-	isr_handlers[isr_no] = NULL;
+	isr_handlers[isr_num] = NULL;
 	
 }
 
