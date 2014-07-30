@@ -28,7 +28,28 @@
  *               geliyor ;).
  */
 void dump_regs(struct registers_t *regs){
- 
+ 	
+	debug_print(KERN_EMERG, "Dump Registers\n"
+				"General Purpose Registers:\n"
+				"\teax = \033[1;37m%10P \033[0m ecx = \033[1;37m%10P\n"
+				"\t\033[0medx = \033[1;37m%10P \033[0m ebx = \033[1;37m%10P\n"
+				"\t\033[0mesp = \033[1;37m%10P \033[0m ebp = \033[1;37m%10P\n"
+				"\t\033[0mesi = \033[1;37m%10P \033[0m edi = \033[1;37m%10P\n"
+				"\033[0mSegment selectors:\n"
+				"\tds  = \033[1;37m%10P \033[0m es  = \033[1;37m%10P\n"
+				"\t\033[0mfs  = \033[1;37m%10P \033[0m gs  = \033[1;37m%10P\n"
+				"\t\033[0mcs  = \033[1;37m%10P \033[0m ss  = \033[1;37m%10P\n"
+				"\033[0mOther:\n"
+				"\t\033[0merror Code  = \033[1;37m%10P\n"
+				"\t\033[0muser esp    = \033[1;37m%10P\n"
+				"\t\033[0meip         = \033[1;37m%10P\n"
+				"\t\033[0meflags      = \033[1;37m%10P",
+				regs->eax,regs->ecx,
+				regs->edx,regs->ebx,
+				regs->esp,regs->ebp,
+				regs->esi,regs->edi,
+				regs->ds,regs->es,regs->fs,regs->gs,regs->cs,regs->ss,
+				regs->err_code,regs->useresp,regs->eip,regs->eflags);
   
 }
 
