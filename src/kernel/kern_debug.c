@@ -61,7 +61,7 @@ void _debug_print(char *file,uint32_t line,kern_levels_t level,const char *fmt,.
 	vsnprintf(buffer,sizeof(buffer)-1,fmt,arg_list);
 	va_end(arg_list);
 	
-	if(level == KERN_NULL)
+	if(level == KERN_DUMP)
 		printf("%s\n",buffer);
 	else{
 		char *lvl_text;
