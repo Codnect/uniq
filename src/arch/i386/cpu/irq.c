@@ -108,6 +108,7 @@ extern void _irq15(void);
 #define PIC_MASTER_DATA			0x21
 #define PIC_SLAVE_COMMAND		0xA0
 #define PIC_SLAVE_DATA			0xA1
+#define PIC_EOI				0x20
 
 /*
  * ICW'ler
@@ -138,12 +139,12 @@ static int_handler_t irq_handlers[MAX_IRQ] = { NULL };
  *
  * @param irq_no : irq numarasi
  */
-void irq_add_handler(uint8_t irq_no, int_handler_t handler){
+void irq_add_handler(uint8_t irq_num, int_handler_t handler){
 	
-	if(irq_no >= MAX_IRQ)
+	if(irq_num >= MAX_IRQ)
 		return;
 		
-	irq_handlers[irq_no] = handler;
+	irq_handlers[irq_num] = handler;
 	
 }
 
@@ -152,12 +153,12 @@ void irq_add_handler(uint8_t irq_no, int_handler_t handler){
  *
  * @param irq_no : irq numarasi
  */
-void irq_remove_handler(uint8_t irq_no){
+void irq_remove_handler(uint8_t irq_num){
 
-	if(irq_no >= MAX_IRQ)
+	if(irq_num >= MAX_IRQ)
 		return;
 		
-	irq_handlers[irq_no] = NULL;
+	irq_handlers[irq_num] = NULL;
 	
 }
 
@@ -191,34 +192,40 @@ void irq_set_gates(void){
 void irq_remap(void){
 	
 	/* PIC'leri baslat - ICW1 */
-	outportb(PIC_MASTER_COMMAND, ICW1);
-	outportb(PIC_SLAVE_COMMAND, ICW1);
+	outbyte(PIC_MASTER_COMMAND, ICW1);
+	outbyte(PIC_SLAVE_COMMAND, ICW1);
 	
 	/* kesme offsetlerini ayarla - ICW2 */
-	outportb(PIC_MASTER_DATA, ICW2_MASTER_PIC_OFFSET);
-	outportb(PIC_SLAVE_DATA, ICW2_SLAVE_PIC_OFFSET);
+	outbyte(PIC_MASTER_DATA, ICW2_MASTER_PIC_OFFSET);
+	outbyte(PIC_SLAVE_DATA, ICW2_SLAVE_PIC_OFFSET);
 	
 	/* */
-	outportb(PIC_MASTER_DATA, ICW3_MASTER_PIC);
-	outportb(PIC_SLAVE_DATA, ICW3_SLAVE_PIC);
+	outbyte(PIC_MASTER_DATA, ICW3_MASTER_PIC);
+	outbyte(PIC_SLAVE_DATA, ICW3_SLAVE_PIC);
 	
 	/* x86 modu - ICW4 */
-	outportb(PIC_MASTER_DATA, ICW4);
-	outportb(PIC_SLAVE_DATA, ICW4);
+	outbyte(PIC_MASTER_DATA, ICW4);
+	outbyte(PIC_SLAVE_DATA, ICW4);
 	
 	/* null - ICW_NULL */
-	outportb(PIC_MASTER_DATA, ICW_NULL);
-	outportb(PIC_SLAVE_DATA, ICW_NULL);
+	outbyte(PIC_MASTER_DATA, ICW_NULL);
+	outbyte(PIC_SLAVE_DATA, ICW_NULL);
  
 }
 
 /*
  * irq_eoi, PIC'lere kesme sonu sinyali gonderir.
  * 
+ * (END OF INTERRUPT) = EOI
+ *
  * @param irq_num : irq numarasi
  */
 void irq_eoi(uint8_t irq_num){
 
+	if (irq_num >= 8) 
+		outb(PIC_SLAVE_COMMAND, PIC_EOI);
+		
+	outbyte(PIC_MASTER_COMMAND, PIC_EOI);
 	
 }
 
@@ -243,7 +250,7 @@ void irq_handler(struct registers_t *regs){
 }
 
 /*
- * init_irq
+ * init_irq, irq-donanim kesmelerini baslatir.
  */
 void init_irq(void){
  
