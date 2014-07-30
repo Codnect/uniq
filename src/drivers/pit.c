@@ -80,7 +80,7 @@
 
 
 /*
- * timer_handler
+ * timer_handler, timer isleyicisi
  *
  * @param regs : kaydediciler.
  */
@@ -90,7 +90,8 @@ void timer_handler(struct registers_t *regs){
 }
 
 /*
- * timer_set_freq
+ * timer_set_freq, timer'i istedigimiz hertz frekansina
+ * ayarlamamizi saglar.
  *
  * @param hz : hertz
  */
@@ -107,7 +108,8 @@ static void timer_set_freq(uint32_t hertz){
 }
 
 /*
- * init_timer
+ * init_timer, timer'i irq isleyici listesine ekler ve ayarlayip
+ * baslatir.
  */
 void init_timer(void){
  
