@@ -31,21 +31,14 @@ void dump_regs(struct registers_t *regs){
  	
 	debug_print(KERN_EMERG, "Dump Registers");
 	debug_print(KERN_DUMP,"General purpose registers:");
-	debug_print(KERN_DUMP,"\teax = \033[1;37m%10P \033[0m ecx = \033[1;37m%10P",regs->eax,
-										    regs->ecx);
-	debug_print(KERN_DUMP,"\t\033[0medx = \033[1;37m%10P \033[0m ebx = \033[1;37m%10P",regs->edx,
-											   regs->ebx);
-	debug_print(KERN_DUMP,"\t\033[0mesp = \033[1;37m%10P \033[0m ebp = \033[1;37m%10P",regs->esp,
-											   regs->ebp);			
-	debug_print(KERN_DUMP,"\t\033[0mesi = \033[1;37m%10P \033[0m edi = \033[1;37m%10P",regs->esi,
-											   regs->edi);
+	debug_print(KERN_DUMP,"\teax = \033[1;37m%10P \033[0m ecx = \033[1;37m%10P",regs->eax,regs->ecx);
+	debug_print(KERN_DUMP,"\t\033[0medx = \033[1;37m%10P \033[0m ebx = \033[1;37m%10P",regs->edx,regs->ebx);
+	debug_print(KERN_DUMP,"\t\033[0mesp = \033[1;37m%10P \033[0m ebp = \033[1;37m%10P",regs->esp,regs->ebp);			
+	debug_print(KERN_DUMP,"\t\033[0mesi = \033[1;37m%10P \033[0m edi = \033[1;37m%10P",regs->esi,regs->edi);
 	debug_print(KERN_DUMP,"\033[0mSegment selectors:");
-	debug_print(KERN_DUMP,"\tds  = \033[1;37m%10P \033[0m es  = \033[1;37m%10P",regs->ds,
-										    regs->es);				
-	debug_print(KERN_DUMP,"\t\033[0mfs  = \033[1;37m%10P \033[0m gs  = \033[1;37m%10P",regs->fs,
-										    	   regs->gs);				
-	debug_print(KERN_DUMP,"\t\033[0mcs  = \033[1;37m%10P \033[0m ss  = \033[1;37m%10P",regs->cs,
-										    	   regs->ss);
+	debug_print(KERN_DUMP,"\tds  = \033[1;37m%10P \033[0m es  = \033[1;37m%10P",regs->ds,regs->es);				
+	debug_print(KERN_DUMP,"\t\033[0mfs  = \033[1;37m%10P \033[0m gs  = \033[1;37m%10P",regs->fs,regs->gs);				
+	debug_print(KERN_DUMP,"\t\033[0mcs  = \033[1;37m%10P \033[0m ss  = \033[1;37m%10P",regs->cs,regs->ss);
 	debug_print(KERN_DUMP,"\033[0mOther:");
 	debug_print(KERN_DUMP,"\t\033[0merror code  = \033[1;37m%10P",regs->err_code);
 	debug_print(KERN_DUMP,"\t\033[0muser esp    = \033[1;37m%10P",regs->useresp);
