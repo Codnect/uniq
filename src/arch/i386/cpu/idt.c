@@ -322,7 +322,7 @@ void idt_set_gate(uint8_t num,void (*base)(void),uint16_t sel,uint8_t flags){
  * init_idt,idt tablosunun hazirlanmasi ve yuklenmesi islemleri 
  * gerceklestirir.
  */
-void init_idt(void){
+void idt_init(void){
 	
  	debug_print(KERN_INFO,"Initializing the IDT. IDT table address is \033[1;37m%P",(uint32_t)&idt_entry);
 
