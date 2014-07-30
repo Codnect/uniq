@@ -9,7 +9,8 @@ KERN_OUTPUT=kernel.bin
 LIBS = 	libs/string.o \
 	libs/ulib.o
 
-DRIVERS = drivers/vga.o
+DRIVERS = drivers/vga.o \
+	  drivers/pit.o
 
 ALLSOURCES = arch/i386/boot.o \
 	     arch/i386/cpu/asm-cpu.o \
