@@ -36,5 +36,7 @@ void kmain(uintptr_t mboot_magic){
 	init_isr();
 	init_irq();
 	//__int_test();
+	init_timer();
+	
 
 }
