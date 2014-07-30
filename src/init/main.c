@@ -30,13 +30,18 @@ void kmain(uintptr_t mboot_magic){
 	else
 		debug_print(KERN_INFO,"Valid the magic number.The magic number is \033[1;37m%P",mboot_magic);
 		
-	/* gdt,idt,isr ve irq*/
-	init_gdt();
-	init_idt();
-	init_isr();
-	init_irq();
+	/*
+	 * gdt,idt,isr ve irq
+	 */
+	gdt_init();
+	idt_init();
+	isr_init();
+	irq_init();
 	//__int_test();
-	init_timer();
-	
+
+	/*
+	 * drivers
+	 */
+	timer_init();
 
 }
