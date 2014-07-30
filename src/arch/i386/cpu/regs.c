@@ -30,7 +30,7 @@
 void dump_regs(struct registers_t *regs){
  	
 	debug_print(KERN_EMERG, "Dump Registers\n"
-				"General Purpose Registers:\n"
+				"General purpose registers:\n"
 				"\teax = \033[1;37m%10P \033[0m ecx = \033[1;37m%10P\n"
 				"\t\033[0medx = \033[1;37m%10P \033[0m ebx = \033[1;37m%10P\n"
 				"\t\033[0mesp = \033[1;37m%10P \033[0m ebp = \033[1;37m%10P\n"
