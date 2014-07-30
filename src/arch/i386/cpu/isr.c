@@ -139,7 +139,8 @@ static void isr_fault(struct registers_t *regs){
 	debug_print(KERN_EMERG, "Unhandled exception: [interrupt number = %u] %s", regs->int_num
 										 , fault_msglist[regs->int_num]);
 	dump_regs(regs);
-	
+	halt_system();
+
 }
 
 /*
@@ -213,8 +214,7 @@ void init_isr(void){
  * int_test
  */
 void __int_test(void){
-	
-	
+	int x = 0/0;
 }
 
 MODULE_AUTHOR("Burak Köken");
