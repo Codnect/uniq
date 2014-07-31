@@ -63,7 +63,7 @@ uint32_t calc_total_mem(void){
 /*
  * kmalloc_center
  */
-uintptr kmalloc_center(size_t size,bool align,uintptr_t *physic_addr){
+uintptr_t kmalloc_center(size_t size,bool align,uintptr_t *physic_addr){
  
   return 0;
  
