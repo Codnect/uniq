@@ -58,6 +58,7 @@ uint32_t calc_total_mem(void){
  return total_frames * FRAME_SIZE;
  
 }
+
 /*
  * kmalloc_center
  */
@@ -111,6 +112,7 @@ void page_fault(struct registers_t *regs){
  */
 void paging_init(uint32_t mem_size){
  
+ total_frames = mem_size / FRAME_SIZE; 
  
 }
  
