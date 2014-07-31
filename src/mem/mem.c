@@ -18,6 +18,63 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * kmalloc_center
+ */
+uintptr kmalloc_center(size_t size,bool align,uintptr_t *physic_addr){
+ 
+ return 0;
+}
+
+/*
+ * kmalloc_aligned
+ */
+uintptr_t kmalloc_aligned(size_t size){
+
+ return 0;
+}
+
+/*
+ * kmalloc_physic
+ */
+uintptr_t kmalloc_physic(size_t size,uintptr_t *physic_addr){
+ 
+ return 0;
+}
+
+/*
+ * kmalloc_aphysic
+ */
+uintptr_t kmalloc_aphysic(size_t size,uintptr_t *physic_addr){
+ 
+ return 0;
+}
+
+/*
+ * kmalloc
+ */
+uintptr_t kmalloc(size_t size){
+ 
+ return 0;
+}
+ 
+/*
+ * page_fault
+ */
+void page_fault(struct registers_t *regs){
+ 
+ 
+}
+
+/*
+ * paging_init
+ */
+void paging_init(void){
+ 
+ 
+}
  
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
