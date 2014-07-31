@@ -46,7 +46,8 @@ void clear_frame(uintptr_t frame_addr){
  */
 uint32_t cntrl_frame(uintptr_t frame_addr){
  
- return 0;
+  return 0;
+  
 }
 
 
@@ -55,7 +56,7 @@ uint32_t cntrl_frame(uintptr_t frame_addr){
  */
 uint32_t calc_total_mem(void){
  
- return total_frames * FRAME_SIZE;
+  return total_frames * FRAME_SIZE;
  
 }
 
@@ -64,7 +65,8 @@ uint32_t calc_total_mem(void){
  */
 uintptr kmalloc_center(size_t size,bool align,uintptr_t *physic_addr){
  
- return 0;
+  return 0;
+ 
 }
 
 /*
@@ -72,7 +74,8 @@ uintptr kmalloc_center(size_t size,bool align,uintptr_t *physic_addr){
  */
 uintptr_t kmalloc_aligned(size_t size){
 
- return 0;
+  return 0;
+ 
 }
 
 /*
@@ -80,7 +83,8 @@ uintptr_t kmalloc_aligned(size_t size){
  */
 uintptr_t kmalloc_physic(size_t size,uintptr_t *physic_addr){
  
- return 0;
+  return 0;
+ 
 }
 
 /*
@@ -88,7 +92,8 @@ uintptr_t kmalloc_physic(size_t size,uintptr_t *physic_addr){
  */
 uintptr_t kmalloc_aphysic(size_t size,uintptr_t *physic_addr){
  
- return 0;
+  return 0;
+ 
 }
 
 /*
@@ -96,7 +101,8 @@ uintptr_t kmalloc_aphysic(size_t size,uintptr_t *physic_addr){
  */
 uintptr_t kmalloc(size_t size){
  
- return 0;
+  return 0;
+ 
 }
  
 /*
@@ -112,7 +118,7 @@ void page_fault(struct registers_t *regs){
  */
 void paging_init(uint32_t mem_size){
  
- total_frames = mem_size / FRAME_SIZE; 
+  total_frames = mem_size / FRAME_SIZE; 
  
 }
  
