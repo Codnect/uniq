@@ -74,7 +74,7 @@ uintptr_t kmalloc_center(size_t size,bool align,uintptr_t *physic_addr){
  */
 uintptr_t kmalloc_aligned(size_t size){
 
-  return 0;
+  return kmalloc_center(size,true,NULL);
  
 }
 
@@ -83,7 +83,7 @@ uintptr_t kmalloc_aligned(size_t size){
  */
 uintptr_t kmalloc_physic(size_t size,uintptr_t *physic_addr){
  
-  return 0;
+  return kmalloc_center(size,false,physic_addr);
  
 }
 
@@ -92,7 +92,7 @@ uintptr_t kmalloc_physic(size_t size,uintptr_t *physic_addr){
  */
 uintptr_t kmalloc_aphysic(size_t size,uintptr_t *physic_addr){
  
-  return 0;
+  return kmalloc_center(size,true,physic_addr);
  
 }
 
@@ -101,7 +101,7 @@ uintptr_t kmalloc_aphysic(size_t size,uintptr_t *physic_addr){
  */
 uintptr_t kmalloc(size_t size){
  
-  return 0;
+  return kmalloc_center(size,false,NULL);
  
 }
  
