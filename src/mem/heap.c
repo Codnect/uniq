@@ -18,6 +18,15 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * heap_init
+ */
+void heap_init(void){
  
+ 
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
