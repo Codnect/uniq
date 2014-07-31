@@ -20,6 +20,44 @@
 #include <uniq/module.h>
 #include <uniq/kernel.h>
 
+#define FRAME_SIZE 4
+
+uint32_t *frames;
+uint32_t total_frames;
+
+/*
+ * set_frame
+ */
+void set_frame(uintptr_t frame_addr){
+ 
+ 
+}
+
+/*
+ * clear_frame
+ */
+void clear_frame(uintptr_t frame_addr){
+ 
+ 
+}
+
+/*
+ * cntrl_frame
+ */
+uint32_t cntrl_frame(uintptr_t frame_addr){
+ 
+ return 0;
+}
+
+
+/*
+ * calc_total_mem
+ */
+uint32_t calc_total_mem(void){
+ 
+ return total_frames * FRAME_SIZE;
+ 
+}
 /*
  * kmalloc_center
  */
@@ -71,7 +109,7 @@ void page_fault(struct registers_t *regs){
 /*
  * paging_init
  */
-void paging_init(void){
+void paging_init(uint32_t mem_size){
  
  
 }
