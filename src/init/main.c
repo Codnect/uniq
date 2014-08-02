@@ -20,7 +20,7 @@
 #include <uniq/types.h>
 #include <uniq/kernel.h>
 
-void kmain(uintptr_t mboot_magic){
+void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 
 	/* vga konsol */
 	init_vga_console();
