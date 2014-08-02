@@ -52,6 +52,7 @@ extern kmain
 kentry:
 		push eax			; multiboot onyuklecisi
 						; magic number = 0x2BADB002
+		push ebx			; multiboot yapisi adresi
 
 		; kerneli calistir
 		cli				; kesmeleri kapat
