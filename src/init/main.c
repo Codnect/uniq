@@ -19,6 +19,7 @@
 
 #include <uniq/types.h>
 #include <uniq/kernel.h>
+#include <uniq/multiboot.h>
 
 void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 
