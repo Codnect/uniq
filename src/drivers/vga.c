@@ -165,7 +165,7 @@ void change_line(uint8_t line_no,const char *s){
 		return;
 
 	uint8_t len = strlen(s);
-	if(len > 80)
+	if(len > VGA_CWIDTH)
 		return;	
 
 	delete_line(line_no);	
