@@ -34,6 +34,24 @@ page_dir_t *kernel_dir = NULL;
 page_dir_t *current_dir = NULL;
 
 /*
+ * total_memory_size
+ */
+uint32_t total_memory_size(void){
+	
+
+
+}
+
+/*
+ * use_memory_size
+ */
+uint32_t use_memory_size(void){
+	
+	
+	
+}
+
+/*
  * enable_paging
  */
 void enable_paging(void){
@@ -149,6 +167,20 @@ void alloc_frame(page_t *page,bool rw,bool user){
 	page->rw      = (rw) ? PAGE_RWRITE : PAGE_RONLY;
 	page->user    = (user) ? PAGE_USER_ACCESS : PAGE_KERNEL_ACCESS;
 	page->frame   = index;
+	
+}
+
+/*
+ * dma_frame
+ *
+ * @param page :
+ * @param rw :
+ * @param user :
+ * @param addr :
+ */
+void dma_frame(page_t *page,bool rw,bool user,uintptr_t addr){
+	
+	
 	
 }
 
