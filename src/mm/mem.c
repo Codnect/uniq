@@ -158,13 +158,11 @@ void alloc_frame(page_t *page,bool rw,bool user){
  */
 void free_frame(page_t *page){
 
-	uint32_t frame;
-
-	if(!(frame = page->frame))
+	if(!page->frame)
 		return;
 
 	remove_frame(frame);
-	page->frame = 0x0;
+	page->frame = 0;
 	
 }
 
