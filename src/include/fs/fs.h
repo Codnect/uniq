@@ -29,10 +29,21 @@
 #define FS_MOUNTPOINT   0x40
 
 struct fs_node_t{
-    char  fname[256];
-    /*
-     * ...
-     */
+    char  fname[256];           /* dosya ismi */
+    uint32_t mask;              /* izin maskeleri */
+    uint32_t uid;               /* kullanici sahip id*/
+    uint32_t gid;               /* grup sahip id*/
+    uint32_t flags;             /* node tipi, vs. */
+    uint32_t inode;             /* inode numarasi */
+    uint32_t size;              /* dosya boyutu (bayt olarak) */
+    uint32_t open_flags;        /* acmak icin flaglar (okuma-yazma-ekleme vs...) */
+
+    /* erisim/degistirme/olusturma zamanlari */
+	uint32_t access_time;       /* erisim */
+	uint32_t modify_time;       /* degistirme */
+	uint32_t create_time;       /* olusturma  */
+	
+	/* dosya islemleri */
 };
 
 #endif /* __UNIQ_FS__ */
