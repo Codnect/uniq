@@ -20,13 +20,13 @@
 #ifndef __UNIQ_FS_H__
 #define __UNIQ_FS_H__
 
-#define FS_FILE         0x01
-#define FS_DIRECTORY    0x02
-#define FS_CHAR_DEVICE  0x04
-#define FS_BLOCK_DEVICE 0x08
-#define FS_PIPE         0x10
-#define FS_SYMLINK      0x20
-#define FS_MOUNTPOINT   0x40
+#define FS_FILE         	0x01
+#define FS_DIRECTORY    	0x02
+#define FS_CHAR_DEVICE  	0x04
+#define FS_BLOCK_DEVICE 	0x08
+#define FS_PIPE         	0x10
+#define FS_SYMLINK      	0x20
+#define FS_MOUNTPOINT   	0x40
 
 struct fs_node_t{
     	char  fname[256];           /* dosya ismi */
