@@ -112,7 +112,9 @@ uint32_t find_free_frame(void){
 		if(frame_map[index] != MAX_LIMIT){
 
 			for(offset = 0; offset < 32; offset++){
+				
 				uint32_t cntrl = 0x1 << offset;
+				
 				if(!(frame_map[index] & cntrl))
 					return index * 32 + offset;	
 
@@ -146,6 +148,7 @@ void alloc_frame(page_t *page,bool rw,bool user){
 	page->rw      = (rw) ? PAGE_RWRITE : PAGE_RONLY;
 	page->user    = (user) ? PAGE_USER_ACCESS : PAGE_KERNEL_ACCESS;
 	page->frame   = index;
+	
 }
 
 /*
@@ -162,6 +165,7 @@ void free_frame(page_t *page){
 
 	remove_frame(frame);
 	page->frame = 0x0;
+	
 }
 
 /*
