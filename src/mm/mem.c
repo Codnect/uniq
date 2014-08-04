@@ -161,7 +161,7 @@ void free_frame(page_t *page){
 	if(!page->frame)
 		return;
 
-	remove_frame(frame);
+	remove_frame(page->frame);
 	page->frame = 0;
 	
 }
