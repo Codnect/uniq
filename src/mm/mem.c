@@ -53,6 +53,7 @@ void disable_paging(void){
 	__asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
 	cr0 &= ~0x80000000;
 	__asm__ volatile("mov %0, %%cr0" :: "r"(cr0));
+	
 }
 
 
@@ -108,7 +109,7 @@ uint32_t find_free_frame(void){
 	
 	for(index = 0; index < (nframe/32); index++){
 
-		if(frame_map[index] != MAX_LIMIT /* 4 GiB */){
+		if(frame_map[index] != MAX_LIMIT){
 
 			for(offset = 0; offset < 32; offset++){
 				uint32_t cntrl = 0x1 << offset;
