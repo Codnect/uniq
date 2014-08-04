@@ -162,7 +162,7 @@ void free_frame(page_t *page){
 	if(!page->frame)
 		return;
 
-	remove_frame(page->frame);
+	remove_frame(page->frame * FRAME_SIZE_BYTE);
 	page->frame = 0;
 	
 }
