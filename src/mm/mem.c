@@ -24,13 +24,14 @@
 #include <uniq/task.h>
 #include <string.h>
 
+#define PAGE_FAULT_INT		14
 
 uint32_t *frame_map;
 uint32_t nframe;
 extern uint32_t last_addr;
 
-page_dir_t *kernel_dir = 0;
-page_dir_t *current_dir = 0;
+page_dir_t *kernel_dir = NULL;
+page_dir_t *current_dir = NULL;
 
 /*
  * enable_paging
@@ -234,19 +235,19 @@ void paging_init(uint32_t mem_size){
 	
 	nframe = mem_size / FRAME_SIZE_KIB;
 	frame_map = (uint32_t *)kmalloc(nframe / 8);
- 	memset(frame_map,0,nframe / 8);
+ 	memset(frame_map,NULL,nframe / 8);
 	
 	kernel_dir = (page_dir_t *)kmalloc_align(sizeof(page_dir_t));
-	memset(kernel_dir,0,sizeof(page_dir_t));
+	memset(kernel_dir,NULL,sizeof(page_dir_t));
 	current_dir = kernel_dir;
 
 	uint32_t i = 0;
 	while(i < last_addr){
-		alloc_frame(get_page(i,1,kernel_dir),0,0);
-		i += 0x1000;
+		alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
+		i += FRAME_SIZE_BYTE;
 	}
 
-	isr_add_handler(14,page_fault);
+	isr_add_handler(PAGE_FAULT_INT,page_fault);
 	change_page_dir(kernel_dir);
 
 }
