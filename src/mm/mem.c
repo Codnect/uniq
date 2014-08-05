@@ -23,12 +23,14 @@
 #include <mm/heap.h>
 #include <uniq/task.h>
 #include <string.h>
+#include <uniq/spin_lock.h>
 
 #define PAGE_FAULT_INT		14
 
 uint32_t *frame_map;
 uint32_t nframe;
 extern uint32_t last_addr;
+static volatile uint32_t alloc_flock = 0;
 
 page_dir_t *kernel_dir = NULL;
 page_dir_t *current_dir = NULL;
@@ -177,6 +179,7 @@ void alloc_frame(page_t *page,bool rw,bool user){
 	if(page->frame)
 		return;
 
+	spin_lock(&alloc_flock);
 	uint32_t index = find_free_frame();
 
 	if(index == MAX_LIMIT)
@@ -188,6 +191,7 @@ void alloc_frame(page_t *page,bool rw,bool user){
 	page->rw      = (rw) ? PAGE_RWRITE : PAGE_RONLY;
 	page->user    = (user) ? PAGE_USER_ACCESS : PAGE_KERNEL_ACCESS;
 	page->frame   = index;
+	spin_unlock(&alloc_flock);
 	
 }
 
