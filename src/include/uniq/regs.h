@@ -22,16 +22,16 @@
 
 #include <uniq/types.h>
 
-struct registers_t {
+typedef struct{
 	uint32_t gs, fs, es, ds;                          /* selektorler; ds = veri segmenti, es = extra segment,
 	                                                  * gs, fs diger segment yazmaclari.
 	                                                  */
 	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;  /* pusha ile stack'a atilir. */
 	uint32_t int_num, err_code;                       /* int_num : kesme numarasi , err_code : hata kodu */
 	uint32_t eip, cs, eflags, useresp, ss;            /* islemci tarafindan stack'a atilir. */
-};
+}registers_t;
 
-void dump_regs(struct registers_t *regs);
-typedef void (*int_handler_t) (struct registers_t *);
+void dump_regs(registers_t *regs);
+typedef void (*int_handler_t) (registers_t *);
 
 #endif /* __UNIQ_REGS_H__ */
