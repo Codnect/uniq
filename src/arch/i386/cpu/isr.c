@@ -134,7 +134,7 @@ void isr_remove_handler(uint8_t isr_num){
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
  *		 icin registers_t yapisini inceleyin.
  */
-static void isr_fault(struct registers_t *regs){
+static void isr_fault(registers_t *regs){
 	
 	debug_print(KERN_EMERG, "Unhandled exception: [interrupt number = %u] %s", regs->int_num
 										 , fault_msglist[regs->int_num]);
