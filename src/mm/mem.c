@@ -138,7 +138,7 @@ uint32_t find_free_frame(void){
 	
 	
 	for(index = 0; index < max_index; index++){
-
+		
 		if(frame_map[index] != MAX_LIMIT){
 			
 			if((offset_limit) && (index == max_index - 1)){
@@ -157,10 +157,10 @@ uint32_t find_free_frame(void){
 						return index * 32 + offset;	
 
 				}
-				
 			}
 			
 		}
+		
 	}
 
 }
