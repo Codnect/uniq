@@ -27,7 +27,7 @@
  *               kullansam bilmiyorum ama kaydedici demek kulaga daha hos
  *               geliyor ;).
  */
-void dump_regs(struct registers_t *regs){
+void dump_regs(registers_t *regs){
  	
 	debug_print(KERN_EMERG, "Dump Registers");
 	debug_print(KERN_DUMP,"General purpose registers:");
