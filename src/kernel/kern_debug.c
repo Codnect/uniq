@@ -30,7 +30,7 @@
 /*
  * debug seviyesi mesajlari
  */
-static char *level_msgs[]={
+static const char *level_msgs[]={
 	"\033[1;32mINFO\033[0m",
 	"\033[1;37mNOTICE\033[0m",
 	"\033[1;33mWARNING\033[0m",
