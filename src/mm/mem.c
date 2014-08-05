@@ -91,7 +91,7 @@ void disable_paging(void){
 
 	uint32_t cr0;
 	__asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
-	cr0 &= ~0x80000000;
+	cr0 &= 0x7fffffff;
 	__asm__ volatile("mov %0, %%cr0" :: "r"(cr0));
 	
 }
@@ -229,7 +229,7 @@ void free_frame(page_t *page){
  * 
  * @param regs : kaydediciler
  */
-void page_fault(registers_t *regs){
+void page_fault_handler(registers_t *regs){
 
 	uint32_t fault_addr;
 	__asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
@@ -308,7 +308,7 @@ void paging_init(uint32_t mem_size){
 		i += FRAME_SIZE_BYTE;
 	}
 
-	isr_add_handler(PAGE_FAULT_INT,page_fault);
+	isr_add_handler(PAGE_FAULT_INT,page_fault_handler);
 	change_page_dir(kernel_dir);
 
 }
