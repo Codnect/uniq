@@ -30,18 +30,18 @@
  * (spin_unlock) kaldirir ve diger process isini yapmaya baslar. spin_lock durumda
  * cpu baya yorulur fakat kullanmak zorundayiz.
  *
- * spin_lock ile ilgili bir arastirma daha yaptim. kulladigimiz bu fonksiyonlar
- * (__sync_lock_test_and_set,__sync_lock_release) yada her ne dersek diyelim buyuk
- * ihtimal makrodur. bunlar gcc'nin bize sundugu yararlardan sadece biri.
+ * kulladigimiz bu fonksiyonlar(__sync_lock_test_and_set,__sync_lock_release) 
+ * yada her ne dersek diyelim buyuk ihtimal makrodur. bunlar gcc'nin bize sundugu 
+ * yararlardan sadece biri ;).
  */
  
 #ifndef spin_lock
 #define spin_lock
 
   /*
-   * spin_lock
+   * spin_lock,kilit olustur
    *
-   * @param lock_addr :
+   * @param lock_addr : kilit olusturulacak adres
    */
   static void spin_lock(uint32_t volatile *lock_addr){
   
@@ -50,9 +50,9 @@
   }
   
   /*
-   * spin_unlock
+   * spin_unlock,kilidi kaldir
    *
-   * @param lock_addr :
+   * @param lock_addr : kilidi kaldirilacak adres
    */
   static void spin_unlock(uint32_t volatile *lock_addr){
   
