@@ -84,7 +84,7 @@ uint32_t timer_ticks = 0;
  *
  * @param regs : kaydediciler.
  */
-void timer_handler(struct registers_t *regs){
+void timer_handler(registers_t *regs){
  
 	timer_ticks++;
 	irq_eoi(TIMER_IRQ_NUM);	/* kesme sonu sinyali gondererek kesmenin sona
