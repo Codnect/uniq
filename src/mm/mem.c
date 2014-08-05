@@ -34,25 +34,44 @@ page_dir_t *kernel_dir = NULL;
 page_dir_t *current_dir = NULL;
 
 /*
- * total_memory_size
+ * total_memory_size,toplam bellegin framelere boyutlarina uygun olarak
+ * ayarlanmasi sonrasi frame boyutlarina gore toplam bellegi hesaplar
+ * ve geri dondurur. frame boyutlari  4 KiB boyutundadir. ve sonuc
+ * KiB seklindedir!.
  */
 uint32_t total_memory_size(void){
 	
-
+	return nframe * FRAME_SIZE_KIB;
 
 }
 
 /*
- * use_memory_size
+ * use_memory_size, kullanilan bellek boyutunu dondurur. kullanilan
+ * frame sayisinin boyutu hesaplar ve geri dondurulur. geri donen
+ * boyut KiB seklindedir.
  */
 uint32_t use_memory_size(void){
 	
+	uint32_t use_mem = 0;
+	uint32_t index,offset;
 	
+	for (index = 0; index < (nframe / 32); index++){
+		
+		for (offset = 0; offset < 32; offset++){
+			uint32_t cntrl = 0x1 << offset;
+			if (frame_map[index] & cntrl) {
+				use_mem++;
+			}
+		}
+		
+	}
+	
+	return use_mem * FRAME_SIZE_KIB;	
 	
 }
 
 /*
- * enable_paging
+ * enable_paging, sayfalamayi aktif hale getirir.
  */
 void enable_paging(void){
 
@@ -64,7 +83,7 @@ void enable_paging(void){
 }
 
 /*
- * disable_paging
+ * disable_paging, sayfalamayi devre disi birakir.
  */
 void disable_paging(void){
 
@@ -77,9 +96,10 @@ void disable_paging(void){
 
 
 /*
- * set_frame
+ * set_frame, frame_map'te frame'in kullanilmaya basladigina
+ * dair frame ait bit '1' seklinde set edilir.
  *
- * @param frame_addr :
+ * @param frame_addr : frame adresi
  */
 void set_frame(uintptr_t frame_addr){
 
@@ -91,9 +111,10 @@ void set_frame(uintptr_t frame_addr){
 }
 
 /*
- * remove_frame
+ * remove_frame, frame_map'te frame'in kaldirildigina dair
+ * frame ait bit '0' haline getirilir.
  *
- * @param frame_addr :
+ * @param frame_addr : frame adresi
  */
 void remove_frame(uintptr_t frame_addr){
 	
@@ -105,9 +126,9 @@ void remove_frame(uintptr_t frame_addr){
 }
 
 /*
- * cntrl_frame
+ * cntrl_frame, frame'in frame_map'te olup olmadigini kontrol eder.
  *
- * @param frame_addr :
+ * @param frame_addr : frame adresi
  */
 uint32_t cntrl_frame(uintptr_t frame_addr){
 	
@@ -120,7 +141,8 @@ uint32_t cntrl_frame(uintptr_t frame_addr){
 }
 
 /*
- * find_free_frame
+ * find_free_frame, ilk bos frame'i bulur ve index numarasini
+ * dondurur.
  */
 uint32_t find_free_frame(void){
 
@@ -143,11 +165,12 @@ uint32_t find_free_frame(void){
 }
 
 /*
- * alloc_frame
+ * alloc_frame, bellekten bir frame yada diger bir tabirle sayfa tahsis eder.
  *
- * @param page :
- * @param rw :
- * @param user :
+ * @param page : sayfa adresi
+ * @param rw : okuma/yazma izni ( false ise sadece okuma , true ise hem okuma hem yazma)
+ * @param user : kullanici izni ( false ise kullanici moddan izin yok, true ise kullanici
+ * 				  moddan da erisim izni var)
  */
 void alloc_frame(page_t *page,bool rw,bool user){
 
@@ -183,9 +206,9 @@ void dma_frame(page_t *page,bool rw,bool user,uintptr_t addr){
 }
 
 /*
- * free_frame
+ * free_frame, frame(sayfa)'i bosa cikarir.
  *
- * @param page :
+ * @param page : sayfa adresi
  */
 void free_frame(page_t *page){
 
@@ -198,9 +221,9 @@ void free_frame(page_t *page){
 }
 
 /*
- * page_fault
+ * page_fault,sayfalama hatasi oldugunda calisicak fonksiyondur.
  * 
- * @param regs :
+ * @param regs : kaydediciler
  */
 void page_fault(registers_t *regs){
 
@@ -217,11 +240,15 @@ void page_fault(registers_t *regs){
 }
 
 /*
- * get_page
+ * get_page,bir sayfa ayarlamamizi saglar. 
  *
- * @param addr :
- * @param make :
- * @param dir :
+ * @param addr : adres
+ * @param make : eger tablo index'i sayfalama dizininde bulunuyor ise
+ *		 o bulunan tablo'daki belirtilen sayfa adresi dondurulur. eger
+ *		 make true ise diger if yani ilk sayfa olusturma asamasina
+ *		 giriliyor ve sayfanin adresi donduruluyor. eger hicbiri degilse
+ *		 NULL olarak geri donduruluyor.
+ * @param dir : sayfa dizini
  */
 page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 
@@ -238,13 +265,13 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 		dir->tables_physic[table_index] = temp | 0x7;	/* present,rw,us */
 		return &dir->tables[table_index]->pages[addr % 1024];
 	}
-	else
-		return NULL;
+	
+	return NULL;
 
 }
 
 /*
- * change_page_dir
+ * change_page_dir,
  *
  * @param new_dir :
  */
@@ -257,9 +284,9 @@ void change_page_dir(page_dir_t *new_dir){
 }
 
 /*
- * paging_init
+ * paging_init, sayfalamayi baslatir.
  *
- * @param mem_size :
+ * @param mem_size : bellek boyutu ( multiboot yapisindan aliyoruz)
  */
 void paging_init(uint32_t mem_size){
 	
