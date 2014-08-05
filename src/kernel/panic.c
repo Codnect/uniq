@@ -21,6 +21,7 @@
 #include <uniq/kernel.h>
 #include <uniq/types.h>
 #include <uniq/module.h>
+#include <compiler.h>
 
 /*
  * die,kendisine verilen formatli yada formatsiz karakter
@@ -31,7 +32,7 @@
  * @param fmt : format
  * @param ... : argumanlar
  */
-void die(const char *fmt, ...){
+__noreturn void die(const char *fmt, ...){
 
 	char err_msg[4096];
 	va_list arg_list;
@@ -51,7 +52,7 @@ void die(const char *fmt, ...){
  *
  * @param err : hata mesaji
  */
-void _assert(const char *err){
+__noreturn void _assert(const char *err){
 	
 	debug_print(KERN_EMERG, "Kernel Fault : %s",err);
 	disable_irq();
