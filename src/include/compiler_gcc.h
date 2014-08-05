@@ -27,5 +27,10 @@
 
 #define __asm__ 	asm
 
+/* attributes */
+#define __noreturn	__attribute__ ((noreturn))
+#define __packed	__attribute__ ((packed))
+#define __malloc	__attribute__ ((malloc))
+
 
 #endif	/* __UNIQ_COMPILER_GCC_H__ */
