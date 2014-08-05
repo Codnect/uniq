@@ -22,7 +22,7 @@
 
 #include <uniq/types.h>
 
-struct apm_bios_info{
+struct apm_bios_info_t{
 	uint16_t	version;
 	uint16_t	cseg;
 	uint32_t	offset;
