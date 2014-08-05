@@ -25,7 +25,7 @@
  *
  * @param regs : kaydediciler.
  */
-void mouse_handler(struct registers_t *regs){
+void mouse_handler(registers_t *regs){
  
 
 }
