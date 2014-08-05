@@ -204,7 +204,7 @@ void free_frame(page_t *page){
  * 
  * @param regs :
  */
-void page_fault(struct registers_t *regs){
+void page_fault(registers_t *regs){
 
 	uint32_t fault_addr;
 	__asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
