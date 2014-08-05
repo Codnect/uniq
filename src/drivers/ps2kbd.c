@@ -25,7 +25,7 @@
  *
  * @param regs : kaydediciler.
  */
-void kbd_handler(struct registers_t *regs){
+void kbd_handler(registers_t *regs){
  
 
 }
