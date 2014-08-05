@@ -18,6 +18,18 @@
  */
  
 #include <uniq/module.h>
+#include <drivers/apm_bios.h>
+
+/*
+ * apm_bios_info_load
+ *
+ * @param apm_bios_info :
+ */
+void apm_bios_info_load(struct apm_bios_info_t *apm_bios_info){
+ 
+ 
+ 
+}
 
 /*
  * apm_init
