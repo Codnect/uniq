@@ -20,6 +20,21 @@
 #ifndef __UNIQ_SPIN_LOCK_H__
 #ifndef __UNIQ_SPIN_LOCK_H__
 
+
+/*
+ * spin_lock, ayni anda birden fazla process calistirabilen isletim sistemleri
+ * icin onemli. mesela 1. process'imiz disk'e veri yaziyor ve o anda baska bir
+ * process daha diske veri yazmak yada ayni adrese mudahele etmek istediler
+ * ilk once erisen process bir kilit(spin_lock) olusturur ve diger process ilk
+ * erisen process'i beklemek zorundadir. ilk process isi bittiginde kilidi
+ * (spin_unlock) kaldirir ve diger process isini yapmaya baslar. spin_lock durumda
+ * cpu baya yorulur fakat kullanmak zorundayiz.
+ *
+ * spin_lock ile ilgili bir arastirma daha yaptim. kulladigimiz bu fonksiyonlar
+ * (__sync_lock_test_and_set,__sync_lock_release) yada her ne dersek diyelim buyuk
+ * ihtimal makrodur. bunlar gcc'nin bize sundugu yararlardan sadece biri.
+ */
+ 
 #ifndef spin_lock
 #define spin_lock
 
