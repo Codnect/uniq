@@ -125,19 +125,41 @@ uint32_t cntrl_frame(uintptr_t frame_addr){
 uint32_t find_free_frame(void){
 
 	uint32_t index,offset;
+	uint32_t offset_limit,max_index,fremainder;
+	offset_limit = max_index = fremainder = 0;
+	max_index = nframe / 32;
+	fremainder = nframe % 32;
+	#define MAX_OFFSET	32
 	
-	for(index = 0; index < (nframe/32); index++){
+	if(fremainder){
+		max_index++
+		offset_limit = fremainder;
+	}
+	
+	
+	for(index = 0; index < max_index; index++){
 
 		if(frame_map[index] != MAX_LIMIT){
-
-			for(offset = 0; offset < 32; offset++){
-				
-				uint32_t cntrl = 0x1 << offset;
-				
-				if(!(frame_map[index] & cntrl))
-					return index * 32 + offset;	
-
+			
+			if((offset_limit) && (index == max_index - 1)){
+				for(offset = 0; offset < offset_limit; offset++){
+					
+					uint32_t cntrl = 0x1 << offset;
+					if(!(frame_map[index] & cntrl))
+						return index * 32 + offset;
+				}
 			}
+			else{
+				for(offset = 0; offset < MAX_OFFSET; offset++){
+				
+					uint32_t cntrl = 0x1 << offset;
+					if(!(frame_map[index] & cntrl))
+						return index * 32 + offset;	
+
+				}
+				
+			}
+			
 
 		}
 	}
@@ -266,8 +288,16 @@ void change_page_dir(page_dir_t *new_dir){
 void paging_init(uint32_t mem_size){
 	
 	nframe = mem_size / FRAME_SIZE_KIB;
-	frame_map = (uint32_t *)kmalloc(nframe / 8);
- 	memset(frame_map,NULL,nframe / 8);
+	
+	uint32_t alloc_frame_byte,frame_remainder;
+	alloc_frame_byte = nframe / 8;
+	frame_remainder = nframe % 8;
+
+	if(frame_remainder)
+		alloc_frame_byte++;
+	
+	frame_map = (uint32_t *)kmalloc(alloc_frame_byte);
+ 	memset(frame_map,NULL,alloc_frame_byte);
 	
 	kernel_dir = (page_dir_t *)kmalloc_align(sizeof(page_dir_t));
 	memset(kernel_dir,NULL,sizeof(page_dir_t));
