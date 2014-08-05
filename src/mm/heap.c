@@ -24,6 +24,7 @@
 
 extern uintptr_t end;
 uintptr_t last_addr = (uintptr_t)&end;
+static uint32_t volatile mlock = 0;
 
 /*
  * malloc
@@ -32,9 +33,11 @@ uintptr_t last_addr = (uintptr_t)&end;
  */
 __malloc void *malloc(uint32_t size){
 	
+	spin_lock(&mlock);
 	void *ret_addr;
+	spin_unlock(&mlock);
 	return ret_addr;
-	
+
 }
 
 /*
@@ -45,7 +48,9 @@ __malloc void *malloc(uint32_t size){
  */
 __malloc void *realloc(void *ptr,uint32_t size){
 	
+	spin_lock(&mlock);
 	void *ret_addr;
+	spin_unlock(&mlock);
 	return ret_addr;
 	
 }
@@ -58,7 +63,9 @@ __malloc void *realloc(void *ptr,uint32_t size){
  */
 __malloc void *calloc(uint32_t n,uint32_t size){
 	
+	spin_lock(&mlock);
 	void *ret_addr;
+	spin_unlock(&mlock);
 	return ret_addr;
 	
 }
@@ -70,7 +77,9 @@ __malloc void *calloc(uint32_t n,uint32_t size){
  */
 __malloc void *valloc(uint32_t size){
 	
+	spin_lock(&mlock);
 	void *ret_addr;
+	spin_unlock(&mlock);
 	return ret_addr;
 	
 }
