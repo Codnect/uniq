@@ -20,9 +20,69 @@
 #include <uniq/module.h>
 #include <uniq/kernel.h>
 #include <mm/mem.h>
+#include <compiler.h>
 
 extern uintptr_t end;
 uintptr_t last_addr = (uintptr_t)&end;
+
+/*
+ * malloc
+ *
+ * @param size :
+ */
+__malloc void *malloc(uint32_t size){
+	
+	void *ret_addr;
+	return ret_addr;
+	
+}
+
+/*
+ * realloc
+ *
+ * @param ptr :
+ * @param size :
+ */
+__malloc void *realloc(void *ptr,uint32_t size){
+	
+	void *ret_addr;
+	return ret_addr;
+	
+}
+
+/*
+ * calloc
+ *
+ * @param n :
+ * @param size :
+ */
+__malloc void *calloc(uint32_t n,uint32_t size){
+	
+	void *ret_addr;
+	return ret_addr;
+	
+}
+
+/*
+ * valloc
+ *
+ * @param size :
+ */
+__malloc void *valloc(uint32_t size){
+	
+	void *ret_addr;
+	return ret_addr;
+	
+}
+
+/*
+ * free
+ *
+ * @param ptr :
+ */
+void free(void *ptr) {
+
+}
 
 
 /*
