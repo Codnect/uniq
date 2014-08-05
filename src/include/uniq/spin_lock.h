@@ -33,6 +33,28 @@
  * kulladigimiz bu fonksiyonlar(__sync_lock_test_and_set,__sync_lock_release) 
  * yada her ne dersek diyelim buyuk ihtimal makrodur. bunlar gcc'nin bize sundugu 
  * yararlardan sadece biri ;).
+ *
+ * ornek vermek gerekirse iki process'de ayni fonksiyona cagri yapsin 
+ *
+ * ------------------------------------------------------------------------------------
+ * uint32_t lock = 0; // kilit olacak degisken 
+ *
+ * // degiskenin adresini veriyoruz,ve spin_lock fonksiyonunu icini inceledigimizde
+ * // lock degerini inceliyor eger 0 ise kilit yok , degerini 1 yaparak kilit
+ * // olusturuluyor.
+ * // diger process'de bu fonksiyonu cagriacak ve spin_lock ile lock'un adresini
+ * // gonderiyor ve kontrol ediyor eger adresteki deger 0 degilse yani kilit varsa
+ * // 0 olana (kilit kalkana) kadar 2. process beklemek zorunda,ilk process lock degerini 
+ * // 0 yaptigi an(kilidi kaldirdiginda) diger process girdigi kontrol dongusunden cikar.
+ * // arastirmalarim sonucu boyle bir aciklama ortaya cikardim ;). yararli bir kaynak
+ * // olmasi dilegimle.
+ *
+ * spin_lock(&lock); 
+ * // ...
+ * spin_unlock(&lock); // deger 0 yapilarak kilit kalkiyor.
+ *
+ * ------------------------------------------------------------------------------------
+ *
  */
  
 #ifndef spin_lock
@@ -45,7 +67,7 @@
    */
   static void spin_lock(uint32_t volatile *lock_addr){
   
-  	while(__sync_lock_test_and_set(lock_addr, 0x01));
+  	while(__sync_lock_test_and_set(lock_addr, 0x1));
   	
   }
   
