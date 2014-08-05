@@ -18,7 +18,15 @@
  */
  
 #include <uniq/module.h>
+
+/*
+ * apm_init
+ */
+void apm_init(void){
  
+
+ 
+} 
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
