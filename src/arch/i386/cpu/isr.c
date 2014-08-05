@@ -149,7 +149,7 @@ static void isr_fault(registers_t *regs){
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
  *		 icin registers_t yapisini inceleyin.
  */
-void isr_handler(struct registers_t *regs){
+void isr_handler(registers_t *regs){
 	
 	int_handler_t handler = isr_handlers[regs->int_num];
 	
