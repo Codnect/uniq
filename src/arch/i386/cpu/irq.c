@@ -254,7 +254,7 @@ void irq_eoi(uint8_t irq_num){
  * @param regs : kaydediciler. hangi kaydedicileri icerdigini ogrenmek
  *		 icin registers_t yapisini inceleyin.
  */
-void irq_handler(struct registers_t *regs){
+void irq_handler(registers_t *regs){
 
 	int_handler_t handler = NULL;
 	
