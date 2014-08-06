@@ -52,8 +52,8 @@ extern int printf(const char *fmt, ...);
  * panic.c & debug
  */
 #include <uniq/kern_debug.h>
-__noreturn void die(const char *fmt, ...);
-__noreturn void _assert(const char *err);
+void die(const char *fmt, ...);
+void _assert(const char *err);
 #define assert(statement) 	(statement) ? ((void)0) : _assert(#statement)
 
 /*
