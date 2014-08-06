@@ -73,5 +73,9 @@ extern void irq_eoi(uint8_t irq_num);
 extern void irq_add_handler(uint8_t irq_num, int_handler_t handler);
 extern void irq_remove_handler(uint8_t irq_num);
 
+/*
+ * mm
+ */
+extern void paging_init(uint32_t mem_size);
 
 #endif /* __UNIQ_KERNEL_H__ */
