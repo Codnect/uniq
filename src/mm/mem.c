@@ -296,10 +296,10 @@ void paging_init(uint32_t mem_size){
 	
 	nframe = mem_size / FRAME_SIZE_KIB;
 	frame_map = (uint32_t *)kmalloc(nframe / 8);
- 	memset(frame_map,NULL,nframe / 8);
+ 	memset(frame_map,0,nframe / 8);
 	
 	kernel_dir = (page_dir_t *)kmalloc_align(sizeof(page_dir_t));
-	memset(kernel_dir,NULL,sizeof(page_dir_t));
+	memset(kernel_dir,0,sizeof(page_dir_t));
 	current_dir = kernel_dir;
 
 	uint32_t i = 0;
