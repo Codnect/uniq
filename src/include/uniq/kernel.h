@@ -31,6 +31,7 @@
 #include <uniq/types.h>
 #include <uniq/port.h>
 #include <uniq/asm.h>
+#include <compiler.h>
 
 /*
  * drivers 
@@ -51,8 +52,8 @@ extern int printf(const char *fmt, ...);
  * panic.c & debug
  */
 #include <uniq/kern_debug.h>
-void die(const char *fmt, ...);
-void _assert(const char *err);
+__noreturn void die(const char *fmt, ...);
+__noreturn void _assert(const char *err);
 #define assert(statement) 	(statement) ? ((void)0) : _assert(#statement)
 
 /*
