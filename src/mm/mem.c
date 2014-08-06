@@ -24,6 +24,7 @@
 #include <uniq/task.h>
 #include <string.h>
 #include <uniq/spin_lock.h>
+#include <compiler.h>
 
 #define PAGE_FAULT_INT		14
 
@@ -229,7 +230,7 @@ void free_frame(page_t *page){
  * 
  * @param regs : kaydediciler
  */
-void page_fault_handler(registers_t *regs){
+__noreturn void page_fault_handler(registers_t *regs){
 
 	uint32_t fault_addr;
 	__asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
