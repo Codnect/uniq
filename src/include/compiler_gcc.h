@@ -25,7 +25,6 @@
 	#define __GNU_COMPILER__
 #endif
 
-#define __asm__ 	asm
 
 /* attributes */
 #define __noreturn	__attribute__ ((noreturn))
