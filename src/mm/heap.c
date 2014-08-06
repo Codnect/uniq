@@ -31,7 +31,7 @@ static volatile uint32_t mlock = 0;
  *
  * @param size :
  */
-void *malloc(uint32_t size){
+__malloc void *malloc(uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
@@ -46,7 +46,7 @@ void *malloc(uint32_t size){
  * @param ptr :
  * @param size :
  */
-void *realloc(void *ptr,uint32_t size){
+__malloc void *realloc(void *ptr,uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
@@ -61,7 +61,7 @@ void *realloc(void *ptr,uint32_t size){
  * @param n :
  * @param size :
  */
-void *calloc(uint32_t n,uint32_t size){
+__malloc void *calloc(uint32_t n,uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
@@ -75,7 +75,7 @@ void *calloc(uint32_t n,uint32_t size){
  *
  * @param size :
  */
-void *valloc(uint32_t size){
+__malloc void *valloc(uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
