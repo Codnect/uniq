@@ -233,12 +233,20 @@ void page_fault_handler(registers_t *regs){
 
 	uint32_t fault_addr;
 	__asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
+	debug_print(KERN_EMERG,"Page Fault ! \033[1;37m%p\033[0m",fault_addr);
 	
-	uint32_t present = !(regs->err_code & 0x1);
-	
-	printf("page fault !");
-	if(present)
-		printf(" (present) ");
+	char err_desc[64] = "Error description :";
+	if(!(regs->err_code & PF_PRESENT))
+		strcat(err_desc," present ");
+	if(regs->err_code & PF_WOP)
+		strcat(err_desc," read-only ");
+	if(regs->err_code & PF_USRMODE)
+		strcat(err_desc," user mode ");
+	if(regs->err_code & PF_RESERVED)
+		strcat(err_desc," reserved ");
+	if(regs->err_code & PF_INSTRUCTION);
+
+	debug_print(KERN_DUMP," %s",err_desc);
 	halt_system();
  
 }
@@ -294,6 +302,7 @@ void change_page_dir(page_dir_t *new_dir){
  */
 void paging_init(uint32_t mem_size){
 	
+	debug_print(KERN_INFO,"Initializing the paging.");
 	nframe = mem_size / FRAME_SIZE_KIB;
 	frame_map = (uint32_t *)kmalloc(nframe / 8);
  	memset(frame_map,0,nframe / 8);
