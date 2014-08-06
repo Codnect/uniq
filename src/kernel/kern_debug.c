@@ -30,7 +30,7 @@
 /*
  * debug seviyesi mesajlari
  */
-static const char *level_msgs[]={
+static const char *level_msgs[] = {
 	"\033[1;32mINFO\033[0m",
 	"\033[1;37mNOTICE\033[0m",
 	"\033[1;33mWARNING\033[0m",
@@ -63,11 +63,8 @@ void _debug_print(char *file,uint32_t line,kern_levels_t level,const char *fmt,.
 	
 	if(level == KERN_DUMP)
 		printf("%s\n",buffer);
-	else{
-		char *lvl_text;
-		lvl_text = level_msgs[level];
-		printf("%-10s: [module = %.40s line = %.6d]\n%s %s\n",lvl_text,file,line,"->",buffer);
-	}
+	else
+		printf("%-10s: [module = %.40s line = %.6d]\n%s %s\n",level_msgs[level],file,line,"->",buffer);
 	
 }
 
