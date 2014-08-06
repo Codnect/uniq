@@ -28,7 +28,9 @@ uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc(uint32_t size);
 void heap_init(void);
 
-#define KHEAP_MAGIC   0xBAF01CDE
+#define KHEAP_MAGIC         0xBAF01CDE
+#define KHEAP_CHECKV        0x450FE321
+#define KHEAP_CHECKSUM      0xFFFFFFFF
 
 typedef struct{
   
