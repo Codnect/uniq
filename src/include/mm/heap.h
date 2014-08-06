@@ -28,4 +28,18 @@ uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc(uint32_t size);
 void heap_init(void);
 
+#define KHEAP_MAGIC   0xBAF01CDE
+
+typedef struct{
+  
+}heap_header_t;
+
+typedef struct{
+  
+}heap_final_t;
+
+typedef struct{
+  
+}heap_t;
+
 #endif /* __UNIQ_HEAP_H__ */
