@@ -18,7 +18,7 @@
  */
 
 #ifndef __UNIQ_SPIN_LOCK_H__
-#ifndef __UNIQ_SPIN_LOCK_H__
+#define __UNIQ_SPIN_LOCK_H__
 
 
 /*
@@ -57,31 +57,29 @@
  *
  */
  
-#ifndef spin_lock
-#define spin_lock
 
-  /*
-   * spin_lock,kilit olustur
-   *
-   * @param lock_addr : kilit olusturulacak adres
-   */
-  static void spin_lock(uint32_t volatile *lock_addr){
+/*
+ * spin_lock,kilit olustur
+ *
+ * @param lock_addr : kilit olusturulacak adres
+ */
+static void spin_lock(uint32_t volatile *lock_addr){
   
   	while(__sync_lock_test_and_set(lock_addr, 0x1));
   	
-  }
+}
   
-  /*
-   * spin_unlock,kilidi kaldir
-   *
-   * @param lock_addr : kilidi kaldirilacak adres
-   */
-  static void spin_unlock(uint32_t volatile *lock_addr){
+/*
+ * spin_unlock,kilidi kaldir
+ *
+ * @param lock_addr : kilidi kaldirilacak adres
+ */
+static void spin_unlock(uint32_t volatile *lock_addr){
   
   	__sync_lock_release(lock_addr);
   	
-  }
+}
 
-#endif
+
 
 #endif /* __UNIQ_SPIN_LOCK_H__ */
