@@ -20,6 +20,7 @@
 #include <uniq/types.h>
 #include <uniq/module.h>
 #include <uniq/kernel.h>
+#include <compiler.h>
 
 /*
  * -Genel bilgiler-
@@ -441,7 +442,7 @@ struct gdt_entry_t{
 	uint8_t access;		/* erisim flaglari */
 	uint8_t granularity;	/* diger flaglar */
 	uint8_t base_high;	/* taban adresin son 8 biti */
-} __attribute__((packed));
+}__packed;
 
 
 /*
@@ -453,7 +454,7 @@ struct gdt_entry_t{
 struct gdt_ptr_t{
 	uint16_t limit;		/* gdt tablosunun uzunlugu tutar */
 	uint32_t base;		/* ilk gdt_entry_t adresi,yani gdt'nin taban adresi */
-} __attribute__((packed));
+}__packed;
 
 
 /*
