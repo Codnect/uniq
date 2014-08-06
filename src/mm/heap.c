@@ -20,18 +20,18 @@
 #include <uniq/module.h>
 #include <uniq/kernel.h>
 #include <mm/mem.h>
-#include <compiler.h>
+#include <uniq/spin_lock.h>
 
 extern uintptr_t end;
 uintptr_t last_addr = (uintptr_t)&end;
-static uint32_t volatile mlock = 0;
+static volatile uint32_t mlock = 0;
 
 /*
  * malloc
  *
  * @param size :
  */
-__malloc void *malloc(uint32_t size){
+void *malloc(uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
@@ -46,7 +46,7 @@ __malloc void *malloc(uint32_t size){
  * @param ptr :
  * @param size :
  */
-__malloc void *realloc(void *ptr,uint32_t size){
+void *realloc(void *ptr,uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
@@ -61,7 +61,7 @@ __malloc void *realloc(void *ptr,uint32_t size){
  * @param n :
  * @param size :
  */
-__malloc void *calloc(uint32_t n,uint32_t size){
+void *calloc(uint32_t n,uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
@@ -75,7 +75,7 @@ __malloc void *calloc(uint32_t n,uint32_t size){
  *
  * @param size :
  */
-__malloc void *valloc(uint32_t size){
+void *valloc(uint32_t size){
 	
 	spin_lock(&mlock);
 	void *ret_addr;
