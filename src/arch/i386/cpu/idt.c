@@ -21,6 +21,7 @@
 #include <uniq/types.h>
 #include <uniq/kernel.h>
 #include <string.h>
+#include <compiler.h>
 
 /*
  * -Genel bilgiler-
@@ -276,7 +277,7 @@ struct idt_entry_t{
 	uint8_t zero;		/* genellikle sifir */
 	uint8_t flags;		/* flaglar */
 	uint16_t base_high;	/* atlanicak fonksiyonun taban adresini son 16 biti */
-} __attribute__((packed));
+}__packed;
 
 
 /*
@@ -286,7 +287,7 @@ struct idt_entry_t{
 struct idt_ptr_t{
 	uint16_t limit;		/* idt'nin uzunlugu(bayt olarak) */
 	uint32_t base;		/* idt'nin taban adresi */
-} __attribute__((packed));
+}__packed;
 
 #define IDT_MAX_ENTRY	256
 #define DPL3		0x60
