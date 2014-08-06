@@ -21,7 +21,6 @@
 #include <uniq/kernel.h>
 #include <uniq/types.h>
 #include <uniq/module.h>
-#include <compiler.h>
 
 /*
  * die,kendisine verilen formatli yada formatsiz karakter
