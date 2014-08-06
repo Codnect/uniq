@@ -32,7 +32,7 @@
  * @param fmt : format
  * @param ... : argumanlar
  */
-__noreturn void die(const char *fmt, ...){
+void die(const char *fmt, ...){
 
 	char err_msg[4096];
 	va_list arg_list;
@@ -52,7 +52,7 @@ __noreturn void die(const char *fmt, ...){
  *
  * @param err : hata mesaji
  */
-__noreturn void _assert(const char *err){
+void _assert(const char *err){
 	
 	debug_print(KERN_EMERG, "Kernel Fault : %s",err);
 	disable_irq();
