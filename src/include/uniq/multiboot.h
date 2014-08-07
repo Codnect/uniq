@@ -17,6 +17,7 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <uniq/types.h>
+#include <compiler.h>
 
 struct mboot_t{
 	uint32_t flags;
@@ -43,4 +44,4 @@ struct mboot_t{
 	uint32_t vbe_interface_seg;
 	uint32_t vbe_interface_off;
 	uint32_t vbe_interface_len;
-} __attribute__ ((packed));
+}__packed;
