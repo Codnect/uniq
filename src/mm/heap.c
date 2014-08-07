@@ -101,7 +101,7 @@ void free(void *ptr) {
  * @param align :
  * @param physic_adddr :
  */
-uint32_t kmalloc_org(uint32_t size,bool align,uint32_t *physic_addr){
+uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 
 	if(align && (last_addr & ALIGN_LIMIT)){
 		last_addr &= ALIGN_LIMIT;
@@ -126,7 +126,7 @@ uint32_t kmalloc_org(uint32_t size,bool align,uint32_t *physic_addr){
  */
 uint32_t kmalloc_align(uint32_t size){
 
-	return kmalloc_org(size,true,NULL);
+	return kmalloc_orig(size,true,NULL);
 
 }
 
@@ -138,7 +138,7 @@ uint32_t kmalloc_align(uint32_t size){
  */
 uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr){
 
-	return kmalloc_org(size,false,physic_addr);
+	return kmalloc_orig(size,false,physic_addr);
 
 }
 
@@ -150,7 +150,7 @@ uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr){
  */
 uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr){
 
-	return kmalloc_org(size,true,physic_addr);
+	return kmalloc_orig(size,true,physic_addr);
 
 }
 
@@ -161,7 +161,7 @@ uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr){
  */
 uint32_t kmalloc(uint32_t size){
 
-	return kmalloc_org(size,false,NULL);
+	return kmalloc_orig(size,false,NULL);
 
 }
 
