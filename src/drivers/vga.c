@@ -224,22 +224,22 @@ void goto_xy(uint8_t new_x,uint8_t new_y){
  * @param s : karakter dizisi
  * @param attr : karakter ozelligi
  */
-int putstr_goto_xy(uint8_t new_x,uint8_t new_y,char *s,uint8_t attr){
+uint32_t putstr_goto_xy(uint8_t new_x,uint8_t new_y,char *s,uint8_t attr){
 
 	if(!vga_vram)
-		return (int)NULL;
+		return (uint32_t)NULL;
 
 	if(new_x > VGA_CWIDTH || VGA_CHEIGHT < new_y)
-		return (int)NULL;
+		return (uint32_t)NULL;
 
 	if(!attr)
 		attr = DEFAULT_ATTR;
 
 	goto_xy(new_x,new_y);
-	int i = putstr(s,attr);
+	uint32_t i = putstr(s,attr);
 
 	if((save_y == csr_y) && (csr_x > save_x))
-		return (int)NULL;
+		return (uint32_t)NULL;
 
 	if(save_x && save_y)
 		restore_csr();
@@ -311,15 +311,15 @@ void putchar(const char c, uint8_t attr){
  * @param string : karakter dizisi
  * @param attr : karakter ozelligi
  */
-int putstr(const char *string,uint8_t attr){
+uint32_t putstr(const char *string,uint8_t attr){
 	
 	if(!vga_vram || !string)
-		return (int)NULL;
+		return (uint32_t)NULL;
 	
 	if(!attr)
 		attr = DEFAULT_ATTR;
 		
-	int i = 0;
+	uint32_t i = 0;
 	while(string[i])
 		putchar(string[i++],attr);
 
