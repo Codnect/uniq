@@ -25,11 +25,11 @@
 #include <string.h>
 #include <uniq/spin_lock.h>
 
-#define PAGE_FAULT_INT		14
+#define PAGE_FAULT_INT		14		/* page fault kesme numarasi */
 
-uint32_t *frame_map;
-uint32_t nframe;
-extern uint32_t last_addr;
+uint32_t *frame_map;				/* frame map */
+uint32_t nframe;				/* frame sayisi */
+extern uint32_t last_addr;			/* linker - end */
 static volatile uint32_t alloc_flock = 0;
 
 page_dir_t *kernel_dir = NULL;
