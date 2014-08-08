@@ -163,6 +163,8 @@ uint32_t find_free_frame(void){
 
 		}
 	}
+	
+	return MAX_LIMIT;
 
 }
 
@@ -176,14 +178,17 @@ uint32_t find_free_frame(void){
  */
 void alloc_frame(page_t *page,bool rw,bool user){
 
+	/* eger zaten frame adresi varsa devam etmeye gerek yok*/
 	if(page->frame)
 		return;
 
+	/* kilit olustur */
 	spin_lock(&alloc_flock);
 	uint32_t index = find_free_frame();
 
+	/* bos frame yok! */
 	if(index == MAX_LIMIT)
-		printf("no free frames!");
+		debug_print(KERN_ALERT,"not found free frame!");
 	
 	set_frame(index * FRAME_SIZE_BYTE);
 
