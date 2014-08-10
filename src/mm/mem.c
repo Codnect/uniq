@@ -32,6 +32,7 @@
 #define PF_RESERVED		0x8
 #define PF_INSTRUCTION		0x10
 #define BITS_PER_BYTE		8
+#define MEM_NORMAL_USE
 
 typedef struct{
 	uint32_t total_mem;
@@ -39,6 +40,7 @@ typedef struct{
 	uint32_t *frame_map;
 	uint32_t aframe_size;
 	int8_t remaining;
+	uint32_t alloc_memf;
 }mp_info_t;
 
 static mp_info_t mp_info;
@@ -66,37 +68,8 @@ uint32_t total_memory_size(void){
  * boyut KiB seklindedir.
  */
 uint32_t use_memory_size(void){
-	
-	uint32_t use_mem = 0;
-	uint32_t index,offset,max_index;
 
-	if(mp_info.remaining > 0)
-		max_index = mp_info.aframe_size / 4 + 1;
-	else
-		max_index = mp_info.aframe_size / 4;
-	
-	for (index = 0; index < max_index; index++){
-		
-		if(mp_info.remaining >=0 && (index == (max_index-1))){	
-			for(offset = 0; offset < mp_info.remaining; offset++){
-				uint32_t cntrl = 0x1 << offset;
-				if (mp_info.frame_map[index] & cntrl)
-					use_mem++;
-					
-			}
-		}
-		else{
-			for (offset = 0; offset < 32; offset++){
-				uint32_t cntrl = 0x1 << offset;
-				if (mp_info.frame_map[index] & cntrl)
-					use_mem++;
-				
-			}
-		}
-		
-	}
-	
-	return use_mem * FRAME_SIZE_KIB;	
+	return mp_info.alloc_memf * FRAME_SIZE_KIB;	
 	
 }
 
@@ -133,12 +106,21 @@ void disable_paging(void){
  */
 void set_frame(uintptr_t frame_addr){
 
-	uint32_t remaining;
 	uint32_t frame  = frame_addr/FRAME_SIZE_BYTE;
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
 	uint32_t offset = FRAME_OFFSET_BIT(frame);
-	mp_info.frame_map[index] |= (0x1 << offset); 
 
+	/* 
+	 * eger ulasilacak frame'in index'i toplam frame sayisindan
+	 * buyukse ugrasmaya gerek yok.
+	 */
+	if((index * 32 + offset) >= mp_info.nframe){
+		debug_print(KERN_CRITIC,"Not found the frame, frame index = %u",index * 32 + offset);
+		return;
+	}
+	mp_info.frame_map[index] |= (0x1 << offset); 
+	mp_info.alloc_memf++;
+	
 }
 
 /*
@@ -152,8 +134,18 @@ void remove_frame(uintptr_t frame_addr){
 	uint32_t frame  = frame_addr/FRAME_SIZE_BYTE;
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
 	uint32_t offset = FRAME_OFFSET_BIT(frame);
-	mp_info.frame_map[index] &= ~(0x1 << offset);
 
+	/* 
+	 * eger ulasilacak frame'in index'i toplam frame sayisindan
+	 * buyukse ugrasmaya gerek yok.
+	 */
+	if((index * 32 + offset) >= mp_info.nframe){
+		debug_print(KERN_CRITIC,"Not found the frame, frame index = %u",index * 32 + offset);
+		return;
+	}
+	mp_info.frame_map[index] &= ~(0x1 << offset);
+	mp_info.alloc_memf--;
+	
 }
 
 /*
@@ -179,7 +171,20 @@ uint32_t find_free_frame(void){
 
 	uint32_t index,offset,max_index;
 	
+#ifdef MEM_NORMAL_USE
+	max_index = mp_info.nframe / 32;
 
+	for(index = 0; index < max_index; index++){
+			if(mp_info.frame_map[index] != MAX_LIMIT){
+				for(offset = 0; offset < 32; offset++){
+					uint32_t cntrl = 0x1 << offset;
+					if(!(mp_info.frame_map[index] & cntrl))
+						return index * 32 + offset;	
+
+				}
+			}
+	}
+#else
 	if(mp_info.remaining > 0)
 		max_index = mp_info.aframe_size / 4 + 1;
 	else
@@ -211,9 +216,10 @@ uint32_t find_free_frame(void){
 
 
 	}
+#endif
 
 	return MAX_LIMIT;
-	
+
 }
 
 /*
@@ -236,11 +242,9 @@ void alloc_frame(page_t *page,bool rw,bool user){
 #if 0
 	debug_print(KERN_DUMP,"frame index %u",index);
 #endif	
-	if(index == MAX_LIMIT){
-		debug_print(KERN_ALERT,"Not found the free frame!");
-		disable_irq();
-		halt_system();
-	}
+	if(index == MAX_LIMIT)
+		die("Not found the free frame!");
+
 	
 	/* frame'i ayarla */
 	set_frame(index * FRAME_SIZE_BYTE);
@@ -362,6 +366,12 @@ void change_page_dir(page_dir_t *new_dir){
 static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 
 	mp_info->total_mem = mem_size;	
+
+#ifdef MEM_NORMAL_USE
+	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
+	uint32_t alloc_frame_byte = ((mp_info->nframe / BITS_PER_BYTE) / 32) * 32;
+	mp_info->nframe = alloc_frame_byte * 8;
+#else
 	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
 	uint32_t alloc_frame_byte = mp_info->nframe / BITS_PER_BYTE;
 	uint8_t alloc_frame_remaining = mp_info->nframe % BITS_PER_BYTE; 
@@ -369,17 +379,17 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 	if(alloc_frame_remaining)
 		alloc_frame_byte++;
 
-	mp_info->aframe_size = alloc_frame_byte;
-
 	if(mp_info->nframe % 32 > 0)
 		mp_info->remaining = mp_info->nframe % 32;
 	else
 		mp_info->remaining = -1;
 
-	//debug_print(KERN_DUMP,"%u",mp_info->remaining);
+#endif
+
+	mp_info->aframe_size = alloc_frame_byte;
 	mp_info->frame_map = (uint32_t *)kmalloc(alloc_frame_byte);
  	memset(mp_info->frame_map,0,alloc_frame_byte);
-	
+
 }
 
 /*
@@ -389,17 +399,15 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
  */
 static void dump_mp_info(mp_info_t *mp_info){
 
-	if(!mp_info->frame_map){
-		debug_print(KERN_CRITIC,"Frame map address is not found!");
-		disable_irq();
-		halt_system();
-	}
-	
+	if(!mp_info->frame_map)
+		die("Frame map address is not found!");
+
 	debug_print(KERN_DUMP,"Dump the memory paging info :");
 	debug_print(KERN_DUMP,"Frame map address is \033[1;37m%p\033[0m",mp_info->frame_map);
 	debug_print(KERN_DUMP,"total memory size : %u KiB, total frame : %u",mp_info->total_mem,mp_info->nframe);
 	debug_print(KERN_DUMP,"frame map size : %u Byte, available memory size : %u KiB",mp_info->aframe_size,
 										    	 mp_info->nframe * FRAME_SIZE_KIB);
+
 	debug_print(KERN_DUMP,"unused memory size : %u KiB",mp_info->total_mem - mp_info->nframe * FRAME_SIZE_KIB);
 
 }
