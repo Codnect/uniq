@@ -25,22 +25,25 @@
 #include <string.h>
 #include <uniq/spin_lock.h>
 
-#define PAGE_FAULT_INT		14
+#define PAGE_FAULT_INT		14	/* page fault kesme numarasi */
+/* page fault flags */
 #define PF_PRESENT		0x1
-#define PF_WOP			0x2
+#define PF_WOP			0x2	/* wop = write operation :) */
 #define PF_USRMODE		0x4
 #define PF_RESERVED		0x8
 #define PF_INSTRUCTION		0x10
-#define BITS_PER_BYTE		8
+#define BITS_PER_BYTE		8	/* byte basina bit sayisi */
 #define MEM_NORMAL_USE
 
 typedef struct{
-	uint32_t total_mem;
-	uint32_t nframe;
-	uint32_t *frame_map;
-	uint32_t aframe_size;
-	int8_t remaining;
-	uint32_t alloc_memf;
+	uint32_t total_mem;		/* toplam bellek (multiboot'tan aldigimiz bellek miktari) */
+	uint32_t nframe;		/* frame sayisi */
+	uint32_t *frame_map;		/* frame map adresi */
+	uint32_t aframe_size;		/* frame map icin tahsis edilmis bellek miktari (byte olarak) */
+	int8_t remaining;		/* bunun amacini kod ustunde incelemeniz daha faydali olur ;),
+					 * mod islemleri sonrasi kalan frame sayisi tuttugunu soyliyim.
+					 */
+	uint32_t alloc_memf;		/* bellekten tahsis edilen frame sayisi */
 }mp_info_t;
 
 static mp_info_t mp_info;
