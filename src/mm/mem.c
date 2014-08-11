@@ -272,7 +272,7 @@ void dma_frame(page_t *page,bool rw,bool user,uintptr_t addr){
 	page->user    = (user) ? PAGE_USER_ACCESS : PAGE_KERNEL_ACCESS;
 	page->frame   = addr / FRAME_SIZE_BYTE;
 
-	if (addr > mp_info.nframe * FRAME_SIZE_BYTE)
+	if (addr < mp_info.nframe * FRAME_SIZE_BYTE)
 		set_frame(addr);
 	
 }
