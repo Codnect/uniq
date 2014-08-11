@@ -77,5 +77,6 @@ extern void irq_remove_handler(uint8_t irq_num);
  * mm
  */
 extern void paging_init(uint32_t mem_size);
+extern void __page_fault_test(void);
 
 #endif /* __UNIQ_KERNEL_H__ */
