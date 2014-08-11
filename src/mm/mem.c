@@ -469,7 +469,7 @@ void paging_final(void){
 	for(uint32_t i = 0x100000; i < last_addr + 0x4000; i += FRAME_SIZE_BYTE)
 		dma_frame(get_page(i,true,kernel_dir),PAGE_RWRITE,PAGE_KERNEL_ACCESS,i);
 
-	debug_print(KERN_INFO,"Mapping vga text-mode dma.");
+	debug_print(KERN_DUMP,"Mapping vga text-mode dma.");
 	for(uint32_t i = 0xB8000; i < 0xC0000; i += FRAME_SIZE_BYTE)
 		dma_frame(get_page(i,false,kernel_dir),PAGE_RONLY,PAGE_USER_ACCESS,i);
 
