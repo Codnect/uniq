@@ -38,8 +38,9 @@ void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 	idt_init();
 	isr_init();
 	irq_init();
-	//__int_test();
-
+#if 0
+	__int_test();
+#endif
 	/*
 	 * drivers
 	 */
