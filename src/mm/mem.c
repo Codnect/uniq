@@ -232,8 +232,14 @@ uint32_t find_free_frame(void){
  */
 void alloc_frame(page_t *page,bool rw,bool user){
 
-	if(page->frame)
+	if(page->frame){
+		
+		page->present = PAGE_PRESENT;
+		page->rw      = (rw) ? PAGE_RWRITE : PAGE_RONLY;
+		page->user    = (user) ? PAGE_USER_ACCESS : PAGE_KERNEL_ACCESS;
 		return;
+		
+	}
 
 	spin_lock(&alloc_flock);
 
