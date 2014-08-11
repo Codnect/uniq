@@ -266,8 +266,14 @@ void alloc_frame(page_t *page,bool rw,bool user){
  * @param addr :
  */
 void dma_frame(page_t *page,bool rw,bool user,uintptr_t addr){
-	
-	
+
+	page->present = PAGE_PRESENT;
+	page->rw      = (rw) ? PAGE_RWRITE : PAGE_RONLY;
+	page->user    = (user) ? PAGE_USER_ACCESS : PAGE_KERNEL_ACCESS;
+	page->frame   = addr / FRAME_SIZE_BYTE;
+
+	if (addr > mp_info.nframe * FRAME_SIZE_BYTE)
+		set_frame(addr);
 	
 }
 
@@ -296,7 +302,7 @@ void page_fault_handler(registers_t *regs){
 	uint32_t fault_addr;
 	__asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
 	char err_desc[128];
-	sprintf(err_desc,"Page Fault ! \033[1;37m%p\033[0m \nError description :",fault_addr);
+	snprintf(err_desc,sizeof(err_desc)-1,"Page Fault ! \033[1;37m%p\033[0m \nError description :",fault_addr);
 
 	if(!(regs->err_code & PF_PRESENT))
 		strcat(err_desc," present ");
