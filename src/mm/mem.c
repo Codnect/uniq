@@ -25,14 +25,16 @@
 #include <string.h>
 #include <uniq/spin_lock.h>
 
-#define PAGE_FAULT_INT		14	/* page fault kesme numarasi */
+#define PAGE_FAULT_INT		14		/* page fault kesme numarasi */
 /* page fault flags */
 #define PF_PRESENT		0x1
-#define PF_WOP			0x2	/* wop = write operation :) */
+#define PF_WOP			0x2		/* wop = write operation :) */
 #define PF_USRMODE		0x4
 #define PF_RESERVED		0x8
 #define PF_INSTRUCTION		0x10
-#define BITS_PER_BYTE		8	/* byte basina bit sayisi */
+#define BITS_PER_BYTE		8		/* byte basina bit sayisi */
+#define PAGING_ENABLE		0x80000000
+#define PAGING_DISABLE		0x7fffffff
 
 /*
  * memory mapping'de 2 yontem olusturdum. MEM_NORMAL_USE tanimlamasi
@@ -105,11 +107,11 @@ uint32_t use_memory_size(void){
 /*
  * enable_paging, sayfalamayi aktif hale getirir.
  */
-void enable_paging(void){
+static void enable_paging(void){
 
 	uint32_t cr0;
 	__asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
-	cr0 |= 0x80000000;
+	cr0 |= PAGING_ENABLE;
 	__asm__ volatile("mov %0, %%cr0" :: "r"(cr0));
 
 }
@@ -117,11 +119,11 @@ void enable_paging(void){
 /*
  * disable_paging, sayfalamayi devre disi birakir.
  */
-void disable_paging(void){
+static void disable_paging(void){
 
 	uint32_t cr0;
 	__asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
-	cr0 &= 0x7fffffff;
+	cr0 &= PAGING_DISABLE;
 	__asm__ volatile("mov %0, %%cr0" :: "r"(cr0));
 	
 }
@@ -133,7 +135,7 @@ void disable_paging(void){
  *
  * @param frame_addr : frame adresi
  */
-void set_frame(uintptr_t frame_addr){
+static void set_frame(uintptr_t frame_addr){
 
 	uint32_t frame  = frame_addr/FRAME_SIZE_BYTE;
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
@@ -158,7 +160,7 @@ void set_frame(uintptr_t frame_addr){
  *
  * @param frame_addr : frame adresi
  */
-void remove_frame(uintptr_t frame_addr){
+static void remove_frame(uintptr_t frame_addr){
 	
 	uint32_t frame  = frame_addr/FRAME_SIZE_BYTE;
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
@@ -182,7 +184,7 @@ void remove_frame(uintptr_t frame_addr){
  *
  * @param frame_addr : frame adresi
  */
-uint32_t cntrl_frame(uintptr_t frame_addr){
+static uint32_t cntrl_frame(uintptr_t frame_addr){
 	
 	uint32_t frame  = frame_addr/FRAME_SIZE_BYTE;
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
@@ -196,7 +198,7 @@ uint32_t cntrl_frame(uintptr_t frame_addr){
  * find_free_frame, ilk bos frame'i bulur ve index numarasini
  * dondurur.
  */
-uint32_t find_free_frame(void){
+static uint32_t find_free_frame(void){
 
 	uint32_t index,offset,max_index;
 	
@@ -386,7 +388,7 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
  *
  * @param new_dir : yeni sayfa dizini adresi.
  */
-void change_page_dir(page_dir_t *new_dir){
+static void change_page_dir(page_dir_t *new_dir){
 
 	current_dir = new_dir;
 	__asm__ volatile("mov %0, %%cr3" :: "r"(&new_dir->tables_physic));
