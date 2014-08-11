@@ -292,12 +292,12 @@ void free_frame(page_t *page){
  * @param regs : kaydediciler
  */
 void page_fault_handler(registers_t *regs){
-
+	
 	uint32_t fault_addr;
 	__asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
-	debug_print(KERN_EMERG,"Page Fault ! \033[1;37m%p\033[0m",fault_addr);
-	
-	char err_desc[64] = "Error description :";
+	char err_desc[128];
+	sprintf(err_desc,"Page Fault ! \033[1;37m%p\033[0m \nError description :",fault_addr);
+
 	if(!(regs->err_code & PF_PRESENT))
 		strcat(err_desc," present ");
 	if(regs->err_code & PF_WOP)
@@ -308,8 +308,7 @@ void page_fault_handler(registers_t *regs){
 		strcat(err_desc," reserved ");
 	if(regs->err_code & PF_INSTRUCTION);
 
-	debug_print(KERN_DUMP," %s",err_desc);
-	halt_system();
+	die(err_desc);
  
 }
 
