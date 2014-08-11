@@ -33,21 +33,47 @@
 #define PF_RESERVED		0x8
 #define PF_INSTRUCTION		0x10
 #define BITS_PER_BYTE		8	/* byte basina bit sayisi */
-#define MEM_NORMAL_USE
+
+/*
+ * memory mapping'de 2 yontem olusturdum. MEM_NORMAL_USE tanimlamasi
+ * kullanilirsa bellek framelere ayrilmasinda frame sayisi hem 8 hemde
+ * 32'ye tam bolunecek sekilde olusturulmustur. bunun nedenlerini 
+ * aciklayacak olursak framelerin kontrolleri ve diger islemlerde
+ * frame_map'in 32 bit olarak islemden gecmesi ve frame_map'e bellek
+ * ayrilirken byte(8 bit) seklinde hesaplanmasi kolay ve hizli olmasidir,
+ * fakat artik bellek miktari fazla olabilir. diger yontemde ise bellekte
+ * en fazla 3 KiB artik bellek kalabilecegi sekilde tasarlanmistir yani
+ * mecburen yinede kaliyor ama dedigim gibi en fazla 3 KiB :),bildiginiz
+ * gibi sayfalamada 4 KiB gibi bir boyut kullaniliyordu. hiz olayina 
+ * geldigimizde ornek vermek gerekirse 256 MiB bellegi tahsis islemine
+ * tutalim. MEM_NORMAL USE tanimli bir cekirdekte 256 MiB bellek tahsis
+ * islemini 4 sn gibi surede gerceklestiriyorsa,diger yontemle 5 sn
+ * gibi surede gerceklestiriyor. eger bellegi sonuna kadar kullanmak
+ * istiyorsaniz MEM_NORMAL_USE tanimini kullanmayabilirsiniz. ornegin
+ * ben 128 MiB bellek icin bu olayi gerceklestirdim MEM_NORMAL_USE
+ * tanimiyla kullanilan mapping isleminde 639 KiB bellek artik olarak
+ * kalirken diger yontemde dedigimiz gibi en fazla 3 KiB artik olustu.
+ * MEM_NORMAL_USE kullanilmayabilir her zaman yuksek bir miktarda bellek
+ * tahsisi yapilmayacagi icin hiz faktoru es gecebiliriz,bellegi iyi
+ * kullanalim yeter ki .).
+ */
+#if 0
+	#define MEM_NORMAL_USE
+#endif
 
 typedef struct{
-	uint32_t total_mem;		/* toplam bellek (multiboot'tan aldigimiz bellek miktari) */
-	uint32_t nframe;		/* frame sayisi */
-	uint32_t *frame_map;		/* frame map adresi */
-	uint32_t aframe_size;		/* frame map icin tahsis edilmis bellek miktari (byte olarak) */
-	int8_t remaining;		/* bunun amacini kod ustunde incelemeniz daha faydali olur ;),
-					 * mod islemleri sonrasi kalan frame sayisi tuttugunu soyliyim.
-					 */
-	uint32_t alloc_memf;		/* bellekten tahsis edilen frame sayisi */
+	uint32_t total_mem;			/* toplam bellek (multiboot'tan aldigimiz bellek miktari) */
+	uint32_t nframe;			/* frame sayisi */
+	uint32_t *frame_map;			/* frame map adresi */
+	uint32_t aframe_size;			/* frame map icin tahsis edilmis bellek miktari (byte olarak) */
+	int8_t remaining;			/* bunun amacini kod ustunde incelemeniz daha faydali olur ;),
+					 	* mod islemleri sonrasi kalan frame sayisi tuttugunu soyliyim.
+					 	*/
+	uint32_t alloc_memf;			/* bellekten tahsis edilen frame sayisi */
 }mp_info_t;
 
 static mp_info_t mp_info;
-extern uint32_t last_addr;
+extern uint32_t last_addr;			/* linker "end" adresi */
 static volatile uint32_t alloc_flock = 0;
 
 page_dir_t *kernel_dir = NULL;
@@ -264,12 +290,13 @@ void alloc_frame(page_t *page,bool rw,bool user){
 }
 
 /*
- * dma_frame
+ * dma_frame,belirtilen adresteki sayfayi direk ayarlariz. diger turlu
+ * bos frame find_free_frame kendisi buluyor ve islemi yapiyordu.
  *
- * @param page :
- * @param rw :
- * @param user :
- * @param addr :
+ * @param page : sayfa adresi
+   @param rw : okuma/yazma izni ( false ise sadece okuma , true ise hem okuma hem yazma)
+ * @param user : kullanici izni ( false ise kullanici moddan izin yok, true ise kullanici
+ * @param addr : bellek adresi
  */
 void dma_frame(page_t *page,bool rw,bool user,uintptr_t addr){
 
@@ -356,9 +383,9 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 }
 
 /*
- * change_page_dir,
+ * change_page_dir,sayfa dizini degistirir.
  *
- * @param new_dir :
+ * @param new_dir : yeni sayfa dizini adresi.
  */
 void change_page_dir(page_dir_t *new_dir){
 
@@ -372,7 +399,7 @@ void change_page_dir(page_dir_t *new_dir){
  * set_mp_info, mp_info(memory paging info) yapisini ayarlar.
  *
  * @param mp_info : mp_info yapisi adresi
- * @param mem_size :
+ * @param mem_size : bellek miktari (byte olarak)
  */
 static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 
@@ -432,7 +459,7 @@ static void dump_mp_info(mp_info_t *mp_info){
 }
 
 /*
- * paging_final
+ * paging_final,sayfalama icin son ayarlari yapar.
  */
 void paging_final(void){
 
