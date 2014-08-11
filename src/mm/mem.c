@@ -372,7 +372,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 
 	/* mp_info adresi bos ise */
 	if(!mp_info)
-		die("mp_info address is not found");
+		die("mp_info address is not found!");
 
 	mp_info->total_mem = mem_size;	
 
@@ -410,7 +410,7 @@ static void dump_mp_info(mp_info_t *mp_info){
 
 	/* mp_info adresi bos ise */
 	if(!mp_info)
-		die("mp_info address is not found");
+		die("mp_info address is not found!");
 	
 	/* frame adresi bos ise :/ */
 	if(!mp_info->frame_map)
@@ -442,7 +442,7 @@ void paging_final(void){
 void paging_init(uint32_t mem_size){
 
 	if(!mem_size)
-		die("Memory size is not found.");
+		die("Memory size is not found!");
 		
 	debug_print(KERN_INFO,"Initializing the paging.");
 	set_mp_info(&mp_info,mem_size);
