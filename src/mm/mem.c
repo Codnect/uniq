@@ -363,12 +363,16 @@ void change_page_dir(page_dir_t *new_dir){
 }
 
 /*
- * set_mp_info
+ * set_mp_info, mp_info(memory paging info) yapisini ayarlar.
  *
- * @param mp_info :
+ * @param mp_info : mp_info yapisi adresi
  * @param mem_size :
  */
 static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
+
+	/* mp_info adresi bos ise */
+	if(!mp_info)
+		die("mp_info address is not found");
 
 	mp_info->total_mem = mem_size;	
 
@@ -398,12 +402,17 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 }
 
 /*
- * dump_mp_info
+ * dump_mp_info, mp_info(memory paging info) yapisini ekrana yazdirir.
  *
- * @param mp_info :
+ * @param mp_info : mp_info yapisi adresi
  */
 static void dump_mp_info(mp_info_t *mp_info){
 
+	/* mp_info adresi bos ise */
+	if(!mp_info)
+		die("mp_info address is not found");
+	
+	/* frame adresi bos ise :/ */
 	if(!mp_info->frame_map)
 		die("Frame map address is not found!");
 
@@ -418,12 +427,23 @@ static void dump_mp_info(mp_info_t *mp_info){
 }
 
 /*
+ * paging_final
+ */
+void paging_final(void){
+
+
+}
+
+/*
  * paging_init, sayfalamayi baslatir.
  *
  * @param mem_size : bellek boyutu ( multiboot yapisindan aliyoruz)
  */
 void paging_init(uint32_t mem_size){
 
+	if(!mem_size)
+		die("Memory size is not found.");
+		
 	debug_print(KERN_INFO,"Initializing the paging.");
 	set_mp_info(&mp_info,mem_size);
 	dump_mp_info(&mp_info);
