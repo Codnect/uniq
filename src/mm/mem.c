@@ -468,6 +468,16 @@ void paging_init(uint32_t mem_size){
 	change_page_dir(kernel_dir);
 	
 }
+
+/*
+ * __page_fault_test
+ */
+void __page_fault_test(void){
+
+	uint32_t *ptr = (uint32_t*)(0xb0000000);
+  	uint32_t fault = *ptr;
+
+}
  
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
