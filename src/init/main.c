@@ -49,7 +49,8 @@ void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 	/*
 	 * memory
 	 */
-	 paging_init(mboot->mem_lower+mboot->mem_upper);
+	paging_init(mboot->mem_lower+mboot->mem_upper);
+	paging_final();	
 #if 0
 	 __page_fault_test();
 #endif
