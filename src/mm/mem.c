@@ -370,7 +370,6 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 	if(dir->tables[table_index])
 		return &dir->tables[table_index]->pages[addr % 1024];
 	else if(make){
-
 		uint32_t temp;
 		dir->tables[table_index] = (page_table_t *)kmalloc_aphysic(sizeof(page_table_t),&temp);
 		memset(dir->tables[table_index],0,FRAME_SIZE_BYTE);
