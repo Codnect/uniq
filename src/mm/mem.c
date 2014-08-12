@@ -114,45 +114,37 @@ static void calc_heap_size(void){
 	
 	#define byte_to_kib(x)	(x / 1024)
 
-	if(n < 2){ /* <= 16 MiB */
+	if(n < 2) /* <= 16 MiB */
 		heap_info.size = 2097152; /* 2 MiB */
-		debug_print(KERN_CRITIC,"The amount of memory is critically low for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 2  && n < 4){ /* 16 MiB - 32 MiB */
+	else if(n >= 2  && n < 4) /* 16 MiB - 32 MiB */
 		heap_info.size = 4194304; /* 4 MiB */
-		debug_print(KERN_WARNING,"The amount of memory is critically low for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 4 && n < 8){ /* 32 MiB - 64 MiB */
+	else if(n >= 4 && n < 8) /* 32 MiB - 64 MiB */
 		heap_info.size = 8388608; /* 8 MiB */
-		debug_print(KERN_NOTICE,"The amount of memory is critically low for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 8 && n < 16){ /* 64 MiB - 128 MiB */
+	else if(n >= 8 && n < 16) /* 64 MiB - 128 MiB */
 		heap_info.size = 16777216; /* 16 MiB */
-		debug_print(KERN_INFO,"The amount of memory is normal level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 16 && n < 32){ /* 128 MiB - 256 MiB */
+	else if(n >= 16 && n < 32) /* 128 MiB - 256 MiB */
 		heap_info.size = 33554432; /* 32 MiB */
-		debug_print(KERN_INFO,"The amount of memory is normal level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 32 && n < 64){ /* 256 MiB - 512 MiB */
+	else if(n >= 32 && n < 64) /* 256 MiB - 512 MiB */
 		heap_info.size = 67108864; /* 64 MiB */
-		debug_print(KERN_INFO,"TThe amount of memory is normal level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 64 && n < 128){ /* 512 MiB - 1024 MiB */
+	else if(n >= 64 && n < 128) /* 512 MiB - 1024 MiB */
 		heap_info.size = 134217728; /* 128 MiB */
-		debug_print(KERN_INFO,"The amount of memory is good level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else if(n >= 128 && n < 256){ /* 1024 MiB - 2048 MiB */
+	else if(n >= 128 && n < 256) /* 1024 MiB - 2048 MiB */
 		heap_info.size = 268435456; /* 256 MiB */
-		debug_print(KERN_INFO,"The amount of memory is good level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
-	else{ /* > 2048 MiB  */
+	else /* 2048 MiB > */
 		heap_info.size = 536870912; /* 512 MiB */
-		debug_print(KERN_INFO,"The amount of memory is very good level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
-	}
+
+	if(n < 8)
+		debug_print(KERN_WARNING,"The amount of memory is critically low for heap. Heap size : %u KiB",
+										byte_to_kib(heap_info.size));
+	else if(n < 64)
+		debug_print(KERN_INFO,"TThe amount of memory is normal level for heap. Heap size : %u KiB",
+										byte_to_kib(heap_info.size));
+	else
+		debug_print(KERN_INFO,"The amount of memory is very good level for heap. Heap size : %u KiB",
+										byte_to_kib(heap_info.size));
 
 	#undef byte_to_kib
-	
+
 }
 
 /*
