@@ -146,7 +146,7 @@ static void calc_heap_size(void){
 		heap_info.size = 268435456; /* 256 MiB */
 		debug_print(KERN_INFO,"The amount of memory is good level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
 	}
-	else{ /* 2048 MiB > */
+	else{ /* > 2048 MiB  */
 		heap_info.size = 536870912; /* 512 MiB */
 		debug_print(KERN_INFO,"The amount of memory is very good level for heap. Heap size : %u KiB",byte_to_kib(heap_info.size));
 	}
