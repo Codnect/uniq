@@ -466,14 +466,14 @@ void paging_final(void){
 
 	debug_print(KERN_INFO,"Initializing the memory mapping.");
 	for(uint32_t i = 0; i < 0x100000; i += FRAME_SIZE_BYTE)
-		dma_frame(get_page(i,true,kernel_dir),PAGE_RWRITE,PAGE_KERNEL_ACCESS,i);
-
+		dma_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,i);
+	
 	for(uint32_t i = 0x100000; i < last_addr + 0x4000; i += FRAME_SIZE_BYTE)
-		dma_frame(get_page(i,true,kernel_dir),PAGE_RWRITE,PAGE_KERNEL_ACCESS,i);
+		dma_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,i);
 
 	debug_print(KERN_DUMP,"Mapping vga text-mode dma.");
 	for(uint32_t i = 0xB8000; i < 0xC0000; i += FRAME_SIZE_BYTE)
-		dma_frame(get_page(i,false,kernel_dir),PAGE_RONLY,PAGE_USER_ACCESS,i);
+		dma_frame(get_page(i,false,kernel_dir),PAGE_RWRITE,PAGE_USER_ACCESS,i);
 
 	debug_print(KERN_DUMP,"Memory mapping size : %u KiB",use_memory_size());
 	isr_add_handler(PAGE_FAULT_INT,page_fault_handler);
@@ -498,6 +498,15 @@ void paging_init(uint32_t mem_size){
 	kernel_dir = (page_dir_t *)kmalloc_align(sizeof(page_dir_t));
 	memset(kernel_dir,0,sizeof(page_dir_t));
 	current_dir = kernel_dir;
+	
+}
+
+/*
+ * sbrk
+ *
+ * @param inc :
+ */
+void *sbrk(uint32_t inc){
 	
 }
 
