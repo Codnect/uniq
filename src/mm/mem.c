@@ -88,8 +88,50 @@ page_dir_t *current_dir = NULL;
  * KiB seklindedir!.
  */
 uint32_t total_memory_size(void){
-	
-	return mp_info.nframe * FRAME_SIZE_KIB;
+
+	uint32_t use = 0,index,max_index,offset;
+
+#ifdef MEM_NORMAL_USE
+	max_index = mp_info.nframe / 32;
+
+	for(index = 0; index < max_index; index++){
+				for(offset = 0; offset < 32; offset++){
+					uint32_t cntrl = 0x1 << offset;
+					if(mp_info.frame_map[index] & cntrl)
+						use++;	
+
+				}
+	}
+#else
+	if(mp_info.remaining > 0)
+		max_index = mp_info.aframe_size / 4 + 1;
+	else
+		max_index = mp_info.aframe_size / 4;
+
+	for(index = 0; index < max_index; index++){
+
+		if(mp_info.remaining >=0 && (index == (max_index-1))){	
+				for(offset = 0; offset < mp_info.remaining; offset++){
+					uint32_t cntrl = 0x1 << offset;
+					if(mp_info.frame_map[index] & cntrl)
+						use++;	
+
+				}
+		}
+		else{
+				for(offset = 0; offset < 32; offset++){
+					uint32_t cntrl = 0x1 << offset;
+					if(mp_info.frame_map[index] & cntrl)
+						use++;	
+
+				}
+		}
+
+
+	}
+#endif
+
+	return use * 4;	
 
 }
 
@@ -114,13 +156,7 @@ static void calc_heap_size(void){
 	
 	#define byte_to_kib(x)	(x / 1024)
 
-	if(n < 2) /* <= 16 MiB */
-		heap_info.size = 2097152; /* 2 MiB */
-	else if(n >= 2  && n < 4) /* 16 MiB - 32 MiB */
-		heap_info.size = 4194304; /* 4 MiB */
-	else if(n >= 4 && n < 8) /* 32 MiB - 64 MiB */
-		heap_info.size = 8388608; /* 8 MiB */
-	else if(n >= 8 && n < 16) /* 64 MiB - 128 MiB */
+	if(n >= 8 && n < 16) /* 64 MiB - 128 MiB */
 		heap_info.size = 16777216; /* 16 MiB */
 	else if(n >= 16 && n < 32) /* 128 MiB - 256 MiB */
 		heap_info.size = 33554432; /* 32 MiB */
@@ -134,10 +170,9 @@ static void calc_heap_size(void){
 		heap_info.size = 536870912; /* 512 MiB */
 
 	if(n < 8)
-		debug_print(KERN_WARNING,"The amount of memory is critically low for heap. Heap size : %u KiB",
-										byte_to_kib(heap_info.size));
+		die("The amount of memory is critically low for heap.");
 	else if(n < 64)
-		debug_print(KERN_INFO,"TThe amount of memory is normal level for heap. Heap size : %u KiB",
+		debug_print(KERN_INFO,"The amount of memory is normal level for heap. Heap size : %u KiB",
 										byte_to_kib(heap_info.size));
 	else
 		debug_print(KERN_INFO,"The amount of memory is very good level for heap. Heap size : %u KiB",
@@ -192,8 +227,7 @@ static void set_frame(uintptr_t frame_addr){
 		debug_print(KERN_CRITIC,"Not found the frame, frame index = %u",index * 32 + offset);
 		return;
 	}
-	mp_info.frame_map[index] |= (0x1 << offset); 
-	mp_info.alloc_memf++;
+	mp_info.frame_map[index] |= (0x1 << offset);
 	
 }
 
@@ -218,7 +252,6 @@ static void remove_frame(uintptr_t frame_addr){
 		return;
 	}
 	mp_info.frame_map[index] &= ~(0x1 << offset);
-	mp_info.alloc_memf--;
 	
 }
 
@@ -508,15 +541,90 @@ static void dump_mp_info(mp_info_t *mp_info){
 void paging_final(void){
 
 	debug_print(KERN_INFO,"Initializing the memory mapping.");
+	
+	/* ilk 1 MiB'i mapping islemi uygulayalim */
+	debug_print(KERN_DUMP,"Memory mapping size : %u KiB",use_memory_size());
+	debug_print(KERN_DUMP,"(0x00000000 - 0x00100000) mapping. %u KiB",0x00100000 / 1024);	
 	for(uint32_t i = 0; i < 0x100000; i += FRAME_SIZE_BYTE)
 		dma_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,i);
-	
-	for(uint32_t i = 0x100000; i < last_addr + 0x4000; i += FRAME_SIZE_BYTE)
-		dma_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,i);
 
-	debug_print(KERN_DUMP,"Mapping vga text-mode dma.");
-	for(uint32_t i = 0xB8000; i < 0xC0000; i += FRAME_SIZE_BYTE)
-		dma_frame(get_page(i,false,kernel_dir),PAGE_RWRITE,PAGE_USER_ACCESS,i);
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m, last_addr + 0x4000 : \033[1;37m%p",
+												last_addr,
+												last_addr + 0x4000);
+
+	uint32_t a_allocmem  = 0; /* kullanilabilir ayrilmis bellek,asagida
+				  * ekstradan 16 KiB ayriliyor dikkat !.
+				  * last_addr'in son kullanilan adres
+				  * oldugunu unutmayin.
+				  */
+	/* 0x100000 adresinden, last_addr + 0x4000(16 KiB) adrese kadar bir mapping daha yapiyoruz */
+	debug_print(KERN_DUMP,"(0x00100000 - %p) mapping. %u KiB ",last_addr + 0x4000,
+								   (last_addr + 0x4000 - 0x100000)/1024); 
+	for(uint32_t j = 0x100000; j < last_addr + 0x4000; j += FRAME_SIZE_BYTE)
+		dma_frame(get_page(j,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,j);
+	a_allocmem += 0x4000;
+	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",a_allocmem,
+											a_allocmem/1024);
+
+	/* vga text-mode video bellegini remapping isleminden geciriyoruz */
+	debug_print(KERN_DUMP,"(0xB8000-0xC0000) remapping vga text-mode dma. %u KiB",(0xC0000-0xB8000)/1024);
+	for(uint32_t k = 0xB8000; k < 0xC0000; k += FRAME_SIZE_BYTE)
+		dma_frame(get_page(k,false,kernel_dir),PAGE_RWRITE,PAGE_USER_ACCESS,k);
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
+
+
+	uint32_t tmp_heap_start = KHEAP_INIT;	/* 0x00800000,ekstra yada temel diyecegimiz heap'in baslangic adresi */
+	/* eger bizim bu adresimiz last_addr + 0x4000'den kucuk ise bu adresi 1 MiB ileri tasiyoruz */
+	if (tmp_heap_start <= last_addr + 0x4000){
+		debug_print(KERN_ERROR, "Kernel heap init address error!");
+		debug_print(KERN_DUMP,"tmp_heap_start : %p, last_addr + 0x4000 : %p", tmp_heap_start,last_addr + 0x4000);
+		tmp_heap_start = last_addr + 0x100000;
+		debug_print(KERN_DUMP,"new tmp_heap_start : %p",tmp_heap_start);
+	}
+	heap_info.alloc_point = tmp_heap_start;
+
+	/* 
+	 * ----------------------------------------------------------------------------------------------
+	 * ekstra heap'in adresine kadar olan tum bellek alanini bizim su anlik temel heap
+	 * alanimizi olusturuyoruz. eger kmallocla tahsisi yaparak bu adrese gelirsek bu
+	 * ekstra heap bolgesine giriyoruz. ve artik buradan tahsis islemini gerceklestiriyoruz.
+	 * eger bu ek artik bu bolgede yetmeze o zaman sikinti olusur :(. bu bolgenin bellek
+	 * miktarini sahip oldugumuz bellek miktarina gore ayarliyoruz. sistemimizin en az 64 MiB
+         * bellek kullanilacak  sekilde ayarlandi. 64 MiB bellekte 16 MiB'lik bir heap ayarliyoruz.
+	 * daha fazla bilgi icin calc_heap_size'i inceleyin.
+	 * ----------------------------------------------------------------------------------------------
+	 */
+
+	/*
+	 * en son last_addr + 0x4000 adresine kadar mapping islemini yaptigimizi hatirlayin.
+	 * burdan temel yada ekstra olarak adlandirdigimiz heap alanina kadar mapping islemi
+	 * yapiyoruz. last_addr'nin degismedigine dikkat edin!
+	 */
+	debug_print(KERN_DUMP,"(%p - %p) mapping. %u Byte / %u KiB",last_addr + 0x4000,
+								   tmp_heap_start,
+								   tmp_heap_start - (last_addr+0x4000),
+								   (tmp_heap_start - (last_addr+0x4000))/1024); 
+	a_allocmem += (tmp_heap_start - (last_addr+0x4000));
+	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",a_allocmem,
+											a_allocmem/1024);
+	for (uint32_t i = last_addr + 0x4000; i < tmp_heap_start  ; i += FRAME_SIZE_BYTE)
+		alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
+	/* 
+	 * sayfa tablolarinin bellekten tahsis edilmesinden dolayi last_addr'in arttigini
+	 * farkedebilirsiniz.
+	 */
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
+
+	
+	/*  heap genislemesi icin. sayfalari sadece sayfalari ayarladigimiza dikkat edin. */
+	heap_info.end_point = tmp_heap_start + heap_info.size;	
+	debug_print(KERN_DUMP,"(%p - %p) preallocation. %u Byte / %u KiB",heap_info.alloc_point,
+								   heap_info.end_point,
+								   heap_info.size,
+								   heap_info.size/1024); 
+	for (uint32_t i = heap_info.alloc_point ; i < heap_info.end_point ; i += FRAME_SIZE_BYTE)
+		get_page(i,true, kernel_dir);
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
 
 	debug_print(KERN_DUMP,"Memory mapping size : %u KiB",use_memory_size());
 	isr_add_handler(PAGE_FAULT_INT,page_fault_handler);
