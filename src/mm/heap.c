@@ -22,6 +22,7 @@
 #include <mm/mem.h>
 #include <mm/heap.h>
 #include <uniq/spin_lock.h>
+#include <string.h>
 
 extern uintptr_t end;
 uintptr_t last_addr = (uintptr_t)&end;
@@ -168,15 +169,84 @@ uint32_t kmalloc(uint32_t size){
 }
 
 /*
+ * __first_free_block_test
+ */
+void __first_free_block_test(void){
+	
+	debug_print(KERN_DUMP,"first free block test...");
+
+	if(free_blk_list->first_block)
+		debug_print(KERN_DUMP,"free block addr : %p",free_blk_list->first_block);
+	else
+		die("Not found the free block addr.");
+
+	heap_block_t *tmp_block = free_blk_list->first_block;
+	
+	if(tmp_block->magic == KHEAP_MAGIC)
+		debug_print(KERN_DUMP,"Valid the heap magic number.");
+	else
+		die("Invalid the heap magic number.");
+
+	if(tmp_block->size)
+		debug_print(KERN_DUMP,"block size : %u byte",tmp_block->size);
+	else
+		die("Not enough block size!");
+
+	if((void*)tmp_block->prev_block == (void*)free_blk_list)
+		debug_print(KERN_DUMP,"free list header block!, prev_block : %p",tmp_block->prev_block);
+	else
+		die("bad block! prev_block : %p",tmp_block->prev_block);
+
+	if(!tmp_block->next_block)
+		debug_print(KERN_DUMP,"null block!, next_block : %p",tmp_block->next_block); 
+
+
+}
+
+/*
+ * link_first_free_block
+ */
+static void link_first_free_block(void){
+
+	void *first_alloc_addr = sbrk(PAGE_SIZE);
+	heap_block_t *first_heap_block = (heap_block_t*)first_alloc_addr;
+	debug_print(KERN_DUMP,"first alloc addr : %p, first heap block addr %p",first_alloc_addr,first_heap_block);
+	first_heap_block->magic = KHEAP_MAGIC;
+	first_heap_block->size = PAGE_SIZE - sizeof(heap_block_t);
+	first_heap_block->prev_block = (heap_block_t*)free_blk_list;
+	first_heap_block->next_block = NULL;
+
+	free_blk_list->first_block = first_heap_block;
+	free_blk_list->blk_size += first_heap_block->size;
+#if 1
+	__first_free_block_test();
+#endif
+	 	
+}
+
+
+/*
  * heap_init
  */
 void heap_init(void){
 	
 	debug_print(KERN_INFO,"Initializing the heap.");
+
+	used_blk_list = (heap_block_header_t*)kmalloc(sizeof(heap_block_header_t));
+	used_blk_list->magic = KHEAP_MAGIC;
+	used_blk_list->blk_size = 0;
+	used_blk_list->first_block = NULL;
+	
+	free_blk_list = (heap_block_header_t*)kmalloc(sizeof(heap_block_header_t));	
+	free_blk_list->magic = KHEAP_MAGIC;
+	free_blk_list->blk_size = 0;
+	free_blk_list->first_block = NULL;
+	debug_print(KERN_DUMP,"used_blk_list addr : %p, free_blk_list addr : %p",used_blk_list,free_blk_list);
+
 	heap_info.current_end = (last_addr + FRAME_SIZE_BYTE) & ~0xFFF;
-	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p",last_addr);
-	debug_print(KERN_DUMP,"heap current end addr : \033[1;37m%p",heap_info.current_end); 
- 
+	debug_print(KERN_DUMP,"last_addr(end) : %p, heap current end addr : %p",last_addr,heap_info.current_end);
+	link_first_free_block();
+
 }
 
 MODULE_AUTHOR("Burak Köken");
