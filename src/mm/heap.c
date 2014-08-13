@@ -218,7 +218,7 @@ static void link_first_free_block(void){
 
 	free_blk_list->first_block = first_heap_block;
 	free_blk_list->blk_size += first_heap_block->size;
-#if 1
+#if 0
 	__first_free_block_test();
 #endif
 	 	
