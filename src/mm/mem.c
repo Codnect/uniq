@@ -75,6 +75,7 @@ typedef struct{
 
 static mp_info_t mp_info;
 extern uint32_t last_addr;			/* linker "end" adresi */
+extern heap_info_t heap_info;
 static volatile uint32_t alloc_flock = 0;
 
 page_dir_t *kernel_dir = NULL;
