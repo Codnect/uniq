@@ -20,6 +20,7 @@
 #include <uniq/module.h>
 #include <uniq/kernel.h>
 #include <mm/mem.h>
+#include <mm/heap.h>
 #include <uniq/spin_lock.h>
 
 extern uintptr_t end;
