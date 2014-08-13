@@ -433,11 +433,14 @@ void page_fault_handler(registers_t *regs){
  * get_page,bir sayfa ayarlamamizi saglar. 
  *
  * @param addr : adres
- * @param make : eger tablo index'i sayfalama dizininde bulunuyor ise
- *		 o bulunan tablo'daki belirtilen sayfa adresi dondurulur. eger
- *		 make true ise diger if yani ilk sayfa olusturma asamasina
- *		 giriliyor ve sayfanin adresi donduruluyor. eger hicbiri degilse
- *		 NULL olarak geri donduruluyor.
+ * @param make : verilen adresin tablo index'i hesaplaninyor ve index'in
+ * 		 oldugu tablo bellekte ise sorun yok tabloya gidip tablodaki
+ *		 sayfa index'i hesaplanarak geri donduruluyor. eger ilk
+ * 		 kontrol islemininde sayfaya ait sayfa tablosunun bellekte
+ * 		 yoksa atliyor ve 2. kontrol'e geliyor eger biz make'i
+ * 		 true yaparsak, o adresin sayfa tablosu yok ise olustur
+ * 		 demek istiyoruz. make'in aciklmasini boyle yapmak daha iyi
+ *		 oldu sanki :).
  * @param dir : sayfa dizini
  */
 page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
@@ -553,10 +556,10 @@ void paging_final(void){
 												last_addr + 0x4000);
 
 	uint32_t a_allocmem  = 0; /* kullanilabilir ayrilmis bellek,asagida
-				  * ekstradan 16 KiB ayriliyor dikkat !.
-				  * last_addr'in son kullanilan adres
-				  * oldugunu unutmayin.
-				  */
+				   * ekstradan 16 KiB ayriliyor dikkat !.
+				   * last_addr'in son kullanilan adres
+				   * oldugunu unutmayin.
+				   */
 	/* 0x100000 adresinden, last_addr + 0x4000(16 KiB) adrese kadar bir mapping daha yapiyoruz */
 	debug_print(KERN_DUMP,"(0x00100000 - %p) mapping. %u KiB ",last_addr + 0x4000,
 								   (last_addr + 0x4000 - 0x100000)/1024); 
