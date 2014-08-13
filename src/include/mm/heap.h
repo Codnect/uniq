@@ -27,7 +27,6 @@ uint32_t kmalloc_align(uint32_t size);
 uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc(uint32_t size);
-void heap_init(void);
 
 #define KHEAP_MAGIC		0xBAF01CDE
 #define KHEAP_INIT		0x00800000
