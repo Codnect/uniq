@@ -76,8 +76,11 @@ extern void irq_remove_handler(uint8_t irq_num);
 /*
  * mm
  */
+#include <mm/mem.h>
+extern void heap_init(void);
 extern void paging_init(uint32_t mem_size);
 extern void paging_final(void);
 extern void __page_fault_test(void);
+extern void *sbrk(uint32_t inc);
 
 #endif /* __UNIQ_KERNEL_H__ */
