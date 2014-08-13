@@ -249,5 +249,14 @@ void heap_init(void){
 
 }
 
+/*
+ * __heap_test
+ */
+void __heap_test(void){
+	
+
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
