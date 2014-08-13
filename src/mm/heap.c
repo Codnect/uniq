@@ -25,6 +25,7 @@
 extern uintptr_t end;
 uintptr_t last_addr = (uintptr_t)&end;
 static volatile uint32_t mlock = 0;
+heap_info_t heap_info;
 
 /*
  * malloc
@@ -169,7 +170,11 @@ uint32_t kmalloc(uint32_t size){
  * heap_init
  */
 void heap_init(void){
- 
+	
+	debug_print(KERN_INFO,"Initializing the heap.");
+	heap_info.current_end = (last_addr + FRAME_SIZE_BYTE) & ~0xFFF;
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p",last_addr);
+	debug_print(KERN_DUMP,"heap current end addr : \033[1;37m%p",heap_info.current_end); 
  
 }
 
