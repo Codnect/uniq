@@ -99,7 +99,6 @@ uint32_t total_memory_size(void){
 					uint32_t cntrl = 0x1 << offset;
 					if(mp_info.frame_map[index] & cntrl)
 						use++;	
-
 				}
 	}
 #else
@@ -115,7 +114,6 @@ uint32_t total_memory_size(void){
 					uint32_t cntrl = 0x1 << offset;
 					if(mp_info.frame_map[index] & cntrl)
 						use++;	
-
 				}
 		}
 		else{
@@ -123,7 +121,6 @@ uint32_t total_memory_size(void){
 					uint32_t cntrl = 0x1 << offset;
 					if(mp_info.frame_map[index] & cntrl)
 						use++;	
-
 				}
 		}
 
@@ -287,7 +284,6 @@ static uint32_t find_free_frame(void){
 					uint32_t cntrl = 0x1 << offset;
 					if(!(mp_info.frame_map[index] & cntrl))
 						return index * 32 + offset;	
-
 				}
 			}
 	}
@@ -305,7 +301,6 @@ static uint32_t find_free_frame(void){
 					uint32_t cntrl = 0x1 << offset;
 					if(!(mp_info.frame_map[index] & cntrl))
 						return index * 32 + offset;	
-
 				}
 			}
 		}
@@ -315,7 +310,6 @@ static uint32_t find_free_frame(void){
 					uint32_t cntrl = 0x1 << offset;
 					if(!(mp_info.frame_map[index] & cntrl))
 						return index * 32 + offset;	
-
 				}
 			}
 
