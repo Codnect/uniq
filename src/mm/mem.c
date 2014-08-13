@@ -71,7 +71,6 @@ typedef struct{
 	int8_t remaining;			/* bunun amacini kod ustunde incelemeniz daha faydali olur ;),
 					 	* mod islemleri sonrasi kalan frame sayisi tuttugunu soyliyim.
 					 	*/
-	uint32_t alloc_memf;			/* bellekten tahsis edilen frame sayisi */
 }mp_info_t;
 
 static mp_info_t mp_info;
@@ -88,6 +87,17 @@ page_dir_t *current_dir = NULL;
  * KiB seklindedir!.
  */
 uint32_t total_memory_size(void){
+
+	mp_info.nframe * FRAME_SIZE_KIB;
+
+}
+
+/*
+ * use_memory_size, kullanilan bellek boyutunu dondurur. kullanilan
+ * frame sayisinin boyutu hesaplar ve geri dondurulur. geri donen
+ * boyut KiB seklindedir.
+ */
+uint32_t use_memory_size(void){
 
 	uint32_t use = 0,index,max_index,offset;
 
@@ -130,17 +140,6 @@ uint32_t total_memory_size(void){
 
 	return use * 4;	
 
-}
-
-/*
- * use_memory_size, kullanilan bellek boyutunu dondurur. kullanilan
- * frame sayisinin boyutu hesaplar ve geri dondurulur. geri donen
- * boyut KiB seklindedir.
- */
-uint32_t use_memory_size(void){
-
-	return mp_info.alloc_memf * FRAME_SIZE_KIB;	
-	
 }
 
 /*
