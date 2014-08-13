@@ -20,7 +20,8 @@
 #ifndef __UNIQ_MEM_H__
 #define __UNIQ_MEM_H__
 
-	
+#include <uniq/task.h>
+
 #define FRAME_SIZE_BYTE		4096		/* 4096 Byte - 4 KiB - 0x1000 */
 #define FRAME_SIZE_KIB		4		/* 4 KiB */
 #define ALIGN_LIMIT		0xFFFFF000
@@ -28,5 +29,13 @@
 
 #define FRAME_INDEX_BIT(x)	(x / 32)
 #define FRAME_OFFSET_BIT(x)	(x % 32)
+
+void free_frame(page_t *page);
+page_t *get_page(uint32_t addr,bool make,page_dir_t *dir);
+void change_page_dir(page_dir_t *new_dir);
+void alloc_frame(page_t *page,bool rw,bool user);
+void dma_frame(page_t *page,bool rw,bool user,uintptr_t addr);
+uint32_t use_memory_size(void);
+uint32_t total_memory_size(void);
 
 #endif /* __UNIQ_MEM_H__ */
