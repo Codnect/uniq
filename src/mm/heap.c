@@ -183,9 +183,9 @@ void __first_free_block_test(void){
 	heap_block_t *tmp_block = free_blk_list->first_block;
 	
 	if(tmp_block->magic == KHEAP_MAGIC)
-		debug_print(KERN_DUMP,"Valid the heap magic number.");
+		debug_print(KERN_DUMP,"valid the heap magic number.");
 	else
-		die("Invalid the heap magic number.");
+		die("invalid the heap magic number.");
 
 	if(tmp_block->size)
 		debug_print(KERN_DUMP,"block size : %u byte",tmp_block->size);
