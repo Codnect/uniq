@@ -21,6 +21,7 @@
 #define __UNIQ_HEAP_H__
 
 #include <uniq/types.h>
+#include <compiler.h>
 
 uint32_t kmalloc_align(uint32_t size);
 uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr);
@@ -28,20 +29,31 @@ uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc(uint32_t size);
 void heap_init(void);
 
-#define KHEAP_MAGIC         0xBAF01CDE
-#define KHEAP_CHECKV        0x450FE321
-#define KHEAP_CHECKSUM      0xFFFFFFFF
+#define KHEAP_MAGIC		0xBAF01CDE
+#define KHEAP_INIT		0x00800000
 
 typedef struct{
-  
-}heap_header_t;
+	uint32_t alloc_point;
+	uint32_t end_point;
+	uint32_t current_end;
+	uint32_t size;
+}heap_info_t;
 
-typedef struct{
-  
-}heap_final_t;
+typedef struct __packed{
+	uint32_t magic;
+	uint32_t size;
+	struct heap_block_t *prev_block;
+	struct heap_block_t *next_block;
+}heap_block_t;
 
-typedef struct{
-  
-}heap_t;
+typedef struct __packed{
+	uint32_t magic;
+	uint32_t blk_size;
+	heap_block_t *first_block;
+}heap_block_header_t;
+
+heap_block_header_t *used_blk_list;
+heap_block_header_t *free_blk_list;
+
 
 #endif /* __UNIQ_HEAP_H__ */
