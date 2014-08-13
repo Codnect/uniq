@@ -461,7 +461,7 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
  *
  * @param new_dir : yeni sayfa dizini adresi.
  */
-static void change_page_dir(page_dir_t *new_dir){
+void change_page_dir(page_dir_t *new_dir){
 
 	current_dir = new_dir;
 	__asm__ volatile("mov %0, %%cr3" :: "r"(&new_dir->tables_physic));
