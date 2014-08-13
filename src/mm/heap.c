@@ -193,12 +193,12 @@ void __first_free_block_test(void){
 		die("Not enough block size!");
 
 	if((void*)tmp_block->prev_block == (void*)free_blk_list)
-		debug_print(KERN_DUMP,"free list header block!, prev_block : %p",tmp_block->prev_block);
+		debug_print(KERN_DUMP,"(free list header block!) prev_block : %p",tmp_block->prev_block);
 	else
-		die("bad block! prev_block : %p",tmp_block->prev_block);
+		die("(bad block!) prev_block : %p",tmp_block->prev_block);
 
 	if(!tmp_block->next_block)
-		debug_print(KERN_DUMP,"null block!, next_block : %p",tmp_block->next_block); 
+		debug_print(KERN_DUMP,"(null block!) next_block : %p",tmp_block->next_block); 
 
 
 }
