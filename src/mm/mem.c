@@ -88,8 +88,8 @@ page_dir_t *current_dir = NULL;
  * KiB seklindedir!.
  */
 uint32_t total_memory_size(void){
-
-	mp_info.nframe * FRAME_SIZE_KIB;
+	
+	return mp_info.nframe * FRAME_SIZE_KIB;
 
 }
 
@@ -366,7 +366,7 @@ void alloc_frame(page_t *page,bool rw,bool user){
  * bos frame find_free_frame kendisi buluyor ve islemi yapiyordu.
  *
  * @param page : sayfa adresi
-   @param rw : okuma/yazma izni ( false ise sadece okuma , true ise hem okuma hem yazma)
+ * @param rw : okuma/yazma izni ( false ise sadece okuma , true ise hem okuma hem yazma)
  * @param user : kullanici izni ( false ise kullanici moddan izin yok, true ise kullanici
  * @param addr : bellek adresi
  */
@@ -484,7 +484,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 	mp_info->total_mem = mem_size;	
 
 #ifdef MEM_NORMAL_USE
-	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
+	mp_info->nframe = mem_size / FRAME_SIZE_KIB;	/* frame adedi */
 	uint32_t alloc_frame_byte = ((mp_info->nframe / BITS_PER_BYTE) / 32) * 32;
 	mp_info->nframe = alloc_frame_byte * 8;
 #else
@@ -499,6 +499,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 		mp_info->remaining = mp_info->nframe % 32;
 	else
 		mp_info->remaining = -1;
+
 #endif
 
 	mp_info->aframe_size = alloc_frame_byte;
@@ -523,7 +524,10 @@ static void dump_mp_info(mp_info_t *mp_info){
 		die("Frame map address is not found!");
 
 	debug_print(KERN_DUMP,"Dump the memory paging info :");
-	debug_print(KERN_DUMP,"Frame map address is \033[1;37m%p\033[0m",mp_info->frame_map);
+	debug_print(KERN_DUMP,"Frame map address is \033[1;37m%p\033[0m, Frame map end address is \033[1;37m%p",
+												mp_info->frame_map,
+												mp_info->frame_map + mp_info->aframe_size / 4);
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p",last_addr);	
 	debug_print(KERN_DUMP,"total memory size : %u KiB, total frame : %u",mp_info->total_mem,mp_info->nframe);
 	debug_print(KERN_DUMP,"frame map size : %u Byte, available memory size : %u KiB",mp_info->aframe_size,
 										    	 mp_info->nframe * FRAME_SIZE_KIB);
@@ -638,19 +642,20 @@ void paging_init(uint32_t mem_size){
 
 	if(!mem_size)
 		die("Memory size is not found!");
-		
+	
 	debug_print(KERN_INFO,"Initializing the paging.");
 	set_mp_info(&mp_info,mem_size);
 	dump_mp_info(&mp_info);
-	
+	calc_heap_size();
+
 	kernel_dir = (page_dir_t *)kmalloc_align(sizeof(page_dir_t));
 	memset(kernel_dir,0,sizeof(page_dir_t));
 	current_dir = kernel_dir;
-	
+
 }
 
 /*
- * sbrk
+ * sbrk,
  *
  * @param inc :
  */
@@ -685,8 +690,9 @@ void *sbrk(uint32_t inc){
 	memset((void*)addr,0,inc);
 	
 	return (void*)addr;
-	
+
 }
+
 
 /*
  * __page_fault_test
