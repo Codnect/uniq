@@ -621,10 +621,10 @@ void paging_final(void){
 	
 	/*  heap genislemesi icin. sayfalari sadece sayfalari ayarladigimiza dikkat edin. */
 	heap_info.end_point = tmp_heap_start + heap_info.size;	
-	debug_print(KERN_DUMP,"(%p - %p) preallocation. %u Byte / %u KiB",heap_info.alloc_point,
-								   heap_info.end_point,
-								   heap_info.size,
-								   heap_info.size/1024); 
+	debug_print(KERN_DUMP,"(%p - %p) preallocation for heap. %u Byte / %u KiB",heap_info.alloc_point,
+								  		   heap_info.end_point,
+								   	  	   heap_info.size,
+								  		   heap_info.size/1024); 
 	for (uint32_t i = heap_info.alloc_point ; i < heap_info.end_point ; i += FRAME_SIZE_BYTE)
 		get_page(i,true, kernel_dir);
 	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
