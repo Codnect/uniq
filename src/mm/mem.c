@@ -654,6 +654,36 @@ void paging_init(uint32_t mem_size){
  * @param inc :
  */
 void *sbrk(uint32_t inc){
+
+	/* istenilen artim boyutu sayfa boyutu katlarinda degil */
+	if(inc % FRAME_SIZE_BYTE)
+		die("heap increment size isn't such as page size. :/");
+
+	/* heap dolu ise :( */
+	if(heap_info.current_end + inc >= heap_info.end_point)
+		die("heap space is full :/.");
+
+	uint32_t addr = heap_info.current_end;
+	
+	/*
+	 * eger extra olarak yada asil heap alanimiza girdiysek
+	 * ordan tahsis islemi gerceklestirecegiz. paging_final'de
+	 * sadece heap alaninin sayfalari icin preallocation yapmistik.
+	 */
+	if(heap_info.current_end + inc > heap_info.alloc_point){
+		debug_print(KERN_INFO,"expanding the heap.!");
+		for(uint32_t i = heap_info.current_end; i < heap_info.current_end + inc; i += FRAME_SIZE_BYTE){
+			debug_print(KERN_DUMP,"frame addr : %p", i);
+			alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
+		}
+		debug_print(KERN_DUMP,"successful!");
+	}
+
+	/* heap'in son gecerli adresini yeniliyoruz */
+	heap_info.current_end += inc;
+	memset((void*)addr,0,inc);
+	
+	return (void*)addr;
 	
 }
 
