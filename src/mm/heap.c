@@ -174,14 +174,12 @@ uint32_t kmalloc(uint32_t size){
 void __first_free_block_test(void){
 	
 	debug_print(KERN_DUMP,"first free block test...");
-
 	if(free_blk_list->first_block)
 		debug_print(KERN_DUMP,"free block addr : %p",free_blk_list->first_block);
 	else
 		die("Not found the free block addr.");
 
 	heap_block_t *tmp_block = free_blk_list->first_block;
-	
 	if(tmp_block->magic == KHEAP_MAGIC)
 		debug_print(KERN_DUMP,"valid the heap magic number.");
 	else
