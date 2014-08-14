@@ -206,6 +206,7 @@ void __first_free_block_test(void){
  */
 static void link_first_free_block(void){
 
+	/* bos blok tahsisi */
 	void *first_alloc_addr = sbrk(PAGE_SIZE);
 	heap_block_t *first_heap_block = (heap_block_t*)first_alloc_addr;
 	debug_print(KERN_DUMP,"first alloc addr : %p, first heap block addr %p",first_alloc_addr,first_heap_block);
@@ -214,6 +215,7 @@ static void link_first_free_block(void){
 	first_heap_block->prev_block = (heap_block_t*)free_blk_list;
 	first_heap_block->next_block = NULL;
 
+	/* bos blok listesine ilk bos blogu bagliyoruz */
 	free_blk_list->first_block = first_heap_block;
 	free_blk_list->blk_size += first_heap_block->size;
 #if 0
@@ -229,7 +231,7 @@ static void link_first_free_block(void){
 void heap_init(void){
 	
 	debug_print(KERN_INFO,"Initializing the heap.");
-
+	/* kullanilan ve bos heap blok listelerini ayarliyoruz */
 	used_blk_list = (heap_block_header_t*)kmalloc(sizeof(heap_block_header_t));
 	used_blk_list->magic = KHEAP_MAGIC;
 	used_blk_list->blk_size = 0;
