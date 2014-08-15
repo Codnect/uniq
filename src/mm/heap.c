@@ -28,6 +28,10 @@ extern uintptr_t end;
 uintptr_t last_addr = (uintptr_t)&end;
 static volatile uint32_t mlock = 0;
 heap_info_t heap_info;
+heap_block_header_t *used_blk_list;
+heap_block_header_t *free_blk_list;
+static void link_free_block(void *addr,uint32_t size);
+void *__kmalloc(uint32_t size);
 
 #define SYNCBLOCK_LINKABLE		0x1
 #define SYNCBLOCK_HIGH			0x2
@@ -97,7 +101,11 @@ __malloc void *valloc(uint32_t size){
  *
  * @param ptr :
  */
-void free(void *ptr){
+void free(void *ptr) {
+
+	spin_lock(&mlock);
+	/* */
+	spin_unlock(&mlock);
 
 }
 
@@ -170,6 +178,13 @@ uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr){
 uint32_t kmalloc(uint32_t size){
 
 	return kmalloc_orig(size,false,NULL);
+
+}
+
+/*
+ * __dump_block_list_details
+ */
+static void __dump_block_list_details(void){
 
 }
 
@@ -326,6 +341,90 @@ static void sync_free_blk_list(heap_block_t *addr){
 	
 }
 
+static void sync_use_blk_list(heap_block_t *addr){
+
+	/* debug_print(KERN_DUMP,"entered -> sync_use_blk_list..."); */
+	heap_block_t *block = used_blk_list->first_block;
+	heap_block_t *last_block = NULL;
+	while(block){
+		if(block > addr)
+			break;
+		last_block = block;
+		block = block->next_block;
+	}
+
+	if(!block){
+		last_block->next_block = addr;
+		addr->prev_block = last_block;
+		used_blk_list->blk_size += addr->size;
+	}
+	else{
+		if(block->prev_block == used_blk_list)
+			used_blk_list->first_block = addr;
+		else
+			((heap_block_t*)block->prev_block)->next_block = addr;
+
+		addr->prev_block = block->prev_block;
+		addr->next_block = block;
+		block->prev_block = addr;
+		used_blk_list->blk_size += addr->size;
+			
+	}
+
+}
+
+/*
+ * link_use_block
+ */
+static void link_use_block(void *addr){
+
+	/* debug_print(KERN_DUMP,"entered -> link_use_block...");
+	debug_print(KERN_DUMP,"addr : %p",addr); */
+	
+	if(!used_blk_list->first_block){
+		heap_block_t *block = (heap_block_t*)addr;
+		used_blk_list->first_block = block;
+		block->prev_block = (heap_block_t*)used_blk_list;
+		used_blk_list->blk_size += block->size;
+	}
+	else
+		sync_use_blk_list((heap_block_t*)addr);
+
+}
+
+/*
+ * unlink_use_block
+ */
+static void unlink_use_block(void *addr){
+
+	/* debug_print(KERN_DUMP,"entered -> unlink_use_block..."); */
+	heap_block_t *block = used_blk_list->first_block;
+	
+	while(block){
+		
+		if(block == addr)
+			break;
+		block = block->next_block;
+
+	}
+	
+	if(block){
+
+		heap_block_t *tmp_block = (heap_block_t*)addr;
+		if(block->prev_block == used_blk_list)
+			used_blk_list->first_block = block->next_block;
+		else
+			((heap_block_t*)block->prev_block)->next_block = block->next_block;
+			
+		if(block->next_block)
+				((heap_block_t*)block->next_block)->prev_block = block->prev_block;
+
+		used_blk_list->blk_size -= tmp_block->size;
+		link_free_block(addr,0);
+		
+	}
+
+}
 
 /*
  * link_free_block
@@ -361,11 +460,14 @@ static void link_free_block(void *addr,uint32_t size){
 		if(!free_blk_list->first_block){
 			free_blk_list->first_block = (heap_block_t*)new_free_block;
 			new_free_block->prev_block = (heap_block_t*)free_blk_list;
+			free_blk_list->blk_size += new_free_block->size;
 		}
 		else
 			sync_free_blk_list(new_free_block);
 
 	}
+	else
+		sync_free_blk_list((heap_block_t*)addr);
 
 }
 
@@ -393,6 +495,11 @@ static bool check_size_in_free_list(uint32_t size){
 
 } 
 
+/*
+ * unlink_free_block
+ *
+ * @param size :
+ */
 /*
  * unlink_free_block
  *
@@ -516,6 +623,8 @@ static void *unlink_free_block(uint32_t size){
 
 }
 
+
+
 /*
  * __kmalloc
  *
@@ -528,6 +637,17 @@ void *__kmalloc(uint32_t size){
 		return (void*)NULL;
 
 	return (void*)unlink_free_block(size);
+
+}
+
+/*
+ * __kfree
+ *
+ * @param ptr :
+ */
+void __kfree(void *ptr){
+
+	unlink_use_block((heap_block_t*)(ptr - sizeof(heap_block_t)));
 
 }
 
@@ -562,6 +682,13 @@ static void link_first_free_block(void){
 void __heap_test(void){
 
 	debug_print(KERN_DUMP,"heap test...");
+#if 0
+	uint32_t *x = (uint32_t*)__kmalloc(400);
+	debug_print(KERN_DUMP,"allocation(x) : %p",x);
+	__kfree(x);
+	uint32_t *y = (uint32_t*)__kmalloc(10);
+	debug_print(KERN_DUMP,"allocation(y) : %p",y);
+#endif
 
 #if 0 /* test */ 
 	debug_print(KERN_DUMP,"---> test (1) <---");
@@ -613,3 +740,7 @@ void heap_init(void){
 #endif
 
 }
+
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
