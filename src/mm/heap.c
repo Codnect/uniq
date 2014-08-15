@@ -408,7 +408,12 @@ static void unlink_use_block(void *addr){
 
 	}
 	
-	if(block){
+	/*
+	 * aslinda bu magic numarasini kontrol amacli yarar diye dusunmustum
+	 * su anlik biseye yaramiyor bi ara kaldirabilirim :). biraz dursun burda,
+	 * baktik ilerde lazim olabilir tutariz.
+	 */
+	if(block && block->magic == KHEAP_MAGIC){
 
 		heap_block_t *tmp_block = (heap_block_t*)addr;
 		if(block->prev_block == used_blk_list)
