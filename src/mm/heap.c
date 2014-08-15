@@ -515,17 +515,16 @@ static void *unlink_free_block(void *addr,uint32_t size){
 
 /*
  * __kmalloc
+ *
+ * @param size :
  */
 void *__kmalloc(uint32_t size){
 
 	/* boyut 0'sa gerek yok */
 	if(!size)
 		return (void*)NULL;
-	
-	/* bos blok listesiden bir blok ayir */
-	heap_block_t *new_block = unlink_free_block(NULL,size);
 
-	return (void*)new_block;
+	return (void*)unlink_free_block(NULL,size);
 
 }
 
