@@ -404,6 +404,9 @@ static void unlink_use_block(void *addr){
 		
 		if(block == addr)
 			break;
+		else if(block > addr)
+			return;
+
 		block = block->next_block;
 
 	}
