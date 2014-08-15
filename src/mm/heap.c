@@ -452,11 +452,14 @@ static void *unlink_free_block(uint32_t size){
 		*/
 			if(move_block->prev_block == free_blk_list){
 				free_blk_list->first_block = move_block;
-				((heap_block_t*)move_block->next_block)->prev_block = move_block;
+				/* kontrol etmeyi unutmayalim ;) */
+				if(move_block->next_block)
+					((heap_block_t*)move_block->next_block)->prev_block = move_block;
 			}
 			else{
 				((heap_block_t*)move_block->prev_block)->next_block = move_block;
-				((heap_block_t*)move_block->next_block)->prev_block = move_block;
+				if(block->next_block)
+					((heap_block_t*)move_block->next_block)->prev_block = move_block;
 			}
 			
 		/*
@@ -480,7 +483,8 @@ static void *unlink_free_block(uint32_t size){
 				}
 			}else{
 				((heap_block_t*)block->prev_block)->next_block = block->next_block;
-				((heap_block_t*)block->next_block)->prev_block = block->prev_block;
+				if(block->next_block)
+					((heap_block_t*)block->next_block)->prev_block = block->prev_block;
 			}
 			free_blk_list->blk_size -= block->size;
 			block->prev_block = NULL;
