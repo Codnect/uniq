@@ -202,6 +202,130 @@ void __first_free_block_test(void){
 }
 
 /*
+ * unlink_free_block
+ */
+static void *unlink_free_block(void *addr,uint32_t size){
+
+	heap_block_t *return_block = NULL;	
+	/* debug_print(KERN_DUMP,"enter -> unlink_free_block function..."); */
+	if(!free_blk_list->blk_size)
+		return (void*)NULL;
+
+	if(!addr){
+		
+		if(free_blk_list->blk_size < size){
+			/* debug_print(KERN_DUMP,"free_blk_list->blk_size : %u byte, size : %u byte",free_blk_list->blk_size,
+												  size); */
+			link_free_block(NULL,size);
+		}
+		
+		heap_block_t *block = free_blk_list->first_block;
+			
+		while(block){
+			/* debug_print(KERN_DUMP,"block_size : %u byte",block->size); */
+			if(block->size - size > sizeof(heap_block_t)){
+				heap_block_t *move_block = (void*)block + sizeof(heap_block_t) + size;
+			#if 0
+				debug_print(KERN_DUMP,"------------------------------------------------------");
+				debug_print(KERN_DUMP,"[enter 0]");
+				debug_print(KERN_DUMP,"move_block : %p",move_block);
+				debug_print(KERN_DUMP,"free_blk_list : %p, free first block : %p",free_blk_list,
+												  free_blk_list->first_block);
+				debug_print(KERN_DUMP,"free block size : %u byte",free_blk_list->blk_size);
+			#endif
+				move_block->magic = KHEAP_MAGIC;
+				move_block->prev_block = block->prev_block;
+				move_block->next_block = block->next_block;
+				move_block->size = block->size - sizeof(heap_block_t) - size;
+				free_blk_list->blk_size -= sizeof(heap_block_t) + size;
+			#if 0
+				debug_print(KERN_DUMP,"------------------------------------------------------");
+				debug_print(KERN_DUMP,"move_block : %p",move_block);
+				debug_print(KERN_DUMP,"move_block->magic : %p",move_block->magic);
+				debug_print(KERN_DUMP,"move_block->prev_block : %p",move_block->prev_block);
+				debug_print(KERN_DUMP,"move_block->next_block : %p",move_block->next_block);
+				debug_print(KERN_DUMP,"move_block->size : %u byte",move_block->size);
+				debug_print(KERN_DUMP,"------------------------------------------------------");
+			#endif	
+				heap_block_t *alloc_block = block;
+				alloc_block->magic = KHEAP_MAGIC;
+				alloc_block->prev_block = NULL;
+				alloc_block->next_block = NULL;
+				alloc_block->size = size;
+			#if 0
+				debug_print(KERN_DUMP,"alloc_block : %p",alloc_block);
+				debug_print(KERN_DUMP,"alloc_block->magic : %p",alloc_block->magic);
+				debug_print(KERN_DUMP,"alloc_block->prev_block : %p",alloc_block->prev_block);
+				debug_print(KERN_DUMP,"alloc_block->next_block : %p",alloc_block->next_block);
+				debug_print(KERN_DUMP,"alloc_block->size : %u byte",alloc_block->size);
+			#endif
+				if(move_block->prev_block == free_blk_list){
+					free_blk_list->first_block = move_block;
+					((heap_block_t*)move_block->next_block)->prev_block = move_block;
+				}
+				else{
+					((heap_block_t*)move_block->prev_block)->next_block = move_block;
+					((heap_block_t*)move_block->next_block)->prev_block = move_block;
+				}
+				
+			#if 0
+				debug_print(KERN_DUMP,"------------------------------------------------------");
+				debug_print(KERN_DUMP,"free_blk_list : %p, free first block : %p",free_blk_list,
+												  free_blk_list->first_block);
+				debug_print(KERN_DUMP,"free block size : %u byte",free_blk_list->blk_size);
+				
+			#endif
+				
+				return_block = block;
+				break;
+			}
+			else if(block->size == size){
+				/* debug_print(KERN_DUMP,"[enter 1]"); */
+				if(block->prev_block == free_blk_list){
+					free_blk_list->first_block = block->next_block;	
+					/* eger blok dugumu varsa */
+					if(block->next_block){
+						/* debug_print(KERN_DUMP,"[enter 1.0]"); */
+						((heap_block_t*)block->next_block)->prev_block = (heap_block_t*)free_blk_list;
+					}
+				}else{
+					((heap_block_t*)block->prev_block)->next_block = block->next_block;
+					((heap_block_t*)block->next_block)->prev_block = block->prev_block;
+				}
+				free_blk_list->blk_size -= block->size;
+				block->prev_block = NULL;
+				block->next_block = NULL;
+				#if 0
+					debug_print(KERN_DUMP,"------------------------------------------------------");
+					debug_print(KERN_DUMP,"block : %p",block);
+					debug_print(KERN_DUMP,"block->magic : %p",block->magic);
+					debug_print(KERN_DUMP,"block->prev_block : %p",block->prev_block);
+					debug_print(KERN_DUMP,"block->next_block : %p",block->next_block);
+					debug_print(KERN_DUMP,"block->size : %u byte",block->size);
+					debug_print(KERN_DUMP,"------------------------------------------------------");
+					debug_print(KERN_DUMP,"free_blk_list : %p, free first block : %p",free_blk_list,
+													  free_blk_list->first_block);
+					debug_print(KERN_DUMP,"free block size : %u byte",free_blk_list->blk_size);
+				#endif
+				return_block = block;
+				break;
+			}
+			block = block->next_block;
+		}
+		
+	}
+
+	if(return_block){
+		link_use_block(return_block);
+		return (void*)return_block + sizeof(heap_block_t);
+	}
+
+	return (void*)NULL;
+
+}
+
+
+/*
  * link_first_free_block
  */
 static void link_first_free_block(void){
