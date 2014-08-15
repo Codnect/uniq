@@ -225,14 +225,14 @@ static void *unlink_free_block(void *addr,uint32_t size){
 			/* debug_print(KERN_DUMP,"block_size : %u byte",block->size); */
 			if(block->size - size > sizeof(heap_block_t)){
 				heap_block_t *move_block = (void*)block + sizeof(heap_block_t) + size;
-			#if 0
+			/*
 				debug_print(KERN_DUMP,"------------------------------------------------------");
 				debug_print(KERN_DUMP,"[enter 0]");
 				debug_print(KERN_DUMP,"move_block : %p",move_block);
 				debug_print(KERN_DUMP,"free_blk_list : %p, free first block : %p",free_blk_list,
 												  free_blk_list->first_block);
 				debug_print(KERN_DUMP,"free block size : %u byte",free_blk_list->blk_size);
-			#endif
+			*/
 				move_block->magic = KHEAP_MAGIC;
 				move_block->prev_block = block->prev_block;
 				move_block->next_block = block->next_block;
