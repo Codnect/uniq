@@ -247,6 +247,7 @@ static void sync_free_blk_list(heap_block_t *addr){
 		/* debug_print(KERN_DUMP,"end of the list"); */
 		last_block->next_block = addr;
 		free_blk_list->blk_size += addr->size;
+		addr->prev_block = last_block;
 	}
 	else{
 		/* debug_print(KERN_DUMP,"entered -> SYNCBLOCK"); */
