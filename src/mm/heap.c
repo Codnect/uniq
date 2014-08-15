@@ -458,7 +458,7 @@ static void *unlink_free_block(uint32_t size){
 			}
 			else{
 				((heap_block_t*)move_block->prev_block)->next_block = move_block;
-				if(block->next_block)
+				if(move_block->next_block)
 					((heap_block_t*)move_block->next_block)->prev_block = move_block;
 			}
 			
