@@ -27,5 +27,6 @@ int32_t abs(int32_t x);
 int32_t max(int32_t x,int32_t y);
 int32_t min(int32_t x,int32_t y);
 int atoi(const char *s);
+uint32_t krand(void);
 
 #endif /* __UNIQ_LIB_H__ */
