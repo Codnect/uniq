@@ -218,11 +218,30 @@ static uint32_t detect_heap_block_size(uint32_t size){
 
 static heap_blk_t heap_small_blks[SMALL_BLOCK + 1];
 
+/*
+ * get_heap_blk_header,
+ *
+ * @param blk : 
+ */
 static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
 
 	return blk->first;
 
 }
+
+/*
+ * blk_list_update,
+ *
+ * @param blk :
+ * @param node :
+ */ 
+static void blk_list_update(heap_blk_t *blk,heap_blk_header_t *node){
+	
+	node->next = blk->first;
+	blk->first = node;
+
+}
+
 
 /*
  * __kmalloc
