@@ -259,7 +259,7 @@ void __heap_test(void){
 void heap_init(void){
 	
 	debug_print(KERN_INFO,"Initializing the heap.");
-	heap_info.current_end = (last_addr + FRAME_SIZE_BYTE) & ~0xFFF;
+	heap_info.current_end = (last_addr + FRAME_SIZE_BYTE) & ~PAGE_MASK;
 
 
 }
