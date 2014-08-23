@@ -38,21 +38,16 @@ typedef struct{
 	uint32_t size;
 }heap_info_t;
 
-typedef struct __packed{
-	uint32_t magic;
+typedef struct{
+	struct heap_small_blk_header_t *next;
+	void *head;
 	uint32_t size;
-	struct heap_block_t *prev_block;
-	struct heap_block_t *next_block;
-}heap_block_t;
-
-typedef struct __packed{
 	uint32_t magic;
-	uint32_t blk_size;
-	heap_block_t *first_block;
-}heap_block_header_t;
+}heap_blk_header_t;
 
-heap_block_header_t *used_blk_list;
-heap_block_header_t *free_blk_list;
+typedef struct{
+	heap_blk_header_t *first;
+}heap_blk_t;
 
 
 #endif /* __UNIQ_HEAP_H__ */
