@@ -216,6 +216,13 @@ static uint32_t detect_heap_block_size(uint32_t size){
 
 }
 
+static heap_blk_t heap_small_blks[SMALL_BLOCK + 1];
+
+static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
+
+	return blk->first;
+
+}
 
 /*
  * __kmalloc
@@ -227,8 +234,67 @@ void *__kmalloc(uint32_t size){
 	/* boyut 0'sa gerek yok */
 	if(!size)
 		return (void*)NULL;
+		
+	uint32_t blk_type = detect_heap_block_size(size);
 
+	if(blk_type >= BIG_BLOCK){
+		
+		/*
+		 * big block
+		 */
+		debug_print(KERN_DUMP,"-> big block",blk_type);
+	}
+	else{
 
+		/*
+		 * small block
+		 */
+		debug_print(KERN_DUMP,"-> small block, [block type = %u]",blk_type);
+		heap_blk_header_t *small_blk = get_heap_blk_header(&heap_small_blks[blk_type]);
+		debug_print(KERN_DUMP,"small_blk : %p",small_blk);
+
+		if(!small_blk){
+
+				/*
+				 * sayfa tahsisi
+				 */
+				small_blk = (heap_blk_header_t*)sbrk(PAGE_SIZE);
+				assert(!((uint32_t)small_blk % PAGE_SIZE));
+				debug_print(KERN_DUMP,"small_blk : %p",small_blk);
+				small_blk->magic = BLOCK_MAGIC;
+
+				/*
+				 * bloktan tahsis icin adresi belirleyelim.
+				 */
+				small_blk->head = (void*)((uint32_t)small_blk + sizeof(heap_blk_header_t));
+				debug_print(KERN_DUMP,"small_blk->head : %p",small_blk->head);
+
+				/*
+				 * small block list'i guncelleyelim.
+				 */
+				blk_list_update(&heap_small_blks[blk_type],small_blk);
+
+				/*
+				 * sayfayi belirlenen block boyutuna gore ayarlayalim.
+				 */
+				#define calc_blk_parts(x)	((PAGE_SIZE - sizeof(heap_blk_header_t)) >> x) - 1
+				uint32_t true_pow = blk_type + 2; /* (2^0 ve 2^1) */
+				uint32_t blk_parts = calc_blk_parts(true_pow);
+				#undef calc_blk_parts
+				debug_print(KERN_DUMP,"true_pow : %u, blk_parts : %u",true_pow,
+										      blk_parts);
+
+				for(uint32_t i = 0; i < blk_parts; i++){
+
+				}
+ 
+		}
+		else{
+
+		}
+	}
+
+	return (void*)NULL;
 
 }
 
