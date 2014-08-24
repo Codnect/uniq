@@ -443,7 +443,29 @@ void __kfree(void *ptr){
 
 }
 
+/*
+ * _kcalloc
+ *
+ * @param nmem :
+ * @param size :
+ */
+static void *_kcalloc(uint32_t nmem,uint32_t size){
 
+	return (void*)NULL;
+
+}
+
+/*
+ * _krealloc
+ *
+ * @param ptr :
+ * @param size :
+ */
+static void *_krealloc(void *ptr,uint32_t size){
+
+	return (void*)NULL;
+
+}
 
 /*
  * __heap_test
