@@ -38,6 +38,9 @@ typedef struct{
 	uint32_t size;
 }heap_info_t;
 
+/*
+ * small block
+ */
 typedef struct{
 	struct heap_blk_header_t *next;		/* sonraki block header'nin adresi */
 	void *point;				/* header'in bos blok parcasinin bellek adresi.
@@ -53,6 +56,17 @@ typedef struct{
 typedef struct{
 	heap_blk_header_t *first;		/* ilk block header'nin adresi*/
 }heap_blk_t;
+
+/*
+ * big block
+ */
+typedef struct{
+	struct heap_big_blk_header_t *prev;
+	struct heap_big_blk_header_t *next;
+	void *point;
+	uint32_t size;
+	uint32_t magic;
+}heap_big_blk_header_t;
 
 
 #endif /* __UNIQ_HEAP_H__ */
