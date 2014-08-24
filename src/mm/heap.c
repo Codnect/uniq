@@ -361,8 +361,10 @@ static void *_kmalloc(uint32_t size){
 		 * eger istenilen boyutta blok parcasi ayrildiktan sonra
 		 * tahsis edilecek adres kalmamissa,bir sonraki dugumu
 		 * tahsis isleminin yapildigi ilk blok dugumune atiyoruz.
-		 * eger bu NULL ise usteki gordugumuz kontrol yapisindan
-		 * iceri girilir ve bir tahsis icin ayarlamak yapilir.
+		 * eger bu NULL ise bir dahaki tahsis isleminde ayni
+	 	 * small block tipinden tahsis yapilmaya kalkilirsa usteki
+		 * gordugumuz kontrol yapisindan iceri girilir ve tahsis icin 
+		 * ayarlamalar yapilir.
 		 */
 		if(!small_blk->point){
 
