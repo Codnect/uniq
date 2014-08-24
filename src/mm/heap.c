@@ -238,6 +238,7 @@ static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
  */
 static void *blk_part_push(heap_blk_header_t *header,void *ptr){
 
+	assert(ptr && (uint32_t)header < (uint32_t)ptr);
 	uint32_t **addr = (uint32_t**)ptr;
 	*addr = (uint32_t*)header->point;
 	header->point = addr;
@@ -251,8 +252,7 @@ static void *blk_part_push(heap_blk_header_t *header,void *ptr){
  */
 static void *blk_part_pop(heap_blk_header_t *header){
 
-	assert(header && header->point != NULL);	
-
+	assert(header && header->point);	
 	void *addr = header->point;
 	uint32_t **point = header->point;
 	header->point = *point;
