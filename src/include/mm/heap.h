@@ -39,14 +39,19 @@ typedef struct{
 }heap_info_t;
 
 typedef struct{
-	struct heap_small_blk_header_t *next;
-	void *head;
-	uint32_t size;
-	uint32_t magic;
+	struct heap_blk_header_t *next;		/* sonraki block header'nin adresi */
+	void *point;				/* header'in bos blok parcasinin bellek adresi.
+						 * bu adres tahsis edilmeden once kendisinden sonraki 
+						 * blok parcasini adresinide barindirir. adresini
+						 * tuttugu blok parcasida baska blok parcasinin
+						 * adresini barindirarak bir dugum olustururlar.
+						 */
+	uint32_t size;				/* header blok boyutu */
+	uint32_t magic;				/* header block magic */
 }heap_blk_header_t;
 
 typedef struct{
-	heap_blk_header_t *first;
+	heap_blk_header_t *first;		/* ilk block header'nin adresi*/
 }heap_blk_t;
 
 
