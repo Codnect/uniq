@@ -238,7 +238,6 @@ static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
  */
 static void *blk_part_push(heap_blk_header_t *header,void *ptr){
 
-	
 	uint32_t **addr = (uint32_t**)ptr;
 	*addr = (uint32_t*)header->point;
 	header->point = addr;
@@ -438,6 +437,7 @@ void __kfree(void *ptr){
 		 * bosa cikariyoruz.
 		 */
 		blk_part_push(blk_header,ptr);
+		
 	}
 
 
