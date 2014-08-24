@@ -229,31 +229,52 @@ static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
 
 }
 
+
 /*
- * blk_list_update,
+ * blk_part_push,
  *
- * @param blk :
- * @param node :
- */ 
-static void blk_list_update(heap_blk_t *blk,heap_blk_header_t *node){
+ * @param header :
+ * @param ptr :
+ */
+static void *blk_part_push(heap_blk_header_t *header,void *ptr){
+
 	
-	node->next = blk->first;
-	blk->first = node;
+	uint32_t **addr = (uint32_t**)ptr;
+	*addr = (uint32_t*)header->point;
+	header->point = addr;
 
 }
 
+/*
+ * blk_part_pop,
+ *
+ * @param header :
+ */
+static void *blk_part_pop(heap_blk_header_t *header){
+
+	assert(header && header->point != NULL);	
+
+	void *addr = header->point;
+	uint32_t **point = header->point;
+	header->point = *point;
+	
+	return addr;
+
+}
 
 /*
- * __kmalloc
+ * __kmalloc, heap alanindan istenen boyutta bellek ayrilir.
  *
- * @param size :
+ * @param size : heap alanindan ayrilacak boyut(bayt olarak) 
  */
-void *__kmalloc(uint32_t size){
+static void *_kmalloc(uint32_t size){
 
-	/* boyut 0'sa gerek yok */
+	/*
+	 * eger boyut sifirsa islem yapmaya gerek yok.
+	 */
 	if(!size)
-		return (void*)NULL;
-		
+		return NULL;
+
 	uint32_t blk_type = detect_heap_block_size(size);
 
 	if(blk_type >= BIG_BLOCK){
@@ -261,61 +282,107 @@ void *__kmalloc(uint32_t size){
 		/*
 		 * big block
 		 */
-		debug_print(KERN_DUMP,"-> big block",blk_type);
+		#if 0
+			debug_print(KERN_DUMP,"-> big block",blk_type);
+		#endif
 	}
 	else{
 
 		/*
 		 * small block
 		 */
-		debug_print(KERN_DUMP,"-> small block, [block type = %u]",blk_type);
 		heap_blk_header_t *small_blk = get_heap_blk_header(&heap_small_blks[blk_type]);
-		debug_print(KERN_DUMP,"small_blk : %p",small_blk);
+		#if 0
+			debug_print(KERN_DUMP,"-> small block, [block type = %u] ,small_blk : %p",blk_type,small_blk);
+		#endif
 
 		if(!small_blk){
-
+				
 				/*
-				 * sayfa tahsisi
+				 * sbrk ile sayfa boyutu kadar tahsis islemi gerceklestiriyoruz.
 				 */
 				small_blk = (heap_blk_header_t*)sbrk(PAGE_SIZE);
 				assert(!((uint32_t)small_blk % PAGE_SIZE));
-				debug_print(KERN_DUMP,"small_blk : %p",small_blk);
 				small_blk->magic = BLOCK_MAGIC;
-
 				/*
-				 * bloktan tahsis icin adresi belirleyelim.
+				 * sayfanin hangi adresinden itibaren malloc fonksiyonlariyla
+				 * tahsis islemlerinin yapilacagi adres noktasi belirliyoruz.
 				 */
-				small_blk->head = (void*)((uint32_t)small_blk + sizeof(heap_blk_header_t));
-				debug_print(KERN_DUMP,"small_blk->head : %p",small_blk->head);
-
+				small_blk->point = (void*)((uint32_t)small_blk + sizeof(heap_blk_header_t));
+				#if 0				
+					debug_print(KERN_DUMP,"small_blk : %p, small_blk->head : %p",small_blk,small_blk->head);
+				#endif
+				heap_blk_t *blk = (heap_blk_t*)(&heap_small_blks[blk_type]);
 				/*
-				 * small block list'i guncelleyelim.
+				 * sayfayi bulundugu small block tipine gore listeye bagliyoruz.
 				 */
-				blk_list_update(&heap_small_blks[blk_type],small_blk);
+				small_blk->next = blk->first;
+				blk->first = small_blk;
 
 				/*
-				 * sayfayi belirlenen block boyutuna gore ayarlayalim.
+				 * sayfayi belirlenen blok boyutuna gore ayarlayiyoruz.
 				 */
 				#define calc_blk_parts(x)	((PAGE_SIZE - sizeof(heap_blk_header_t)) >> x) - 1
-				uint32_t true_pow = blk_type + 2; /* (2^0 ve 2^1) */
+				uint32_t true_pow = blk_type + 2;	 /* (2^0 ve 2^1) */
 				uint32_t blk_parts = calc_blk_parts(true_pow);
 				#undef calc_blk_parts
-				debug_print(KERN_DUMP,"true_pow : %u, blk_parts : %u",true_pow,
-										      blk_parts);
+				#if 0				
+					debug_print(KERN_DUMP,"true_pow : %u, blk_parts : %u",true_pow,blk_parts);
+				#endif				
+				uint32_t **tmp_blk = small_blk->point;
 
+				/*
+				 * sayfadaki blok parcalarinin malloc ile tahsis edilen kadar
+				 * birbirlerinin adreslerini tutmasini sagliyoruz.
+				 */
 				for(uint32_t i = 0; i < blk_parts; i++){
-
+					#if 0
+						debug_print(KERN_DUMP,"i << blk_type : %u (i+1) << blk_type : %u",i << blk_type,
+											    		(i+1) << blk_type);
+						debug_print(KERN_DUMP,"tmp_blk[i << blk_type] : %p",&tmp_blk[i << blk_type]);
+					#endif
+					tmp_blk[i << blk_type] = (uint32_t*)&tmp_blk[(i+1) << blk_type];
+				
 				}
- 
-		}
-		else{
+				#if 0
+					debug_print(KERN_DUMP,"&tmp_blk[blk_parts << blk_type] : %p",&tmp_blk[blk_parts << blk_type]);
+				#endif 				
+				tmp_blk[blk_parts << blk_type] = NULL;
+				small_blk->size = blk_type;
 
 		}
+		
+		/*
+		 * istenilen small block tipinden bir parca istiyoruz.
+		 */
+		uint32_t **ret = blk_part_pop(small_blk);
+
+		/*
+		 * eger istenilen boyutta blok parcasi ayrildiktan sonra
+		 * tahsis edilecek adres kalmamissa,bir sonraki dugumu
+		 * tahsis isleminin yapildigi ilk blok dugumune atiyoruz.
+		 * eger bu NULL ise usteki gordugumuz kontrol yapisindan
+		 * iceri girilir ve bir tahsis icin ayarlamak yapilir.
+		 */
+		if(!small_blk->point){
+
+			heap_blk_t *blk = (heap_blk_t*)(&heap_small_blks[blk_type]);
+			blk->first = small_blk->next;
+			small_blk->next = NULL;
+
+		}
+
+		/*
+		 * ve adresi geri donduruyoruz, :) mutlu son.
+		 */
+		return ret;
+		
 	}
 
 	return (void*)NULL;
 
 }
+
 
 /*
  * __kfree
@@ -324,6 +391,52 @@ void *__kmalloc(uint32_t size){
  */
 void __kfree(void *ptr){
 
+	/*
+	 * eger bos bir isaretci ise islemlere gerek yok
+	 */
+	if(!ptr)
+		return;
+
+	/*
+	 * blk_header'larin adreslerinin hepsinin bir sayfa boyutunun katlarindan
+	 * basladigini _kmalloc() fonksiyonun yapisini inceleyerek gorebilirsiniz.
+	 */
+	heap_blk_header_t *blk_header = (heap_blk_header_t*)((uint32_t)ptr & ~PAGE_MASK);
+
+	/*
+	 * eger sihirli numara eslemiyorsa!
+	 */
+	if(blk_header->magic != BLOCK_MAGIC)
+		return;
+
+	uint32_t blk_type = blk_header->size;
+
+	if(blk_type >= BIG_BLOCK){
+
+		/*
+		 * big block
+		 */
+	}
+	else{
+
+		/*
+		 * small block
+		 */
+		
+		if(!blk_header->point){
+
+			heap_blk_t *blk = (heap_blk_t*)(&heap_small_blks[blk_type]);
+			blk_header->next = blk->first;
+			blk->first = blk_header;	
+	
+		}
+		
+		/*
+		 * blok parcasinin tekrar kullanilmasi amaciyla
+		 * bosa cikariyoruz.
+		 */
+		blk_part_push(blk_header,ptr);
+	}
 
 
 }
