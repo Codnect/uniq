@@ -54,7 +54,7 @@ typedef struct{
 }heap_blk_header_t;
 
 typedef struct{
-	heap_blk_header_t *first;		/* ilk block header'nin adresi*/
+	heap_blk_header_t *first;		/* ilk block header'in adresi*/
 }heap_blk_t;
 
 /*
