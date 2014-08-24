@@ -390,7 +390,7 @@ static void *_kmalloc(uint32_t size){
  *
  * @param ptr :
  */
-void __kfree(void *ptr){
+static void _kfree(void *ptr){
 
 	/*
 	 * eger bos bir isaretci ise islemlere gerek yok
