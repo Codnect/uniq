@@ -354,7 +354,7 @@ static void *_kmalloc(uint32_t size){
 		/*
 		 * istenilen small block tipinden bir parca istiyoruz.
 		 */
-		uint32_t **ret = blk_part_pop(small_blk);
+		void *ret = blk_part_pop(small_blk);
 
 		/*
 		 * eger istenilen boyutta blok parcasi ayrildiktan sonra
