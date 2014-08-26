@@ -648,6 +648,9 @@ static void *_kcalloc(uint32_t nmem,uint32_t size){
  */
 static void *_kvalloc(uint32_t size){
 
+	if(!size)
+		return (void*)NULL;
+
 	uint32_t alloc_size = size + PAGE_SIZE - sizeof(heap_big_blk_t);
 	void *ptr = _kmalloc(alloc_size);
 	void *out_addr = (void*)((uint32_t)ptr + (PAGE_SIZE - sizeof(heap_big_blk_t)));
