@@ -29,6 +29,7 @@ uintptr_t last_addr = (uintptr_t)&end;
 static volatile uint32_t mlock = 0;
 heap_info_t heap_info;
 
+
 #define BLOCK_MAGIC		0xBAF01CDE
 #define BIG_BLOCK		10
 #define SMALL_BLOCK		(BIG_BLOCK - 1)
@@ -191,32 +192,33 @@ uint32_t kmalloc(uint32_t size){
 }
 
 /*
- * detect_heap_block_size,tahsis icin en uygun boyutu belirler.
+ * detect_heap_block_size,tahsis icin en uygun tipi belirler.
  *
  * @param size : tahsis edilmek istenen boyut (bayt olarak). 
  */
-static uint32_t detect_heap_block_size(uint32_t size){
+static uint32_t detect_heap_block_type(uint32_t size){
 
 	/*
 	 * boyutun kac bitle ifade edildigi buluyoruz.ornegin 4
 	 * sayisi ikili sistemde "100" dir. yani toplamda 3 bit
 	 * ile ifade edilir.
 	 */
-	uint32_t block_size = find_bit_count(size);
+	uint32_t blk_type = find_bit_count(size);
 	
-	if(block_size <= 2)
+	if(blk_type <= 2)
 		return 0;
 
-	block_size -= (is_pow_two(size) + 2);
+	blk_type -= (is_pow_two(size) + 2);
 
-	if(block_size > BIG_BLOCK)
+	if(blk_type > BIG_BLOCK)
 		return BIG_BLOCK;
 
-	return block_size;
+	return blk_type;
 
 }
 
 static heap_blk_t heap_small_blks[SMALL_BLOCK + 1];
+static heap_big_root_blk_t heap_big_root;
 
 /*
  * get_heap_blk_header,
@@ -262,6 +264,137 @@ static void *blk_part_pop(heap_blk_header_t *header){
 }
 
 /*
+ * detect_big_heap_type,
+ *
+ * @param size :
+ */
+static uint32_t detect_big_heap_type(uint32_t size){
+
+	uint32_t page_count = (size + sizeof(heap_big_blk_t)) / PAGE_SIZE + 1;
+	uint32_t blk_type = find_bit_count(page_count);
+
+	/*
+	 * ===============
+	 * 1-4 	    [0]
+	 * 5-8      [1]
+	 * 9-16	    [2]
+	 * 17-32    [3]
+	 * 31-64    [4]
+	 * 63-128   [5]
+	 * 127-256  [6]
+	 * 255-512  [7]
+	 * 511-1024 [8]
+	 * 1025-... [9]
+	 * ===============
+	 */
+
+	if(blk_type <= 2)
+		blk_type = 0;
+	else{
+		
+		blk_type -= (is_pow_two(page_count) + 2);
+		
+		if(blk_type >= BIG_MAX_TYPE)
+			blk_type = BIG_MAX_TYPE;
+			
+	}
+
+	return blk_type;
+
+}
+
+/*
+ * big_blk_list_insert,
+ *
+ * @param header :
+ */
+static void big_blk_list_insert(heap_big_blk_t *header){
+
+	uint32_t blk_type = detect_big_heap_type(header->size);
+	
+	if(!heap_big_root.node[blk_type]){
+
+		heap_big_root.node[blk_type] = header;
+		header->next = NULL;
+
+	}
+	else{
+
+		header->next = heap_big_root.node[blk_type];
+		heap_big_root.node[blk_type]->prev = header;
+
+	}
+	
+	header->prev = heap_big_root.node[blk_type];
+
+} 
+
+/*
+ * big_blk_find_best_size,
+ *
+ * @param search_size :
+ */
+static heap_big_blk_t *big_blk_find_best_size(uint32_t search_size){
+
+
+	uint32_t blk_type = detect_big_heap_type(search_size);
+	heap_big_blk_t *big_blk = (heap_big_blk_t*)heap_big_root.node[blk_type];
+
+	while(big_blk && big_blk->size >= search_size){
+
+			if(!big_blk->next)
+				break;	
+
+			big_blk = big_blk->next;
+	
+	}
+
+	if(big_blk->size < search_size)
+		return NULL;	
+
+	return big_blk;
+
+}
+
+/*
+ * big_blk_list_delete,
+ *
+ * @param header :
+ */
+static void big_blk_list_delete(heap_big_blk_t *header){
+
+	uint32_t blk_type = detect_big_heap_type(header->size);
+	heap_big_blk_t *big_blk = (heap_big_blk_t*)heap_big_root.node[blk_type];
+
+	while(big_blk){
+
+			if((uint32_t)big_blk == (uint32_t)header)
+				break;
+
+			big_blk = big_blk->next;
+	
+	}
+
+	if(!big_blk->prev){
+	
+		heap_big_root.node[blk_type] = big_blk->next;
+		((heap_big_blk_t*)big_blk->next)->prev = NULL;
+
+	}
+	else{
+
+		if(big_blk->next)
+			((heap_big_blk_t*)big_blk->next)->prev = big_blk->prev;
+	
+		if(big_blk->prev)		
+			((heap_big_blk_t*)big_blk->prev)->next = big_blk->next;
+
+	}
+
+
+}
+
+/*
  * __kmalloc, heap alanindan istenen boyutta bellek ayrilir.
  *
  * @param size : heap alanindan ayrilacak boyut(bayt olarak) 
@@ -274,16 +407,46 @@ static void *_kmalloc(uint32_t size){
 	if(!size)
 		return NULL;
 
-	uint32_t blk_type = detect_heap_block_size(size);
+	uint32_t blk_type = detect_heap_block_type(size);
 
 	if(blk_type >= BIG_BLOCK){
 		
 		/*
 		 * big block
 		 */
-		#if 0
-			debug_print(KERN_DUMP,"-> big block",blk_type);
-		#endif
+
+		/*
+		 * tahsis edilecek boyut kadar bos bloklardan uygun yer
+		 * ariyoruz.
+		 */
+		heap_big_blk_t *big_blk = big_blk_find_best_size(size);
+
+		/*
+		 * eger uygun yer bulunamamissa yani big_blk "null" ise.
+		 */
+		if(!big_blk){
+			
+			/*
+			 * sbrk ile uygun boyutta sayfa tahsisi gerceklestiriyoruz.
+			 */
+			uint32_t page_count = (size + sizeof(heap_big_blk_t)) / PAGE_SIZE + 1;
+			big_blk = (heap_big_blk_t*)sbrk(page_count * PAGE_SIZE);
+			assert(!((uint32_t)big_blk % PAGE_SIZE));
+			
+			big_blk->magic = BLOCK_MAGIC;
+			big_blk->size = page_count * PAGE_SIZE - sizeof(heap_big_blk_t);
+			
+			
+			
+		}
+		/*
+		 * eger uygun yer bulunmussa
+		 */
+		else
+			big_blk_list_delete(big_blk);
+
+		return (void*)big_blk + sizeof(heap_big_blk_t);
+
 	}
 	else{
 
@@ -380,8 +543,6 @@ static void *_kmalloc(uint32_t size){
 		
 	}
 
-	return (void*)NULL;
-
 }
 
 
@@ -417,6 +578,10 @@ static void _kfree(void *ptr){
 		/*
 		 * big block
 		 */
+		 
+		heap_big_blk_t *big_blk = (heap_big_blk_t*)(blk_header);
+		big_blk_list_insert(big_blk);
+
 	}
 	else{
 
