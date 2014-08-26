@@ -1,7 +1,7 @@
 Uniq
 ====
 
-**Uniq**, i386 mimariye sahip bir işletim sistemi çekirdeğidir. *Unix* yada *Linux* tabanlı değildir,*Unix* benzeri bir işletim sistemi çekirdeği diyebiliriz ve tüm çekirdek sıfırdan yazılmıştır. Bunun yanında çekirdeğin **POSIX** standartlarını büyük ölçüde desteklemeye
+**Uniq**, i386 mimarisine sahip bir işletim sistemi çekirdeğidir. *Unix* yada *Linux* tabanlı değildir,*Unix* benzeri bir işletim sistemi çekirdeği diyebiliriz ve tüm çekirdek sıfırdan yazılmıştır. Bunun yanında çekirdeğin **POSIX** standartlarını büyük ölçüde desteklemeye
 çalışacaktır.
 
 
