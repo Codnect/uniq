@@ -28,7 +28,7 @@ uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr);
 uint32_t kmalloc(uint32_t size);
 
-#define KHEAP_MAGIC		0xBAF01CDE
+#define PAGE_SIZE		4096
 #define KHEAP_INIT		0x00800000
 
 typedef struct{
@@ -42,15 +42,16 @@ typedef struct{
  * small block
  */
 typedef struct{
-	struct heap_blk_header_t *next;		/* sonraki block header'nin adresi */
+	struct heap_blk_header_t *next;		/* sonraki block header'in adresi */
+	uint32_t size;				/* header blok boyutu */
+	uint32_t magic;				/* header block magic */
 	void *point;				/* header'in bos blok parcasinin bellek adresi.
 						 * bu adres tahsis edilmeden once kendisinden sonraki 
 						 * blok parcasini adresinide barindirir. adresini
 						 * tuttugu blok parcasida baska blok parcasinin
 						 * adresini barindirarak bir dugum olustururlar.
 						 */
-	uint32_t size;				/* header blok boyutu */
-	uint32_t magic;				/* header block magic */
+
 }heap_blk_header_t;
 
 typedef struct{
@@ -60,13 +61,17 @@ typedef struct{
 /*
  * big block
  */
-typedef struct{
-	struct heap_big_blk_header_t *prev;
-	struct heap_big_blk_header_t *next;
-	void *point;
-	uint32_t size;
-	uint32_t magic;
-}heap_big_blk_header_t;
+#define BIG_MAX_TYPE	0x9
 
+typedef struct _heap_big_blk_t{
+	struct heap_big_blk_t *next;		/* sonraki block header'in adresi */
+	uint32_t size;				/* header blok boyutu */
+	uint32_t magic;				/* header block magic */
+	struct heap_big_blk_t *prev;		/* onceki block header'in adresi */
+}heap_big_blk_t;
+
+typedef struct{
+	heap_big_blk_t *node[BIG_MAX_TYPE + 1];
+}heap_big_root_blk_t;
 
 #endif /* __UNIQ_HEAP_H__ */
