@@ -388,7 +388,6 @@ static void big_blk_list_delete(heap_big_blk_t *header){
 
 	}
 
-
 }
 
 /*
@@ -432,8 +431,6 @@ static void *_kmalloc(uint32_t size){
 			
 			big_blk->magic = BLOCK_MAGIC;
 			big_blk->size = page_count * PAGE_SIZE - sizeof(heap_big_blk_t);
-			
-			
 			
 		}
 		/*
@@ -601,7 +598,6 @@ static void _kfree(void *ptr){
 		blk_part_push(blk_header,ptr);
 		
 	}
-
 
 }
 
