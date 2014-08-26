@@ -20,7 +20,6 @@
 #include <uniq/module.h>
 #include <drivers/apm_bios.h>
 
-uintptr_t apm_bios_info_addr = NULL;
 
 /*
  * apm_bios_info_load
@@ -38,8 +37,7 @@ void apm_bios_info_load(struct apm_bios_info_t *apm_bios_info){
  */
 void apm_init(void){
  
-	if(!apm_bios_info_addr)
-		return;
+
  
 } 
 
