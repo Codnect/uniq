@@ -572,6 +572,10 @@ static void _kfree(void *ptr){
 	if(!ptr)
 		return;
 
+	/* sayfa hizalamasi yapilmis blok mu? */
+	if(!((uint32_t)ptr % PAGE_SIZE))
+		ptr = (void*)ptr - 1;
+		
 	/*
 	 * blk_header'larin adreslerinin hepsinin bir sayfa boyutunun katlarindan
 	 * basladigini _kmalloc() fonksiyonun yapisini inceleyerek gorebilirsiniz.
