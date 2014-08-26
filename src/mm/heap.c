@@ -133,9 +133,24 @@ void free(void *ptr){
  */
 uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 
+	if(heap_info.current_end){
+
+		void *ret_addr;
+		
+		if(!align)
+			ret_addr = malloc(size);
+		else
+			ret_addr = valloc(size);
+
+		return ret_addr;
+		
+	}
+
 	if(align && (last_addr & ALIGN_LIMIT)){
+
 		last_addr &= ALIGN_LIMIT;
 		last_addr += FRAME_SIZE_BYTE;
+
 	}
 
 	if(physic_addr)
