@@ -375,17 +375,14 @@ static void big_blk_list_delete(heap_big_blk_t *header){
 	
 	}
 
-	if(!big_blk->prev){
 	
-		heap_big_root.node[blk_type] = big_blk->next;
-		((heap_big_blk_t*)big_blk->next)->prev = NULL;
-
-	}
-	else{
-
-		if(big_blk->next)
+	if(big_blk->next)
 			((heap_big_blk_t*)big_blk->next)->prev = big_blk->prev;
 	
+	if(!big_blk->prev)
+		heap_big_root.node[blk_type] = big_blk->next;
+	else{
+		
 		if(big_blk->prev)		
 			((heap_big_blk_t*)big_blk->prev)->next = big_blk->next;
 
