@@ -62,6 +62,7 @@ __malloc void *malloc(uint32_t size){
 	spin_lock(&mlock);
 	void *ret_addr = _kmalloc(size);
 	spin_unlock(&mlock);
+	
 	return ret_addr;
 
 }
@@ -77,6 +78,7 @@ __malloc void *realloc(void *ptr,uint32_t size){
 	spin_lock(&mlock);
 	void *ret_addr = _krealloc(ptr,size);
 	spin_unlock(&mlock);
+	
 	return ret_addr;
 	
 }
@@ -92,6 +94,7 @@ __malloc void *calloc(uint32_t n,uint32_t size){
 	spin_lock(&mlock);
 	void *ret_addr = _kcalloc(n,size);
 	spin_unlock(&mlock);
+	
 	return ret_addr;
 	
 }
@@ -106,6 +109,7 @@ __malloc void *valloc(uint32_t size){
 	spin_lock(&mlock);
 	void *ret_addr = _kvalloc(size);
 	spin_unlock(&mlock);
+	
 	return ret_addr;
 	
 }
@@ -118,7 +122,10 @@ __malloc void *valloc(uint32_t size){
 void free(void *ptr){
 
 	spin_lock(&mlock);
-	_kfree(ptr);
+	
+	if(last_addr < (uint32_t)ptr)
+		_kfree(ptr);
+
 	spin_unlock(&mlock);
 
 }
