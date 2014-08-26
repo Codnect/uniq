@@ -44,7 +44,11 @@ heap_info_t heap_info;
 #define is_pow_two(x)		!(x & (x - 1))
 
 
-void *__kmalloc(uint32_t size);
+static void _kfree(void *ptr);
+static void *_kcalloc(uint32_t nmem,uint32_t size);
+static void *_kvalloc(uint32_t size);
+static void *_krealloc(void *ptr,uint32_t size);
+static void *_kmalloc(uint32_t size);
 
 
 
@@ -56,7 +60,7 @@ void *__kmalloc(uint32_t size);
 __malloc void *malloc(uint32_t size){
 	
 	spin_lock(&mlock);
-	void *ret_addr;
+	void *ret_addr = _kmalloc(size);
 	spin_unlock(&mlock);
 	return ret_addr;
 
@@ -71,7 +75,7 @@ __malloc void *malloc(uint32_t size){
 __malloc void *realloc(void *ptr,uint32_t size){
 	
 	spin_lock(&mlock);
-	void *ret_addr;
+	void *ret_addr = _krealloc(ptr,size);
 	spin_unlock(&mlock);
 	return ret_addr;
 	
@@ -86,7 +90,7 @@ __malloc void *realloc(void *ptr,uint32_t size){
 __malloc void *calloc(uint32_t n,uint32_t size){
 	
 	spin_lock(&mlock);
-	void *ret_addr;
+	void *ret_addr = _kcalloc(n,size);
 	spin_unlock(&mlock);
 	return ret_addr;
 	
@@ -100,7 +104,7 @@ __malloc void *calloc(uint32_t n,uint32_t size){
 __malloc void *valloc(uint32_t size){
 	
 	spin_lock(&mlock);
-	void *ret_addr;
+	void *ret_addr = _kvalloc(size);
 	spin_unlock(&mlock);
 	return ret_addr;
 	
@@ -111,10 +115,10 @@ __malloc void *valloc(uint32_t size){
  *
  * @param ptr :
  */
-void free(void *ptr) {
+void free(void *ptr){
 
 	spin_lock(&mlock);
-	/* */
+	_kfree(ptr);
 	spin_unlock(&mlock);
 
 }
@@ -623,7 +627,7 @@ static void *_kcalloc(uint32_t nmem,uint32_t size){
  *
  * @param size :
  */
-static void *_kvalloc(uint32_t size) {
+static void *_kvalloc(uint32_t size){
 
 	uint32_t alloc_size = size + PAGE_SIZE - sizeof(heap_big_blk_t);
 	void *ptr = _kmalloc(alloc_size);
