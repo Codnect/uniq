@@ -13,7 +13,7 @@ Uniq
 **Desteklenen Platformlar** | i386
 **Son Kararlı Sürüm** |-
 **Çekirdek Türü**|-
-**Lisans**| GNU GPL v2
+**Lisans**| [GNU GPL v2](https://github.com/codnect/uniq/blob/master/LICENSE)
 
 #### Çekirdek Sürümü Geçmişi ####
 Kod Adı | Sürüm | Platform | Yayınlanma Tarihi | Sorumlu Geliştirici
