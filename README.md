@@ -4,6 +4,16 @@ Uniq
 **Uniq**, i386 mimarisine sahip bir işletim sistemi çekirdeğidir. *Unix* yada *Linux* tabanlı değildir,*Unix* benzeri bir işletim sistemi çekirdeği diyebiliriz ve tüm çekirdek sıfırdan yazılmıştır. Bunun yanında çekirdeğin **POSIX** standartlarını büyük ölçüde desteklemeye
 çalışacaktır.
 
+#### Çekirdek Bilgileri ####
+  .| .
+------- | ----- 
+**Geliştirici**| Gönüllüler 
+**IS Ailesi** |  Unix benzeri
+**Kaynak Modeli** | Açık Kaynak  
+**Desteklenen Platformlar** | i386
+**Son Kararlı Sürüm** |-
+**Çekirdek Türü**|-
+**Lisans**| GNU GPL v2
 
 #### Çekirdek Sürümü Geçmişi ####
 Kod Adı | Sürüm | Platform | Yayınlanma Tarihi | Sorumlu Geliştirici
