@@ -613,7 +613,28 @@ static void _kfree(void *ptr){
  */
 static void *_kcalloc(uint32_t nmem,uint32_t size){
 
-	return (void*)NULL;
+	void *ptr = _kmalloc(nmem * size);
+
+	if(ptr)
+		memset(ptr,0,nmem * size);
+
+	return ptr;
+
+}
+
+/*
+ * _kvalloc
+ *
+ * @param size :
+ */
+static void *_kvalloc(uint32_t size) {
+
+	uint32_t alloc_size = size + PAGE_SIZE - sizeof(heap_big_blk_t);
+	void *ptr = _kmalloc(alloc_size);
+	void *out_addr = (void*)((uint32_t)ptr + (PAGE_SIZE - sizeof(heap_big_blk_t)));
+	
+	assert((uint32_t)out_addr % PAGE_SIZE == 0);
+	return out_addr;
 
 }
 
@@ -624,6 +645,47 @@ static void *_kcalloc(uint32_t nmem,uint32_t size){
  * @param size :
  */
 static void *_krealloc(void *ptr,uint32_t size){
+
+
+	/* eger isaretci null ise boyut kadar bellek ayir */
+	if(!ptr)
+		return _kmalloc(size);
+
+	/* boyut bos ise isaretciyi serbest birak */
+	if(!size){
+
+		_kfree(ptr);
+		return NULL;
+
+	}
+
+	heap_blk_header_t *blk =  (void*)((uint32_t)ptr & (uint32_t)~PAGE_MASK);
+
+	if(blk->magic != BLOCK_MAGIC){
+
+		assert(0 && "bad heap block magic!");
+		return NULL;
+
+	}
+
+	uint32_t old_size = blk->size;
+
+	if(old_size < BIG_BLOCK)
+		old_size = (1 << (2 + old_size));
+
+	if(old_size >= size)
+		return ptr;
+
+	void *out = _kmalloc(size);
+	
+	if(out){
+
+		memcpy(out,ptr,old_size);
+		_kfree(ptr);	
+	
+		return out;
+
+	}
 
 	return (void*)NULL;
 
