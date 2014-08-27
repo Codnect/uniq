@@ -22,4 +22,8 @@ Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) 
 -       | ?  | i386 | - | [Burak Köken](https://github.com/burakkoken)
 -       | ?   | i386 | - | -
 
-### Sorularla Uniq
+####Sorularla Uniq####
+
+* **Neden yeni bir işletim sistemi çekirdeği?**
+
+> Yeni bir işletim sistemi çekirdeği yazmanın gereksiz olduğunu dair çevremden birçok olumsuz tepki aldım. Fakat işletim sistemlerinin nasıl çalıştığına dair olan merakım bu olumsuz tepkilerin üstünden gelmemi sağladı ve merakım sayesinde hayalleriminden biri olarak gördüğüm bu projeyi hazırlamaya koyuldum. İnsanın hayallerini gerçekleştirmesi kadar daha güzel birşey olamaz. Kısacası bu bir merak projesi. - *Burak Köken*
