@@ -19,8 +19,8 @@ Uniq
 Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) | Maintainer
 ------- | ----- | -------- | ----------------- | --------------------
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1 | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
--       | ?  | i386 | - | [Burak Köken](https://github.com/burakkoken)
--       | ?   | i386 | - | -
+-| -  | i386 | - | [Burak Köken](https://github.com/burakkoken)
+- | -   | i386 | - | -
 
 ####Sorularla Uniq####
 
