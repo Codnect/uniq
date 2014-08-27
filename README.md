@@ -30,8 +30,12 @@ Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) 
 
 * **Neden Uniq?**
 
->**Uniq** isminin **Unix**'le hiçbir bağlantısı yoktur. **Uniq** ismi **Unique**(benzersiz) kelimesinden gelmektedir.
+>**Uniq** isminin **Unix**'le hiçbir bağlantısı yoktur. **Uniq** ismi **Unique**(benzersiz) kelimesinden gelmektedir. - *Burak Köken*
 
-* **Uniq'in kökeni?**
+* **Uniq'in kökeni nereye dayanıyor?**
 
->
+> **Uniq**'in kökeni 2013'ün yılında işletim sistemi çekirdeği projesi araştırması için ilk deneme çekirdeği olarak oluşturduğum **Brid** çekirdeğine dayanıyor diyebiliriz fakat iki çekirdeğin kodları tamamen ayrıdır. **Uniq** çekirdeğine başlamaya karar vermekle birlikte **Brid** çekirdeğini bir kenara atmış oldum. **Uniq** çekirdeği **Unix** ve **Linux** tabanlı değildir, kodları sıfırdan yazılmaya başlanmıştır. - *Burak Köken*
+
+* **İlk sürümün ismi neden Dennis Ritchie?**
+
+> [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie), bu sektörde saygı duyduğum ve ilham aldığım kişilerden birisidir. Yaşamı boyunca yaptığı çalışmalarla sektöre yön vermiş bir kişiliktir. Duyduğum saygı ve **Dennis Ritchie**'nin anısına ilk kernel sürüm isminin **Dennis Ritchie** olmasında karar kıldım. Dennis Ritchie'i saygıyla anıyorum. - *Burak Köken*
