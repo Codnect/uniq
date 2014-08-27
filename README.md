@@ -27,3 +27,11 @@ Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) 
 * **Neden yeni bir işletim sistemi çekirdeği?**
 
 > Yeni bir işletim sistemi çekirdeği yazmanın gereksiz olduğunu dair çevremden birçok olumsuz tepki aldım. Fakat işletim sistemlerinin nasıl çalıştığına dair olan merakım bu olumsuz tepkilerin üstünden gelmemi sağladı ve merakım sayesinde hayalleriminden biri olarak gördüğüm bu projeyi hazırlamaya koyuldum. İnsanın hayallerini gerçekleştirmesi kadar daha güzel birşey olamaz. Kısacası bu bir merak projesi. - *Burak Köken*
+
+* **Neden Uniq?**
+
+>**Uniq** isminin **Unix**'le hiçbir bağlantısı yoktur. **Uniq** ismi **Unique**(benzersiz) kelimesinden gelmektedir.
+
+* **Uniq'in kökeni?**
+
+>
