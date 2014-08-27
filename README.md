@@ -38,4 +38,4 @@ Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) 
 
 * **İlk sürümün ismi neden Dennis Ritchie?**
 
-> [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie), bu sektörde saygı duyduğum ve ilham aldığım kişilerden birisidir. Yaşamı boyunca yaptığı çalışmalarla sektöre yön vermiş bir kişiliktir. Duyduğum saygı ve **Dennis Ritchie**'nin anısına ilk kernel sürüm isminin **Dennis Ritchie** olmasında karar kıldım. Dennis Ritchie'i saygıyla anıyorum. - *Burak Köken*
+> [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie), bu sektörde saygı duyduğum ve ilham aldığım kişilerden birisidir. Yaşamı boyunca yaptığı çalışmalarla sektöre yön vermiş bir kişiliktir. Duyduğum saygı ve **Dennis Ritchie**'nin anısına ilk kernel sürüm isminin **Dennis Ritchie** olmasında karar kıldım. **Dennis Ritchie**'i saygıyla anıyorum. - *Burak Köken*
