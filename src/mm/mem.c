@@ -144,7 +144,8 @@ uint32_t use_memory_size(void){
 }
 
 /*
- * calc_heap_size,
+ * calc_heap_size, toplam bellek miktarina gore heap alaninin
+ * boyutunu hesaplar. sistemin en az 64 MiB olmasi gerekiyor!
  */
 static void calc_heap_size(void){
 	
@@ -653,9 +654,13 @@ void paging_init(uint32_t mem_size){
 }
 
 /*
- * sbrk,
+ * sbrk,heap bolgesinden bellek tahsisi yapmamizi saglar. memory
+ * allocator fonksiyonlarininda sayfa tahsisi icin bu fonksiyon
+ * kullanilir.
  *
- * @param inc :
+ * @param inc : artim boyutu yada diger bir tabirle tahsis
+ *              edilmek istenen boyut daha dogru olur. bu boyut
+ *		sayfa boyutu katlarında olmalidir.
  */
 void *sbrk(uint32_t inc){
 
