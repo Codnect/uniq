@@ -105,7 +105,7 @@ extern void _isr31(void);
 static int_handler_t isr_handlers[MAX_ISR_HANDLER] = { NULL };
 
 /*
- * isr_add_handler
+ * isr_add_handler, bir isr isleyici eklemeyi saglar.
  *
  * @param isr_num : istisna kesme numarasi
  * @param handler : kesme isleyicisi
@@ -117,7 +117,7 @@ void isr_add_handler(uint8_t isr_num, int_handler_t handler){
 }
 
 /*
- * isr_remove_handler
+ * isr_remove_handler, belirlenen isr isleyicisini kaldirir.
  *
  * @param isr_num : istisna kesme numarasi
  */
