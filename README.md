@@ -18,6 +18,6 @@ Uniq
 #### Çekirdek Sürümü Geçmişi ####
 Kod Adı | Sürüm | Platform | Yayınlanma Tarihi | Sorumlu Geliştirici
 ------- | ----- | -------- | ----------------- | --------------------
-[**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1-alpha | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
--       | v0.0.1-beta  | i386 | - | [Burak Köken](https://github.com/burakkoken)
--       | v0.0.1-rc0   | i386 | - | -
+[**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1 | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
+-       | ?  | i386 | - | [Burak Köken](https://github.com/burakkoken)
+-       | ?   | i386 | - | -
