@@ -7,16 +7,16 @@ Uniq
 #### Çekirdek Bilgileri ####
   .| .
 ------- | ----- 
-**Geliştirici**| Gönüllüler 
-**IS Ailesi** |  Unix benzeri
-**Kaynak Modeli** | Açık Kaynak  
+**Geliştirici(Developer)**| Gönüllüler(Volunteers) 
+**IS Ailesi(Os Family)** |  Unix benzeri(Unix-like)
+**Kaynak Modeli(Source Model)** | Açık Kaynak(Open Source) 
 **Desteklenen Platformlar** | i386
-**Son Kararlı Sürüm** |-
-**Çekirdek Türü**|-
-**Lisans**| [GNU GPL v2](https://github.com/codnect/uniq/blob/master/LICENSE)
+**Son Sürüm(Latest Release)** |-
+**Çekirdek Türü(Kernel Type)**|-
+**Lisans(License)**| [GNU GPL v2](https://github.com/codnect/uniq/blob/master/LICENSE)
 
 #### Çekirdek Sürümü Geçmişi ####
-Kod Adı | Sürüm | Platform | Yayınlanma Tarihi | Sorumlu Geliştirici
+Kod Adı(Code Name)| Sürüm(Version) | Platformlar(Platforms) | Sürüm Tarihi(Release Date) | Sorumlu Geliştirici
 ------- | ----- | -------- | ----------------- | --------------------
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1 | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
 -       | ?  | i386 | - | [Burak Köken](https://github.com/burakkoken)
