@@ -598,7 +598,7 @@ void paging_final(void){
 	/*
 	 * en son last_addr + 0x4000 adresine kadar mapping islemini yaptigimizi hatirlayin.
 	 * burdan temel yada ekstra olarak adlandirdigimiz heap alanina kadar mapping islemi
-	 * yapiyoruz. last_addr'nin degismedigine dikkat edin!
+	 * yapiyoruz.
 	 */
 	debug_print(KERN_DUMP,"(%p - %p) mapping. %u Byte / %u KiB",last_addr + 0x4000,
 								   tmp_heap_start,
@@ -664,6 +664,10 @@ void paging_init(uint32_t mem_size){
  */
 void *sbrk(uint32_t inc){
 
+	/* heap baslatilmamis */
+	if(!heap_info.current_end)
+		die("uninitialized heap!!!");
+	
 	/* istenilen artim boyutu sayfa boyutu katlarinda degil */
 	if(inc % FRAME_SIZE_BYTE)
 		die("heap increment size isn't such as page size. :/");
