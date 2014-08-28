@@ -53,9 +53,9 @@ static void *_kmalloc(uint32_t size);
 
 
 /*
- * malloc
+ * malloc,istenilen boyutta yer tahsis eder.
  *
- * @param size :
+ * @param size : boyut (bayt olarak)
  */
 __malloc void *malloc(uint32_t size){
 	
@@ -68,10 +68,11 @@ __malloc void *malloc(uint32_t size){
 }
 
 /*
- * realloc
+ * realloc,eski tahsis edilen bolgenin boyutunu
+ * degistirir.
  *
- * @param ptr :
- * @param size :
+ * @param ptr : isaretci
+ * @param size : boyut (bayt olarak)
  */
 __malloc void *realloc(void *ptr,uint32_t size){
 	
@@ -84,10 +85,11 @@ __malloc void *realloc(void *ptr,uint32_t size){
 }
 
 /*
- * calloc
+ * calloc, istenilen eleman sayisi kadar verilen
+ * eleman boyutuna gore yer tahsis edilir.
  *
- * @param n :
- * @param size :
+ * @param n : eleman sayisi
+ * @param size : eleman boyutu
  */
 __malloc void *calloc(uint32_t n,uint32_t size){
 	
@@ -100,9 +102,10 @@ __malloc void *calloc(uint32_t n,uint32_t size){
 }
 
 /*
- * valloc
- *
- * @param size :
+ * valloc,sayfa hizalamasi yaparak bellek tahsisi yapar
+ * zorunlu olmadigi surece kullanmamaya dikkat edin!
+ * 
+ * @param size : boyut (bayt olarak)
  */
 __malloc void *valloc(uint32_t size){
 	
@@ -115,9 +118,9 @@ __malloc void *valloc(uint32_t size){
 }
 
 /*
- * free
+ * free,belirtilen bellek bolgesini bos'a cikarir.
  *
- * @param ptr :
+ * @param ptr : isaretci
  */
 void free(void *ptr){
 
@@ -140,6 +143,7 @@ void free(void *ptr){
  */
 uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 
+	/* eger heap baslatilmissa */
 	if(heap_info.current_end){
 
 		void *ret_addr;
@@ -153,9 +157,10 @@ uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 		
 	}
 
-	if(align && (last_addr & ALIGN_LIMIT)){
+	/* sayfa hizalamasi yapar,eger align, true ise  */
+	if(align && (last_addr & 0xFFFFF000)){
 
-		last_addr &= ALIGN_LIMIT;
+		last_addr &= ~PAGE_MASK;
 		last_addr += FRAME_SIZE_BYTE;
 
 	}
@@ -172,9 +177,9 @@ uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 
 
 /*
- * kmalloc_align
+ * kmalloc_align,sayfa hizalamasi yaparak bellek tahsis eder.
  *
- * @param size :
+ * @param size : boyut(bayt olarak)
  */
 uint32_t kmalloc_align(uint32_t size){
 
@@ -207,9 +212,16 @@ uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr){
 }
 
 /*
- * kmalloc
+ * kmalloc,belirtilen boyut kadar bellek tahsis eder. heap
+ * baslatilmadan tahsis yapilabilir fakat tahsis edilen
+ * bellek bolgeleri bosa cikarilamaz. heap baslatildiktan
+ * sonra tahsis edilen bellek bolgeleri bosa cikarilabilir.
+ * heap baslatildiktan sonra diger malloc,valloc,realloc ve
+ * calloc fonksiyonlarinin kullanilmasi daha yerinde olacaktir.
+ * heap baslatildiktan sonra malloc yerine kmalloc'ta 
+ * kullanilabilir.
  *
- * @param size :
+ * @param size : boyut (bayt olarak)
  */
 uint32_t kmalloc(uint32_t size){
 
@@ -243,13 +255,15 @@ static uint32_t detect_heap_block_type(uint32_t size){
 
 }
 
+/* small blocks */
 static heap_blk_t heap_small_blks[SMALL_BLOCK + 1];
+/* big root block */
 static heap_big_root_blk_t heap_big_root;
 
 /*
- * get_heap_blk_header,
+ * get_heap_blk_header,small blocklar icin ilk header'i dondurur.
  *
- * @param blk : 
+ * @param blk : small block isaretcisi
  */
 static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
 
@@ -259,10 +273,11 @@ static heap_blk_header_t *get_heap_blk_header(heap_blk_t *blk){
 
 
 /*
- * blk_part_push,
+ * blk_part_push, small block listesinden aldigimiz bir blok parcasini
+ * small block listesine atmamiza yani bosa cikarmamizi saglar.
  *
- * @param header :
- * @param ptr :
+ * @param header : small block header isaretcisi
+ * @param ptr : small block parcasi isaretcisi
  */
 static void *blk_part_push(heap_blk_header_t *header,void *ptr){
 
@@ -274,9 +289,10 @@ static void *blk_part_push(heap_blk_header_t *header,void *ptr){
 }
 
 /*
- * blk_part_pop,
+ * blk_part_pop, small block listesinden bir small block
+ * parcasi alir ve geri dondurur.
  *
- * @param header :
+ * @param header : normal(small block) blok isaretcisi
  */
 static void *blk_part_pop(heap_blk_header_t *header){
 
@@ -290,9 +306,10 @@ static void *blk_part_pop(heap_blk_header_t *header){
 }
 
 /*
- * detect_big_heap_type,
+ * detect_big_heap_type, big blocklar icin blok tipini belirler.
+ * buna gore big block listelerine yerlestirilirler.
  *
- * @param size :
+ * @param size : boyut (bayt olarak)
  */
 static uint32_t detect_big_heap_type(uint32_t size){
 
@@ -330,9 +347,9 @@ static uint32_t detect_big_heap_type(uint32_t size){
 }
 
 /*
- * big_blk_list_insert,
+ * big_blk_list_insert,belirtilen big block'u listeye ekler.
  *
- * @param header :
+ * @param header : big block header isaretcisi
  */
 static void big_blk_list_insert(heap_big_blk_t *header){
 
@@ -356,9 +373,10 @@ static void big_blk_list_insert(heap_big_blk_t *header){
 } 
 
 /*
- * big_blk_find_best_size,
+ * big_blk_find_best_size,aranan boyutta uygun bos big block var mi
+ * diye kontrol eder.
  *
- * @param search_size :
+ * @param search_size : aranan boyut
  */
 static heap_big_blk_t *big_blk_find_best_size(uint32_t search_size){
 
@@ -383,9 +401,9 @@ static heap_big_blk_t *big_blk_find_best_size(uint32_t search_size){
 }
 
 /*
- * big_blk_list_delete,
+ * big_blk_list_delete,belirtilen big block'u listeden siler.
  *
- * @param header :
+ * @param header : big block header isaretcisi
  */
 static void big_blk_list_delete(heap_big_blk_t *header){
 
@@ -417,7 +435,7 @@ static void big_blk_list_delete(heap_big_blk_t *header){
 }
 
 /*
- * __kmalloc, heap alanindan istenen boyutta bellek ayrilir.
+ * _kmalloc, heap alanindan istenen boyutta bellek ayrilir.
  *
  * @param size : heap alanindan ayrilacak boyut(bayt olarak) 
  */
@@ -567,9 +585,9 @@ static void *_kmalloc(uint32_t size){
 
 
 /*
- * __kfree
+ * _kfree,belirtilen bellek bolgesini bos'a cikarir.
  *
- * @param ptr :
+ * @param ptr : isaretci
  */
 static void _kfree(void *ptr){
 
@@ -632,10 +650,11 @@ static void _kfree(void *ptr){
 }
 
 /*
- * _kcalloc
+ * _kcalloc, istenilen eleman sayisi kadar verilen
+ * eleman boyutuna gore yer tahsis edilir.
  *
- * @param nmem :
- * @param size :
+ * @param nmem : eleman sayisi
+ * @param size : eleman boyutu
  */
 static void *_kcalloc(uint32_t nmem,uint32_t size){
 
@@ -649,9 +668,10 @@ static void *_kcalloc(uint32_t nmem,uint32_t size){
 }
 
 /*
- * _kvalloc
- *
- * @param size :
+ * _kvalloc,sayfa hizalamasi yaparak bellek tahsisi yapar,
+ * zorunlu olmadigi surece kullanmamaya dikkat edin!!!
+ * 
+ * @param size : boyut (bayt olarak)
  */
 static void *_kvalloc(uint32_t size){
 
@@ -668,10 +688,11 @@ static void *_kvalloc(uint32_t size){
 }
 
 /*
- * _krealloc
+ * _krealloc,eski tahsis edilen bolgenin boyutunu
+ * degistirir.
  *
- * @param ptr :
- * @param size :
+ * @param ptr : isaretci
+ * @param size : boyut (bayt olarak)
  */
 static void *_krealloc(void *ptr,uint32_t size){
 
@@ -729,7 +750,7 @@ void __heap_test(void){
 }
 
 /*
- * heap_init
+ * heap_init, heap'i baslatir.
  */
 void heap_init(void){
 	
