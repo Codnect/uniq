@@ -47,9 +47,16 @@ typedef struct{
 
 typedef struct{				
 
-	/* page_table isaretci dizisi */
+	/* sayfa tablolari isaretci dizisi */
 	page_table_t *tables[PAGE_MAX_LIMIT];
-	/* tables fiziksel adres isaretcisi */
+	/*
+	 * sayfa tablolarinin sayfa dizini girdisi halleri.
+	 * kisaca sayfa dizin tablosudur. gdt.c'yi incelediyseniz 
+	 * eger yabanci olmayacaksiniz. son 20 bit sayfa tablolarinin 
+	 * kacinci 4 KiB'lik adreste oldugunu belirtir.diger bitler
+	 * ise flaglardir.bu tablonun adresini cr3 kaydedicesine
+	 * atacagiz.
+	 */
 	uint32_t tables_physic[PAGE_MAX_LIMIT];
 	/* tables_physic adresi */
 	uint32_t physic_addr;
