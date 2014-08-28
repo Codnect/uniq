@@ -83,4 +83,11 @@ extern void paging_final(void);
 extern void __page_fault_test(void);
 extern void *sbrk(uint32_t inc);
 
+/* memory allocation */
+__malloc void *malloc(uint32_t size);
+__malloc void *realloc(void *ptr,uint32_t size);
+__malloc void *calloc(uint32_t n,uint32_t size);
+__malloc void *valloc(uint32_t size);
+void free(void *ptr);
+
 #endif /* __UNIQ_KERNEL_H__ */
