@@ -205,7 +205,7 @@ static void move_csr(void){
  */
 void goto_xy(uint8_t new_x,uint8_t new_y){
 	
-	if(new_x > (VGA_CWIDTH - 1) || (VGA_CHEIGHT - 1) < new_y)
+	if(new_x > VGA_CWIDTH || VGA_CHEIGHT < new_y)
 		return;
 
 	save_csr();
