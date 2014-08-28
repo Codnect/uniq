@@ -24,7 +24,6 @@
 
 #define FRAME_SIZE_BYTE		4096		/* 4096 Byte - 4 KiB - 0x1000 */
 #define FRAME_SIZE_KIB		4		/* 4 KiB */
-#define ALIGN_LIMIT		0xFFFFF000
 #define MAX_LIMIT		0xFFFFFFFF	/* 4 GiB */
 
 #define FRAME_INDEX_BIT(x)	(x / 32)
