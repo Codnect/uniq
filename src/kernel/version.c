@@ -36,7 +36,7 @@ int __kern_version_lower = 1;
 	#define KERN_VERSION_SUFFIX "beta"			/* beta,final */
 #endif
 char * __kern_version_suffix   = KERN_VERSION_SUFFIX;
-char * __kern_version_codename = "nova";
+char * __kern_version_codename = "Dennis Ritchie";
 
 char * __kern_arch = "i386";
 char * __kern_build_date = __DATE__;
