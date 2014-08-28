@@ -33,8 +33,9 @@ int __kern_version_lower = 1;
 #ifdef KERN_SPEC_SUFFIX
 	#define KERN_VERSION_SUFFIX STRSTR(KERN_SPEC_SUFFIX)	/* ozel ekler icin */
 #else
-	#define KERN_VERSION_SUFFIX "beta"			/* beta,final */
+	#define KERN_VERSION_SUFFIX "release"			/* alpha,beta,final,release */
 #endif
+
 char * __kern_version_suffix   = KERN_VERSION_SUFFIX;
 char * __kern_version_codename = "Dennis Ritchie";
 
