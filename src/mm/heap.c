@@ -135,11 +135,13 @@ void free(void *ptr){
 
 
 /*
- * kmalloc_org
+ * kmalloc_org, kmalloc ismiyle baslayan fonksiyonlarin ortak
+ * cagirdigi bir alt fonksiyondur. cagiran fonksiyonlarin
+ * verdigi parametreler dogrultusunda bellek tahsisi yapar.
  *
- * @param size :
- * @param align :
- * @param physic_adddr :
+ * @param size : boyut
+ * @param align : sayfa hizalamasi yapilsin mi?
+ * @param physic_adddr : fiziksel adresin atilacagi adres.
  */
 uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 
@@ -157,7 +159,7 @@ uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 		
 	}
 
-	/* sayfa hizalamasi yapar,eger align, true ise  */
+	/* sayfa hizalamasi yapar,eger align 'true' ise  */
 	if(align && (last_addr & 0xFFFFF000)){
 
 		last_addr &= ~PAGE_MASK;
@@ -188,10 +190,12 @@ uint32_t kmalloc_align(uint32_t size){
 }
 
 /*
- * kmalloc_physic
+ * kmalloc_physic,sayfa hizalamasi yapmadan bellek tahsisi
+ * yapar ve verilen adrese de tahsis edilen bellek bolgesinin 
+ * adresini atar.
  *
- * @param size :
- * @param physic_addr :
+ * @param size : boyut(bayt olarak)
+ * @param physic_addr : fiziksel adresin atilacagi adres.
  */
 uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr){
 
@@ -200,10 +204,12 @@ uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr){
 }
 
 /*
- * kmalloc_aphysic
+ * kmalloc_aphysic,sayfa hizalamasi yaparak bellek tahsisi yapar
+ * ve verien adrese de tahsis edilen bellek bolgesinin adresini
+ * atar.
  *
- * @param size :
- * @param physic_addr :
+ * @param size : boyut(bayt olarak)
+ * @param physic_addr : fiziksel adresin atilacagi adres.
  */
 uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr){
 
