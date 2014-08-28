@@ -526,7 +526,7 @@ static void *_kmalloc(uint32_t size){
 				blk->first = small_blk;
 
 				/*
-				 * sayfayi belirlenen blok boyutuna gore ayarlayiyoruz.
+				 * sayfayi belirlenen blok boyutuna gore ayarliyoruz.
 				 */
 				#define calc_blk_parts(x)	((PAGE_SIZE - sizeof(heap_blk_header_t)) >> x) - 1
 				uint32_t true_pow = blk_type + 2;	 /* (2^0 ve 2^1) */
