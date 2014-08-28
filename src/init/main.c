@@ -41,9 +41,6 @@ void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 #if 0
 	__int_test();
 #endif
-	/*
-	 * drivers
-	 */
 	timer_init();
 
 	/*
@@ -54,5 +51,6 @@ void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 #if 0
 	 __page_fault_test();
 #endif
+	heap_init();
 
 }
