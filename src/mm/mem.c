@@ -685,9 +685,12 @@ void *sbrk(uint32_t inc){
 	 */
 	if(heap_info.current_end + inc > heap_info.alloc_point){
 		debug_print(KERN_INFO,"expanding the heap.!");
+		
 		for(uint32_t i = heap_info.current_end; i < heap_info.current_end + inc; i += FRAME_SIZE_BYTE){
+			
 			debug_print(KERN_DUMP,"frame addr : %p", i);
-			alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
+			alloc_frame(get_page(i,false,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
+			
 		}
 		debug_print(KERN_DUMP,"successful!");
 	}
