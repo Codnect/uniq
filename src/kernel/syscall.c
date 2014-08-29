@@ -18,6 +18,14 @@
  */
  
 #include <uniq/module.h>
+
+/*
+ * syscall_init, 
+ */
+void syscall_init(void){
  
+ 
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
