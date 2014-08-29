@@ -18,6 +18,18 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/regs.h>
+
+/*
+ * syscall_handler, sistem cagrilari isleyicisidir.
+ *
+ * @param regs : kaydediciler
+ */
+void syscall_handler(registers_t *regs){
+	
+
+}
+
 
 /*
  * syscall_init, 
