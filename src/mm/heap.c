@@ -369,7 +369,8 @@ static void big_blk_list_insert(heap_big_blk_t *header){
 	 * ve sayfa boyutuna boldukten sonra kusaratlar icin ekstradan 1 sayfa
 	 * ekleniyordu ve blok tipi 5 sayfalik oldugunu gosterecek. bu yuzden
 	 * heap_big_blk_t tipini cikardik aslinda herhangi bir sayiyida cikarabilirdik,
-	 * 1 sayisi gibi. ayni sorun big_blk_list_delete'de vardi o da duzeltildi.
+	 * 1 sayisi gibi. ayni sorun big_blk_list_delete fonksiyonunda da vardi o da 
+	 * duzeltildi.
 	 */
 	uint32_t blk_type = detect_big_heap_type(header->size - sizeof(heap_big_blk_t));
 	heap_big_blk_t *first_blk = (heap_big_blk_t*)heap_big_root.node[blk_type];
