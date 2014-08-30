@@ -361,6 +361,10 @@ static void big_blk_list_insert(heap_big_blk_t *header){
 
 	uint32_t blk_type = detect_big_heap_type(header->size);
 	
+	/*
+	 * eger tespit edilen big block tipine ait listenin
+	 * ilk dugumu bos ise
+	 */
 	if(!heap_big_root.node[blk_type]){
 
 		heap_big_root.node[blk_type] = header;
@@ -657,7 +661,8 @@ static void _kfree(void *ptr){
 
 /*
  * _kcalloc, istenilen eleman sayisi kadar verilen
- * eleman boyutuna gore yer tahsis edilir.
+ * eleman boyutuna gore yer tahsis edilir.ve tahsis
+ * edilen alani 0'la doldurur.
  *
  * @param nmem : eleman sayisi
  * @param size : eleman boyutu
@@ -666,6 +671,9 @@ static void *_kcalloc(uint32_t nmem,uint32_t size){
 
 	void *ptr = _kmalloc(nmem * size);
 
+	/*
+	 * eger tahsis basarili ise
+	 */
 	if(ptr)
 		memset(ptr,0,nmem * size);
 
