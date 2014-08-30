@@ -726,9 +726,14 @@ static void *_krealloc(void *ptr,uint32_t size){
 
 	uint32_t old_size = blk->size;
 
-	if(old_size < BIG_BLOCK)
-		old_size = (1 << (2 + old_size));
+	if(old_size < BIG_BLOCK){
+		
+		#define small_blk_size(x)	(1 << (2 + x))
+		old_size = small_blk_size(old_size)
+		#undef small_blk_size
 
+	}
+	
 	if(old_size >= size)
 		return ptr;
 
