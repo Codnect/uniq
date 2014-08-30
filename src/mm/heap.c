@@ -141,7 +141,7 @@ void free(void *ptr){
  *
  * @param size : boyut
  * @param align : sayfa hizalamasi yapilsin mi?
- * @param physic_adddr : fiziksel adresin atilacagi adres.
+ * @param physic_adddr : adresin atilacagi adres.
  */
 uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 
@@ -155,6 +155,15 @@ uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 		else
 			ret_addr = valloc(size);
 
+		if(physic_addr){
+		
+			if(align && size >= (FRAME_SIZE_BYTE * 4)){
+				
+				
+			}	
+			
+		}
+		
 		return ret_addr;
 		
 	}
@@ -195,7 +204,7 @@ uint32_t kmalloc_align(uint32_t size){
  * adresini atar.
  *
  * @param size : boyut(bayt olarak)
- * @param physic_addr : fiziksel adresin atilacagi adres.
+ * @param physic_addr : adresin atilacagi adres.
  */
 uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr){
 
@@ -209,7 +218,7 @@ uint32_t kmalloc_physic(uint32_t size,uint32_t *physic_addr){
  * atar.
  *
  * @param size : boyut(bayt olarak)
- * @param physic_addr : fiziksel adresin atilacagi adres.
+ * @param physic_addr : adresin atilacagi adres.
  */
 uint32_t kmalloc_aphysic(uint32_t size,uint32_t *physic_addr){
 
