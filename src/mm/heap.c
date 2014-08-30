@@ -717,6 +717,9 @@ static void *_krealloc(void *ptr,uint32_t size){
 
 	heap_blk_header_t *blk =  (void*)((uint32_t)ptr & (uint32_t)~PAGE_MASK);
 
+	/*
+	 * sihirli numara gecersiz ise :/
+	 */
 	if(blk->magic != BLOCK_MAGIC){
 
 		assert(0 && "bad heap block magic!");
@@ -726,6 +729,9 @@ static void *_krealloc(void *ptr,uint32_t size){
 
 	uint32_t old_size = blk->size;
 
+	/*
+	 * small block ise
+	 */
 	if(old_size < BIG_BLOCK){
 		
 		#define small_blk_size(x)	(1 << (2 + x))
@@ -734,13 +740,27 @@ static void *_krealloc(void *ptr,uint32_t size){
 
 	}
 	
+	/*
+	 * eger eski boyut tahsis edilecek boyuttan buyukse
+	 * eski isaretciyi geri dondur.
+	 */
 	if(old_size >= size)
 		return ptr;
 
+	/*
+	 * yeni boyut icin bellek tahsisi
+	 */
 	void *out = _kmalloc(size);
 	
+	/*
+	 * tahsis basariliysa
+	 */
 	if(out){
 
+		/*
+		 * yeni bellek bolgesine eski isaretcinin gosterdigi
+		 * bellek bolgesindeki verileri kopyala
+		 */
 		memcpy(out,ptr,old_size);
 		_kfree(ptr);	
 	
@@ -748,6 +768,9 @@ static void *_krealloc(void *ptr,uint32_t size){
 
 	}
 
+	/*
+	 * tahsis basarili degilse :S
+	 */
 	return (void*)NULL;
 
 }
