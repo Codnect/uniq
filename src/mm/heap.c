@@ -361,7 +361,7 @@ static void big_blk_list_insert(heap_big_blk_t *header){
 
 	/*
 	 * heap_big_blk_t'nin boyutunun cikarilma sebebi, insert islemi yaparken
-	 * big blocklarin heap boyutlarinda 2'nin kuvvetlerinden 4'ten sonra
+	 * big blocklarin heap boyutlarinda 2'nin kuvvetlerinden 2'den sonra
 	 * +1 fazlaligi olusuyordu. bunun sebebi zaten big blocklarin ayrilirken
 	 * sayfa boyutlari katlarinda ayrilmasidir. ornegin  16368 bayt ayrilmis olsun
 	 * ve sonradan bosa cikarilmak istensin heap block tipini hesaplarken
