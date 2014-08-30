@@ -321,7 +321,7 @@ static uint32_t detect_big_heap_type(uint32_t size){
 
 	uint32_t page_count = (size + sizeof(heap_big_blk_t)) / PAGE_SIZE + 1;
 	uint32_t blk_type = find_bit_count(page_count);
-
+	
 	/*
 	 * ===============
 	 * 1-4 	    [0]
@@ -359,26 +359,38 @@ static uint32_t detect_big_heap_type(uint32_t size){
  */
 static void big_blk_list_insert(heap_big_blk_t *header){
 
-	uint32_t blk_type = detect_big_heap_type(header->size);
-	
+	/*
+	 * heap_big_blk_t'nin boyutunun cikarilma sebebi, insert islemi yaparken
+	 * big blocklarin heap boyutlarinda 2'nin kuvvetlerinden 4'ten sonra
+	 * +1 fazlaligi olusuyordu. bunun sebebi zaten big blocklarin ayrilirken
+	 * sayfa boyutlari katlarinda ayrilmasidir. ornegin  16368 bayt ayrilmis olsun
+	 * ve sonradan bosa cikarilmak istensin heap block tipini hesaplarken
+	 * heap_big_blk_t yapisinin boyutuda ekleniyor ve 16384 bayt oluyor
+	 * ve sayfa boyutuna boldukten sonra kusaratlar icin ekstradan 1 sayfa
+	 * ekleniyordu ve blok tipi 5 sayfalik oldugunu gosterecek. bu yuzden
+	 * heap_big_blk_t tipini cikardik aslinda herhangi bir sayiyida cikarabilirdik,
+	 * 1 sayisi gibi. ayni sorun big_blk_list_delete'de vardi o da duzeltildi.
+	 */
+	uint32_t blk_type = detect_big_heap_type(header->size - sizeof(heap_big_blk_t));
+	heap_big_blk_t *first_blk = (heap_big_blk_t*)heap_big_root.node[blk_type];
+
 	/*
 	 * eger tespit edilen big block tipine ait listenin
 	 * ilk dugumu bos ise
 	 */
-	if(!heap_big_root.node[blk_type]){
+	if(!first_blk){
 
 		heap_big_root.node[blk_type] = header;
-		header->next = NULL;
+		header->next = header->prev = NULL;
 
 	}
 	else{
 
-		header->next = heap_big_root.node[blk_type];
-		heap_big_root.node[blk_type]->prev = header;
+		header->next = first_blk;
+		first_blk->prev = header;		
+		header->prev = NULL;
 
 	}
-	
-	header->prev = heap_big_root.node[blk_type];
 
 } 
 
@@ -390,10 +402,9 @@ static void big_blk_list_insert(heap_big_blk_t *header){
  */
 static heap_big_blk_t *big_blk_find_best_size(uint32_t search_size){
 
-
 	uint32_t blk_type = detect_big_heap_type(search_size);
 	heap_big_blk_t *big_blk = (heap_big_blk_t*)heap_big_root.node[blk_type];
-
+	
 	while(big_blk && big_blk->size >= search_size){
 
 			if(!big_blk->next)
@@ -405,7 +416,7 @@ static heap_big_blk_t *big_blk_find_best_size(uint32_t search_size){
 
 	if(big_blk->size < search_size)
 		return NULL;	
-
+	
 	return big_blk;
 
 }
@@ -417,7 +428,7 @@ static heap_big_blk_t *big_blk_find_best_size(uint32_t search_size){
  */
 static void big_blk_list_delete(heap_big_blk_t *header){
 
-	uint32_t blk_type = detect_big_heap_type(header->size);
+	uint32_t blk_type = detect_big_heap_type(header->size - sizeof(heap_big_blk_t));
 	heap_big_blk_t *big_blk = (heap_big_blk_t*)heap_big_root.node[blk_type];
 
 	while(big_blk){
@@ -506,7 +517,7 @@ static void *_kmalloc(uint32_t size){
 		#endif
 
 		if(!small_blk){
-				
+
 				/*
 				 * sbrk ile sayfa boyutu kadar tahsis islemi gerceklestiriyoruz.
 				 */
@@ -742,7 +753,7 @@ static void *_krealloc(void *ptr,uint32_t size){
 	if(old_size < BIG_BLOCK){
 		
 		#define small_blk_size(x)	(1 << (2 + x))
-		old_size = small_blk_size(old_size)
+		old_size = small_blk_size(old_size);
 		#undef small_blk_size
 
 	}
@@ -787,6 +798,93 @@ static void *_krealloc(void *ptr,uint32_t size){
  */
 void __heap_test(void){
 
+#if 0 	/* small block test - malloc*/
+
+	debug_print(KERN_DUMP,"-> small block(malloc) test");
+	uint32_t *x = (uint32_t*)malloc(4);
+	uint32_t *y = (uint32_t*)malloc(2);
+	uint32_t *z = (uint32_t*)malloc(0);
+	debug_print(KERN_DUMP,"x : %p, y : %p, z : %p",x,y,z);
+
+	uint32_t *w = (uint32_t*)malloc(8);
+	uint32_t *v = (uint32_t*)malloc(16);
+	uint32_t *h = (uint32_t*)malloc(128);
+	debug_print(KERN_DUMP,"w : %p, v : %p, h : %p",w,v,h);	
+
+	uint32_t *r = (uint32_t*)malloc(8);
+	uint32_t *t = (uint32_t*)malloc(16);
+	uint32_t *u = (uint32_t*)malloc(128);
+	debug_print(KERN_DUMP,"r : %p, t : %p, u : %p",r,t,u);
+
+	uint32_t *g = (uint32_t*)malloc(1024);
+	uint32_t *l = (uint32_t*)malloc(1024);
+	uint32_t *j = (uint32_t*)malloc(1024);
+	debug_print(KERN_DUMP,"g : %p, l : %p, j : %p",g,l,j);
+
+	uint32_t *i = (uint32_t*)malloc(2048);
+	uint32_t *o = (uint32_t*)malloc(2048);
+	debug_print(KERN_DUMP,"i : %p, o : %p",i,o);
+	
+	free(x);
+	uint32_t *m = (uint32_t*)malloc(3);
+	free(r);
+	free(v);
+	free(l);
+	free(i);
+	uint32_t *n = (uint32_t*)malloc(6);
+	uint32_t *a = (uint32_t*)malloc(14);
+	uint32_t *s = (uint32_t*)malloc(1020);
+	uint32_t *d = (uint32_t*)malloc(2000);
+	debug_print(KERN_DUMP,"m : %p, n : %p, a : %p",m,n,a);
+	debug_print(KERN_DUMP,"s : %p, d : %p",s,d);
+
+#endif
+
+#if 0	/* big block test - malloc */
+
+	debug_print(KERN_DUMP,"-> big block(malloc) test");
+	uint32_t *x = (uint32_t*)malloc(2049);
+	uint32_t *y = (uint32_t*)malloc(4085);
+	uint32_t *z = (uint32_t*)malloc(4096*3);
+	uint32_t *m = (uint32_t*)malloc(4096*6);
+	debug_print(KERN_DUMP,"x : %p, y : %p, z : %p m : %p",x,y,z,m);
+	free(x);
+	free(y);
+	free(z);
+	uint32_t *j = (uint32_t*)malloc(4096*6);
+	free(j);
+	uint32_t *n = (uint32_t*)malloc(4096*4);
+	free(m);
+	uint32_t *t = (uint32_t*)malloc(4096*6);
+	debug_print(KERN_DUMP,"j : %p, n : %p, t : %p",j,n,t);
+	
+#endif
+
+#if 0 /* realloc,valloc and calloc test */
+
+	debug_print(KERN_DUMP,"-> realloc,valloc and calloc test");
+	char *x = (char*)malloc(4096);
+	strcpy(x,"memory");
+	debug_print(KERN_DUMP,"x : %p, x : %s",x,x);
+	char *y = (char*)realloc(x,8192);
+	debug_print(KERN_DUMP,"y : %p, y : %s",y,y);	
+
+	uint32_t *v = (uint32_t*)malloc(5010);
+	debug_print(KERN_DUMP,"v : %p",v);
+
+	uint32_t *h = (uint32_t*)valloc(4096);
+	debug_print(KERN_DUMP,"h : %p",h);
+	free(h);
+	
+	uint32_t *g = (uint32_t*)calloc(4,1024);
+	debug_print(KERN_DUMP,"g : %p",g);
+
+	free(x);
+	debug_print(KERN_DUMP,"x : %p, x : %s",x,x);
+	char *d = (char*)calloc(4,1024);
+	debug_print(KERN_DUMP,"d : %p, d : %s",d,d);
+
+#endif
 
 }
 
@@ -798,6 +896,9 @@ void heap_init(void){
 	debug_print(KERN_INFO,"Initializing the heap.");
 	heap_info.current_end = (last_addr + FRAME_SIZE_BYTE) & ~PAGE_MASK;
 
+#if 0
+	__heap_test();
+#endif
 
 }
 
