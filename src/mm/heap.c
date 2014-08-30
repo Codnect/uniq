@@ -236,7 +236,7 @@ uint32_t kmalloc(uint32_t size){
 }
 
 /*
- * detect_heap_block_size,tahsis icin en uygun tipi belirler.
+ * detect_heap_block_type,tahsis icin en uygun tipi belirler.
  *
  * @param size : tahsis edilmek istenen boyut (bayt olarak). 
  */
