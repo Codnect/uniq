@@ -10,7 +10,7 @@
 **Geliştirici(Developer)**| Gönüllüler(Volunteers) 
 **IS Ailesi(Os Family)** |  Unix benzeri(Unix-like)
 **Kaynak Modeli(Source Model)** | Açık Kaynak(Open Source) 
-**Platformlar(Platforms)** | i386
+**Platformlar(Platforms)** | i386,i686
 **Son Sürüm(Latest Release)** |[v0.0.1-final](https://github.com/codnect/uniq/releases/tag/0.0.1-final)
 **Çekirdek Türü(Kernel Type)**|Monolitik Kernel(Monolithic Kernel)
 **Lisans(License)**| [GNU GPL v2](https://github.com/codnect/uniq/blob/master/LICENSE)
@@ -20,7 +20,8 @@ Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) 
 ------- | ----- | -------- | ----------------- | --------------------
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | [v0.0.1-final](https://github.com/codnect/uniq/releases/tag/0.0.1-final) | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1-release  | i386 | - | [Burak Köken](https://github.com/burakkoken)
-- | -   | i386 | - | -
+- | -   | i386,i686 | - | -
+- | -   | i386,i686 | - | -
 
 ####Sorularla Uniq####
 
