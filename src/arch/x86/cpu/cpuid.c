@@ -18,6 +18,16 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/types.h>
+
+/*
+ * have_cpuid
+ */
+static bool have_cpuid(void){
  
+  return false;
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
