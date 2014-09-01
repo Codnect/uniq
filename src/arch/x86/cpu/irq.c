@@ -144,7 +144,7 @@ extern void _irq15(void);
 						 * hali  "0 1 0 0". IRQ2 nin slave PIC ile master PIC
 					 	 * baglanti noktasi oldugunu hatirlayin.
 					 	*/
-#define ICW3_SLAVE_PIC			0x02	/* IRQ2'nin kesme numarasinin binary formati = "2" */
+#define ICW3_SLAVE_PIC			0x02	/* IRQ2'nin kesme numarasinin binary formati "10" = "2" */
 #define ICW4_8086_MODE			0x01	/* x86 modu */
 #define ICW4				ICW4_8086_MODE
 #define ICW_NULL			0x0
