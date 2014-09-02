@@ -30,4 +30,12 @@ typedef struct{
 
 }cpuid_info_t;
 
-#endif
+#define AMD_SIGNATURE_EBX		0x68747541
+#define AMD_SIGNATURE_ECX		0x444d4163
+#define AMD_SIGNATURE_EDX		0x69746e65
+
+#define INTEL_SIGNATURE_EBX		0x756e6547
+#define INTEL_SIGNATURE_ECX		0x6c65746e
+#define INTEL_SIGNATURE_EDX		0x49656e69
+
+#endif /* __UNIQ_CPUID_H__ */
