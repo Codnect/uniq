@@ -18,6 +18,16 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/types.h>
+
+
+/*
+ * fork
+ */
+uint32_t fork(void){
  
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
