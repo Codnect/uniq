@@ -20,6 +20,17 @@
 #ifndef __UNIQ_PROC_H__
 #define __UNIQ_PROC_H__
 
+#include <uniq/types.h>
+
+typedef int32_t pid_t;
+
+typedef struct{
+
+}thread_t;
+
+typedef struct{
+  
+}process_t;
 
 
 
