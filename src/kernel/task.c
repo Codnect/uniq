@@ -18,6 +18,15 @@
  */
  
 #include <uniq/module.h>
+
+
+/*
+ * goto_user_mode
+ */
+void goto_user_mode(void){
  
+ 
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
