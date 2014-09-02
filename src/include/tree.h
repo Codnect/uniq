@@ -24,4 +24,4 @@
 #include <compiler.h>
 
 
-#endif /* __UNIQ_LINKED_LIST_H__ */
+#endif /* __UNIQ_TREE_H__ */
