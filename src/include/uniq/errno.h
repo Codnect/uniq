@@ -25,7 +25,7 @@
 typedef int32_t errno_t;
 
 /* 
- * error definitions 
+ * hata tanimlamalari
  */
 #include <uniq/errno_list.>
 
