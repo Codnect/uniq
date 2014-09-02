@@ -27,6 +27,8 @@
 uint32_t fork(void){
  
 
+  return 0;
+  
 }
 
 MODULE_AUTHOR("Burak Köken");
