@@ -35,7 +35,7 @@ static bool have_cpuid(void){
  *
  * @param cpuid_info :
  */
-void get_cpuid_info(cpuid_info_t *cpuid_info){
+bool get_cpuid_info(cpuid_info_t *cpuid_info){
  
 
 }
