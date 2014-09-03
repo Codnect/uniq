@@ -124,7 +124,7 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 
 /* 
  * do_amd_cpuinfo,eger cpuid_info_t yapisina islemci
- * bilgilerini doldurur.(islemci intel ise)
+ * bilgilerini doldurur.(islemci amd ise)
  *
  * @param cpuid_info : cpuid_info_t yapisi
  */
