@@ -19,6 +19,7 @@
  
 #include <uniq/module.h>
 #include <uniq/types.h>
+#include <uniq/cpuid.h>
 
 /*
  * have_cpuid
@@ -26,6 +27,16 @@
 static bool have_cpuid(void){
  
   return false;
+
+}
+
+/*
+ * get_cpuid_info,
+ *
+ * @param cpuid_info :
+ */
+void get_cpuid_info(cpuid_info_t *cpuid_info){
+ 
 
 }
 
