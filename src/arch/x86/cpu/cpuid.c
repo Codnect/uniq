@@ -47,11 +47,11 @@ static inline void cpuid(uint32_t op_num,uint32_t *eax,uint32_t *ebx,uint32_t *e
  *
  * @param regs : cpuid kaydedicileri
  */
-static inline bool verify_intel_cpu(cpuid_regs_t regs){
+static inline bool verify_intel_cpu(cpuid_regs_t *regs){
 
-	if(regs.ebx != INTEL_SIGNATURE_EBX ||
-	   regs.ecx != INTEL_SIGNATURE_ECX ||
-	   regs.edx != INTEL_SIGNATURE_EDX)
+	if(regs->ebx != INTEL_SIGNATURE_EBX ||
+	   regs->ecx != INTEL_SIGNATURE_ECX ||
+	   regs->edx != INTEL_SIGNATURE_EDX)
 		return false;   
 
 	return true;
@@ -64,11 +64,11 @@ static inline bool verify_intel_cpu(cpuid_regs_t regs){
  *
  * @param regs : cpuid kaydedicileri
  */
-static inline bool verify_amd_cpu(cpuid_regs_t regs){
+static inline bool verify_amd_cpu(cpuid_regs_t *regs){
 
-	if(regs.ebx != AMD_SIGNATURE_EBX ||
-	   regs.ecx != AMD_SIGNATURE_ECX ||
-	   regs.edx != AMD_SIGNATURE_EDX)
+	if(regs->ebx != AMD_SIGNATURE_EBX ||
+	   regs->ecx != AMD_SIGNATURE_ECX ||
+	   regs->edx != AMD_SIGNATURE_EDX)
 		return false;
 
 	return true;
@@ -149,9 +149,9 @@ bool get_cpuid_info(cpuid_info_t *cpuid_info){
 	cpuid_regs_t cpuid_regs;
 	cpuid(CPUID_VENDOR_ID,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 
-	if(verify_intel_cpu(cpuid_regs))		/* intel */
+	if(verify_intel_cpu(&cpuid_regs))		/* intel islemci */
 		do_intel_cpuinfo(cpuid_info);
-	else if(verify_amd_cpu(cpuid_regs))		/* amd */
+	else if(verify_amd_cpu(&cpuid_regs))		/* amd islemci */
 		do_amd_cpuinfo(cpuid_info);
 	else{						/* bilinmeyen */
 		strcpy(cpuid_info->vendor_id,"Unknown cpu vendor!");
