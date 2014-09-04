@@ -24,6 +24,7 @@ typedef unsigned int size_t;
 typedef signed int ssize_t;
 
 typedef signed int time_t;
+typedef signed int suseconds_t;
 
 typedef unsigned int size_t;
 typedef signed int ssize_t;
