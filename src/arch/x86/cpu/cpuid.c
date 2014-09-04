@@ -24,10 +24,88 @@
 #include <string.h>
 
 
+char *intel_old_cpu_list[] = {
+	/* 0 */
+	"Brand String Not Supported.", 
+	"Intel(R) Celeron(R) processor", 
+	"Intel(R) Pentium(R) III processor", 
+	"Intel(R) Pentium(R) III Xeon(R) processor", 
+	"Intel(R) Pentium(R) III processor", 
+	"Reserved", 
+	"Mobile Intel(R) Pentium(R) III processor-M", 
+	"Mobile Intel(R) Celeron(R) processor", 
+	"Intel(R) Pentium(R) 4 processor", 
+	"Intel(R) Pentium(R) 4 processor", 
+	"Intel(R) Celeron(R) processor", 
+	"Intel(R) Xeon(R) Processor", 
+	"Intel(R) Xeon(R) processor MP", 
+	"Reserved", 
+	"Mobile Intel(R) Pentium(R) 4 processor-M", 
+	"Mobile Intel(R) Pentium(R) Celeron(R) processor", 
+	"Reserved", 
+	"Mobile Genuine Intel(R) processor", 
+	"Intel(R) Celeron(R) M processor", 
+	"Mobile Intel(R) Celeron(R) processor", 
+	"Intel(R) Celeron(R) processor", 
+	"Mobile Geniune Intel(R) processor", 
+	"Intel(R) Pentium(R) M processor", 
+	"Mobile Intel(R) Celeron(R) processor"
+	/* 1 */
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Intel(R) Celeron(R) processor", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Intel(R) Xeon(R) processor MP", 
+	"Reserved", 
+	"Reserved", 
+	"Intel(R) Xeon(R) processor", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved", 
+	"Reserved"
+};
+
+
+/*
+ * get_brand_string
+ *
+ * @param brand,
+ * @param regs,
+ */
+void get_brand_string(char *brand,cpuid_regs_t *regs){
+
+	char brand_string[17];
+	brand_string[16] = '\0';
+	for(uint32_t i = 0; i < 4; i++){
+		
+		brand_string[i] = regs->eax >> (8 * i);
+		brand_string[i + 4] = regs->ebx >> (8 * i);
+		brand_string[i + 8] = regs->ecx >> (8 * i);
+		brand_string[i + 12] = regs->edx >> (8 * i);
+	
+	}
+
+	strncat(brand,brand_string,strlen(brand_string));
+
+}
+
 /*
  * cpuid, kendisine verilen op_num'a gore eax,ebx,ecx ve edx'e parametrelerini doldurur.
  * ornegin op_num(operation number) 0 oldugunda eger islemci cpuid'yi destekliyorsa
- * vendor_id'yi elde ederiz. cpuid, i486 islemcilerle birlikte eklenmistir.
+ * vendor_id'yi elde ederiz. cpuid, i486 islemcilerle birlikte eklenmistir. intel cpuid
+ * pdf'sinde okuduguma gore bazi i386 islemci tiplerinde de kullanilmis.
  *
  * @param eax,ebx,ecx,edx : cpuid regs
  */
@@ -117,7 +195,60 @@ static bool have_cpuid(void){
  */
 static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 
+	cpuid_regs_t cpuid_regs;
+	uint32_t max_eax,unused;
+	/* vendor */
 	strcpy(cpuid_info->vendor_id,INTEL_VENDOR_NAME);
+
+
+	/* 
+	 * http://www.microbe.cz/docs/CPUID.pdf detayli bir sekilde inceleyebilirsiniz.
+	 *
+	 * islemci detay 
+	 * 
+	 * EAX:
+	 *
+ 	 * 31    28 27          20  19       16 15 14 13  12 11       8  7	    4 3         0
+	 * ======================================================================================
+	 * =  R   =  ext_family	 =  ext_model  =  R = type = family = model_no = stepping	=
+         * ======================================================================================
+ 	 *
+	 * EBX :
+	 *
+	 * 31                  23                     15                   7                    0
+	 * ======================================================================================
+	 * =      APIC ID       =       Count          =       Chunks      =       Brand ID     =
+         * ======================================================================================
+	 *
+	 * ECX,EDX = feature flag
+	 */
+	
+	cpuid(CPUID_PROCESSOR_DETAIL,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
+	cpuid_info->stepping = cpuid_regs.eax & 0xf;
+	cpuid_info->model = (cpuid_regs.eax >> 4) & 0xf;
+	cpuid_info->cpu_family = (cpuid_regs.eax >> 8) & 0xf;
+	cpuid_info->extended_model = (cpuid_regs.eax >> 16) && 0xf;
+	cpuid_info->extended_family = (cpuid_regs.eax >> 20) && 0xff;
+	cpuid_info->flags_ecx = cpuid_regs.ecx;
+	cpuid_info->flags_edx = cpuid_regs.edx;
+	cpuid_info->processor = 0;			/* daha sonra halledicem ;) */
+
+	uint32_t brand = cpuid_regs.ebx & 0xff;
+
+	/* genisletilmis mi ? */
+	cpuid(CPUID_EXTENDED,&max_eax,&unused,&unused,&unused);
+	cpuid_info->brand_string[0] = '\0';
+	if(max_eax >= 0x80000004) {
+		
+			for(uint32_t i = 0x80000002; i <= 0x80000004;i++){
+
+				cpuid(i,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
+				get_brand_string(cpuid_info->brand_string,&cpuid_regs);
+
+			}
+
+	}
+	
 
 }
 
@@ -130,7 +261,40 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
  */
 static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 
+	cpuid_regs_t cpuid_regs;
+	uint32_t extended,unused;
 	strcpy(cpuid_info->vendor_id,AMD_VENDOR_NAME);
+
+	cpuid(CPUID_PROCESSOR_DETAIL,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
+	cpuid_info->stepping = cpuid_regs.eax & 0xf;
+	cpuid_info->model = (cpuid_regs.eax >> 4) & 0xf;
+	cpuid_info->cpu_family = (cpuid_regs.eax >> 8) & 0xf;
+	cpuid_info->extended_model = (cpuid_regs.eax >> 16) && 0xf;
+	cpuid_info->extended_family = (cpuid_regs.eax >> 20) && 0xff;
+	cpuid_info->flags_ecx = cpuid_regs.ecx;
+	cpuid_info->flags_edx = cpuid_regs.edx;
+	cpuid_info->processor = 0;			/* daha sonra halledicem ;) */
+
+
+	cpuid(CPUID_EXTENDED,&extended,&unused,&unused,&unused);
+	cpuid_info->brand_string[0] = '\0';
+
+	if(!extended){
+
+		strcpy(cpuid_info->brand_string,"not extended (amd)");
+		return;
+	}	
+
+	if(extended >= 0x80000002) {
+
+			for(uint32_t i = 0x80000002; i <= 0x80000004;i++){
+
+				cpuid(i,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
+				get_brand_string(cpuid_info->brand_string,&cpuid_regs);
+
+			}
+
+	}
 
 }
 
@@ -154,9 +318,21 @@ bool get_cpuid_info(cpuid_info_t *cpuid_info){
 	else if(verify_amd_cpu(&cpuid_regs))		/* amd islemci */
 		do_amd_cpuinfo(cpuid_info);
 	else{						/* bilinmeyen */
+
 		strcpy(cpuid_info->vendor_id,"Unknown cpu vendor!");
+		strcpy(cpuid_info->brand_string,"Not found brand string!");
+
+		cpuid_info->stepping = 0;
+		cpuid_info->model = 0;
+		cpuid_info->cpu_family = 0;
+		cpuid_info->extended_model = 0;
+		cpuid_info->extended_family = 0;
+		cpuid_info->flags_ecx = 0;
+		cpuid_info->flags_edx = 0;
+		cpuid_info->processor = 0;
 
 		return false;
+
 	}
 			
 	return true;
@@ -173,6 +349,12 @@ void dump_cpuid_info(cpuid_info_t *cpuid_info){
 
 	debug_print(KERN_INFO,"Dumping the cpu info");
 	debug_print(KERN_DUMP,"vendor_id : %s",cpuid_info->vendor_id);
+	debug_print(KERN_DUMP,"brand_string : %s",cpuid_info->brand_string);
+	debug_print(KERN_DUMP,"cpu_family : %u",cpuid_info->cpu_family);
+	debug_print(KERN_DUMP,"extended_family : %u",cpuid_info->extended_family);
+	debug_print(KERN_DUMP,"model : %u",cpuid_info->model);
+	debug_print(KERN_DUMP,"extended_model : %u",cpuid_info->extended_model);
+	debug_print(KERN_DUMP,"stepping : %u",cpuid_info->stepping);
 
 }
 
