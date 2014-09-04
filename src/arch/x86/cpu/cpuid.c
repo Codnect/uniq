@@ -79,10 +79,11 @@ char *intel_old_cpu_list[] = {
 
 
 /*
- * get_brand_string
- *
- * @param brand,
- * @param regs,
+ * get_brand_string,verilen cpuid kaydedici iceriklerinden
+ * brand string'ini olusturur.
+ * 
+ * @param brand, brand_string
+ * @param regs, cpuid regs
  */
 void get_brand_string(char *brand,cpuid_regs_t *regs){
 
@@ -223,6 +224,7 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 	 * ECX,EDX = feature flag
 	 */
 	
+	/* islemci detay ve flaglar */
 	cpuid(CPUID_PROCESSOR_DETAIL,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 	cpuid_info->stepping = cpuid_regs.eax & 0xf;
 	cpuid_info->model = (cpuid_regs.eax >> 4) & 0xf;
@@ -279,7 +281,8 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 	cpuid_regs_t cpuid_regs;
 	uint32_t extended,unused;
 	strcpy(cpuid_info->vendor_id,AMD_VENDOR_NAME);
-
+	
+	/* islemci detay ve flaglar */
 	cpuid(CPUID_PROCESSOR_DETAIL,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 	cpuid_info->stepping = cpuid_regs.eax & 0xf;
 	cpuid_info->model = (cpuid_regs.eax >> 4) & 0xf;
@@ -294,6 +297,7 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 	cpuid(CPUID_EXTENDED,&extended,&unused,&unused,&unused);
 	cpuid_info->brand_string[0] = '\0';
 
+	/* genisletilmemis ise */
 	if(!extended){
 
 		strcpy(cpuid_info->brand_string,"not extended (amd)");
