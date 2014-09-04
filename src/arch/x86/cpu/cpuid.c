@@ -254,7 +254,7 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 		if(brand < 0x18){
 
 			if(signature == 0x000006B1 || signature == 0x00000F13)
-				strcpy(cpuid_info->brand_string,intel_old_cpu_list[brand + 23]);
+				strcpy(cpuid_info->brand_string,intel_old_cpu_list[brand + 24]);
 			else
 				strcpy(cpuid_info->brand_string,intel_old_cpu_list[brand]);
 			
