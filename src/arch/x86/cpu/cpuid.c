@@ -189,7 +189,7 @@ static bool have_cpuid(void){
 }
 
 /* 
- * do_intel_cpuinfo,eger cpuid_info_t yapisina islemci
+ * do_intel_cpuinfo, cpuid_info_t yapisina islemci
  * bilgilerini doldurur.(islemci intel ise)
  *
  * @param cpuid_info : cpuid_info_t yapisi
@@ -271,7 +271,7 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 
 
 /* 
- * do_amd_cpuinfo,eger cpuid_info_t yapisina islemci
+ * do_amd_cpuinfo, cpuid_info_t yapisina islemci
  * bilgilerini doldurur.(islemci amd ise)
  *
  * @param cpuid_info : cpuid_info_t yapisi
