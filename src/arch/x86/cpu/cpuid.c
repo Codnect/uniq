@@ -224,7 +224,9 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 	 * ECX,EDX = feature flag
 	 */
 	
-	/* islemci detay ve flaglar */
+	/*
+	 * islemci detay ve flaglar 
+	 */
 	cpuid(CPUID_PROCESSOR_DETAIL,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 	cpuid_info->stepping = cpuid_regs.eax & 0xf;
 	cpuid_info->model = (cpuid_regs.eax >> 4) & 0xf;
@@ -238,9 +240,12 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 	uint32_t brand = cpuid_regs.ebx & 0xff;
 	uint32_t signature = cpuid_regs.eax;
 
-	/* genisletilmis mi ? */
+	/* 
+	 * genisletilmis mi ? 
+	 */
 	cpuid(CPUID_EXTENDED,&max_eax,&unused,&unused,&unused);
 	cpuid_info->brand_string[0] = '\0';
+
 	if(max_eax >= 0x80000004) {
 			for(uint32_t i = 0x80000002; i <= 0x80000004;i++){
 
@@ -278,7 +283,9 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 	uint32_t extended,unused;
 	strcpy(cpuid_info->vendor_id,AMD_VENDOR_NAME);
 	
-	/* islemci detay ve flaglar */
+	/*
+	 * islemci detay ve flaglar 
+	 */
 	cpuid(CPUID_PROCESSOR_DETAIL,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 	cpuid_info->stepping = cpuid_regs.eax & 0xf;
 	cpuid_info->model = (cpuid_regs.eax >> 4) & 0xf;
@@ -293,7 +300,9 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 	cpuid(CPUID_EXTENDED,&extended,&unused,&unused,&unused);
 	cpuid_info->brand_string[0] = '\0';
 
-	/* genisletilmemis ise */
+	/* 
+	 * genisletilmemis ise 
+	 */
 	if(!extended){
 
 		strcpy(cpuid_info->brand_string,"not extended (amd)");
