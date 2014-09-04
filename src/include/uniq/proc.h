@@ -21,8 +21,7 @@
 #define __UNIQ_PROC_H__
 
 #include <uniq/types.h>
-
-typedef int32_t pid_t;
+#include <uniq/posix_types.h>
 
 typedef struct{
 
