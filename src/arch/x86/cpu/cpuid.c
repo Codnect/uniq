@@ -234,6 +234,7 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 	cpuid_info->processor = 0;			/* daha sonra halledicem ;) */
 
 	uint32_t brand = cpuid_regs.ebx & 0xff;
+	uint32_t signature = cpuid_regs.eax;
 
 	/* genisletilmis mi ? */
 	cpuid(CPUID_EXTENDED,&max_eax,&unused,&unused,&unused);
@@ -246,6 +247,20 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 				get_brand_string(cpuid_info->brand_string,&cpuid_regs);
 
 			}
+
+	}
+	else if(brand > 0){
+
+		if(brand < 0x18){
+
+			if(signature == 0x000006B1 || signature == 0x00000F13)
+				strcpy(cpuid_info->brand_string,intel_old_cpu_list[brand + 23]);
+			else
+				strcpy(cpuid_info->brand_string,intel_old_cpu_list[brand]);
+			
+		}
+		else
+			strcpy(cpuid_info->brand_string,"reserved");
 
 	}
 	
@@ -287,7 +302,7 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 
 	if(extended >= 0x80000002) {
 
-			for(uint32_t i = 0x80000002; i <= 0x80000004;i++){
+			for(uint32_t i = 0x80000002;i <= 0x80000004;i++){
 
 				cpuid(i,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 				get_brand_string(cpuid_info->brand_string,&cpuid_regs);
