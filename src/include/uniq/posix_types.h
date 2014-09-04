@@ -23,7 +23,7 @@
 typedef unsigned int size_t;
 typedef signed int ssize_t;
 
-typedef signet int time_t;
+typedef signed int time_t;
 
 typedef unsigned int size_t;
 typedef signed int ssize_t;
