@@ -20,5 +20,15 @@
 #ifndef __UNIQ_POSIX_TYPES_H__
 #define __UNIQ_POSIX_TYPES_H__
 
+typedef unsigned int size_t;
+typedef signed int ssize_t;
+
+typedef signet int time_t;
+
+typedef unsigned int size_t;
+typedef signed int ssize_t;
+
+typedef signed int pid_t;
+
 
 #endif /* __UNIQ_POSIX_TYPES_H__ */
