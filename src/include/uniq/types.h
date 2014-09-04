@@ -62,9 +62,6 @@ typedef char boolean;
 #define NULL	((void*)0)
 #define null	NULL
 
-typedef unsigned int size_t;
-typedef signed int ssize_t;
-
 #define offsetof(type,member) 	((size_t) &((type*)0)->member)
 #define array_size(x)		(sizeof(x) / sizeof((x)[0]))
 
