@@ -20,5 +20,17 @@
 #ifndef __UNIQ_CMOS_H__
 #define __UNIQ_CMOS_H__
 
+#define CMOS_RTC_SEC		0x00			/* saniye */
+#define CMOS_RTC_MIN		0x02			/* dakika */
+#define CMOS_RTC_HOUR		0x04			/* saat */
+#define CMOS_RTC_WDAY		0x06			/* haftanin kacinci gunu */
+#define CMOS_RTC_MDAY		0x07			/* ayin kacinci gunu */
+#define CMOS_RTC_MON		0x08			/* ay */
+#define CMOS_RTC_YEAR		0x09			/* yil */
+
+#define CMOS_ADDR		0x70
+#define CMOS_DATA		0x71
+#define CMOS_MAX_INDEX		0x7f
+#define CMOS_MAX		CMOS_MAX_INDEX + 1
 
 #endif /* __UNIQ_CMOS_H__ */
