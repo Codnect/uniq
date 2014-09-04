@@ -18,6 +18,14 @@
  */
  
 #include <uniq/module.h>
+
+/*
+ * time_init,
+ */
+void time_init(void){
  
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
