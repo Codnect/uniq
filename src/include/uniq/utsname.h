@@ -20,5 +20,15 @@
 #ifndef __UNIQ_UTSNAME_H__
 #define __UNIQ_UTSNAME_H__
 
+#define UTSNAME_LENGTH		256
+
+typedef struct{
+	char  sysname[UTSNAME_LENGTH];
+	char nodename[UTSNAME_LENGTH];
+	char  release[UTSNAME_LENGTH];
+	char  version[UTSNAME_LENGTH];
+	char  machine[UTSNAME_LENGTH];
+	char domainname[UTSNAME_LENGTH];
+}utsname_t;
 
 #endif /* __UNIQ_UTSNAME_H__ */
