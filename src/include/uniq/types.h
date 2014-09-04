@@ -83,5 +83,6 @@ typedef char boolean;
 #define INT32_MAX		0x7fffffff
 #define INT32_MIN		-(0x7fffffff+1)
 
+#include <uniq/posix_types.h>
 
 #endif /* __UNIQ_TYPES_H__ */
