@@ -21,7 +21,6 @@
 #define __UNIQ_PROC_H__
 
 #include <uniq/types.h>
-#include <uniq/posix_types.h>
 
 typedef struct{
 
