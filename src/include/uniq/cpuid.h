@@ -28,10 +28,20 @@ typedef struct{
 
 typedef struct{
 	char vendor_id[16];
+	char brand_string[48];
 	uint8_t cpu_family;
+	uint8_t extended_family;
+	uint8_t model;
+	uint8_t extended_model;
+	uint8_t stepping;
+	uint32_t flags_ecx;
+	uint32_t flags_edx;
+	uint8_t processor;
 }cpuid_info_t;
 
 #define CPUID_VENDOR_ID			0x00000000
+#define CPUID_PROCESSOR_DETAIL		0x00000001
+#define CPUID_EXTENDED			0x80000000
 
 #define AMD_VENDOR_NAME			"AuthenticAMD"
 #define AMD_SIGNATURE_EBX		0x68747541
