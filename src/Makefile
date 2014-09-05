@@ -6,8 +6,7 @@ LDEMULATION=elf_i386
 TARGET=elf32-i386
 KERN_OUTPUT=kernel.bin
 
-KERN_ISO=uniq.iso
-GENISO=genisoimage
+KERN_ISO=uniq-iso.iso
 
 LIBS = 	libs/string.o \
 	libs/ulib.o
@@ -46,7 +45,7 @@ create-iso:
 	mkdir -p iso/boot/grub
 	cp ../tools/grub/* iso/boot/grub
 	cp kernel.bin iso/boot/kernel.bin
-	grub-mkrescue -o uniq-iso.iso iso
+	grub-mkrescue -o $(KERN_ISO) iso
 
 clean:
 	-rm $(SOURCES) $(KERN_OUTPUT)
