@@ -44,7 +44,7 @@ all: $(SOURCES) link
 create-iso:
 	mkdir -p iso/boot/grub
 	cp ../tools/grub/* iso/boot/grub
-	cp kernel.bin iso/boot/kernel.bin
+	cp $(KERN_OUTPUT) iso/boot/$(KERN_OUTPUT)
 	grub-mkrescue -o $(KERN_ISO) iso
 
 clean:
