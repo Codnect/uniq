@@ -18,6 +18,36 @@
  */
  
 #include <uniq/module.h>
- 
+#include <uniq/types.h>
+#include <drivers/cmos.h>
+#include <uniq/kernel.h>
+
+/*
+ * http://www.walshcomptech.com/ohlandl/config/cmos_registers.html
+ * http://www.bioscentral.com/misc/cmosmap.htm
+ * http://wenku.baidu.com/view/8128da380912a21614792957
+ * http://www.intel-assembler.it/portale/5/cmos-memory-map-123/cmos-memory-map-123.asp
+ * http://wiki.osdev.org/CMOS
+ * 
+ * adreslerinden cmos ile ilgili detayli arastirmayi yapabilirsiniz.
+ *
+ */
+
+/*
+ * cmos_read,
+ *
+ * @param cmos_index_arr
+ */
+void cmos_read(uint8_t *cmos_index_arr){
+
+	for(uint8_t index = 0;index < CMOS_MAX;index++){
+
+		outbyte(CMOS_ADDR,index);
+		cmos_index_arr[index] = inbyte(CMOS_DATA);				
+
+	}
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
