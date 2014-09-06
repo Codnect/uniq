@@ -22,12 +22,12 @@
 
 typedef struct{
 	void *arg_value;
-	void *next_value;
+	struct args_value_t *next_value;
 }args_value_t;
 
 typedef struct{
 	void *arg;
-	void *next_arg;
+	struct args_map_t *next_arg;
 	args_value_t *values;
 }args_map_t;
 
