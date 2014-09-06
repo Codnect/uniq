@@ -18,6 +18,7 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/types.h>
 
 /*
  * lfb_graph_init,
@@ -25,7 +26,7 @@
  * @param width :
  * @param height :
  */
-void lfb_graph_init(uint16 width,uint16 height){
+void lfb_graph_init(uint16_t width,uint16_t height){
  
 
  
