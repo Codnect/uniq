@@ -46,8 +46,7 @@ void die(const char *fmt, ...){
 
 /*
  * _assert ile ilgili uniq/kernel.h'deki tanimlanan macroya bakildiginda
- * kullanimi hakkinda daha cok bilgiye sahip olabilirsiniz.(debug_print 
- * seklinde yazdirildigi icin satir numarasi ve dosya'ya ihtiyac yoktur.)
+ * kullanimi hakkinda daha cok bilgiye sahip olabilirsiniz.
  *
  * @param err : hata mesaji
  */
