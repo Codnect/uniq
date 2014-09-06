@@ -20,6 +20,7 @@
 #include <uniq/types.h>
 #include <ctype.h>
 #include <uniq/module.h>
+#include <uniq/kernel.h>
 
 /*
  * strlen, verilen karakter dizisinin uzunlugu verir.
@@ -659,6 +660,24 @@ char *strncasestr(char *s1,char *s2, size_t len){
 		s1++;
 	}
 	return NULL;
+}
+
+/*
+ * strdup, kendisine verilen karakter dizisini
+ * yeni bir bellek alani tahsisi yaparak kopyalar.
+ * kisacasi kopyasini yada diger bir tabirle klonunu
+ * olusturur.
+ *
+ * @param strdup : karakter dizisi 
+ */
+char * strdup(const char *string){
+	
+	size_t length = strlen(string);
+	char * new_string = malloc(length + 1);
+	memcpy(new_string,string,len+1);
+	
+	return new_string;
+
 }
 
 MODULE_AUTHOR("Burak Köken");
