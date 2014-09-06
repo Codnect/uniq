@@ -21,6 +21,7 @@
 #include <uniq/types.h>
 #include <drivers/cmos.h>
 #include <uniq/kernel.h>
+#include <uniq/time.h>
 
 /*
  * http://www.walshcomptech.com/ohlandl/config/cmos_registers.html
@@ -46,6 +47,17 @@ void cmos_read(uint8_t *cmos_index_arr){
 		cmos_index_arr[index] = inbyte(CMOS_DATA);				
 
 	}
+
+}
+
+/*
+ * get_time,
+ *
+ * @param time :
+ */
+void get_time(tm_t *time){
+
+
 
 }
 
