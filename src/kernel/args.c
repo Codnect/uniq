@@ -19,6 +19,9 @@
  
 #include <uniq/module.h>
 #include <uniq/types.h>
+#include <uniq/args.h>
+
+static args_map_t args_map;
 
 /*
  * arg_parse, argumanlari ayristirir.
