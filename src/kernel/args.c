@@ -21,9 +21,9 @@
 #include <uniq/types.h>
 
 /*
- * arg_parse,
+ * arg_parse, argumanlari ayristirir.
  *
- * @param boot_args :
+ * @param boot_args : boot argumanlari
  */
 void arg_parse(char *boot_args){
  
@@ -31,9 +31,10 @@ void arg_parse(char *boot_args){
 }
 
 /*
- * arg_present,
+ * arg_present, argumanin olup olmadigini kontrol
+ * eder.
  *
- * @param kern_arg :
+ * @param kern_arg : arguman
  */
 bool arg_present(char *kern_arg){
  
@@ -42,9 +43,12 @@ bool arg_present(char *kern_arg){
 }
 
 /*
- * arg_get_values,
+ * arg_get_values, argumanin degerlerini dondurur.
+ * "arguman" = "arguman degerleri" seklindedir.
+ * ornegin :
+ * start=vga_mod gibi. 
  *
- * @param kern_arg :
+ * @param kern_arg : arguman
  */
 char *arg_get_values(char *kern_arg){
  
