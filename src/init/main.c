@@ -20,6 +20,7 @@
 #include <uniq/types.h>
 #include <uniq/kernel.h>
 #include <uniq/multiboot.h>
+#include <uniq/module.h>
 
 void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 
@@ -54,3 +55,6 @@ void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 	heap_init();
 
 }
+
+MODULE_AUTHOR("Burak Köken");
+MODULE_LICENSE("GNU GPL v2");
