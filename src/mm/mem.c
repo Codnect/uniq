@@ -26,6 +26,7 @@
 #include <uniq/spin_lock.h>
 #include <compiler.h>
 #include <uniq/multiboot.h>
+#include <arch.h>
 
 #define PAGE_FAULT_INT		14		/* page fault kesme numarasi */
 /* page fault flags */
@@ -140,7 +141,7 @@ void sync_mmap(struct mboot_t *mboot){
 	
 }
 
-#if (__kern_arch__ > __i386__)
+#if (__kern_arch__ > __arch_i386__)
 
 	#define __invlpg_supported__
 	/*
