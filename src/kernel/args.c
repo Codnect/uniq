@@ -18,6 +18,40 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/types.h>
+
+/*
+ * arg_parse,
+ *
+ * @param boot_args :
+ */
+void arg_parse(char *boot_args){
  
+
+}
+
+/*
+ * arg_present,
+ *
+ * @param kern_arg :
+ */
+bool arg_present(char *kern_arg){
+ 
+  return false;
+
+}
+
+/*
+ * arg_get_values,
+ *
+ * @param kern_arg :
+ */
+char *arg_get_values(char *kern_arg){
+ 
+
+ return NULL;
+ 
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
