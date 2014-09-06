@@ -16,6 +16,10 @@
  *  You should have received a copy of the GNU General Public License along
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+#ifndef __MULTIBOOT_H__
+#define __MULTIBOOT_H__
+
 #include <uniq/types.h>
 #include <compiler.h>
 
@@ -45,3 +49,12 @@ struct mboot_t{
 	uint32_t vbe_interface_off;
 	uint32_t vbe_interface_len;
 }__packed;
+
+struct mboot_memmap_t{
+	uint32_t size;
+	uint64_t base_addr;
+	uint64_t length;
+	uint32_t type;
+}__packed;
+
+#endif /* __MULTIBOOT_H__ */
