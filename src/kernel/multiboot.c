@@ -18,6 +18,19 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/multiboot.h>
+#include <uniq/kernel.h>
+
+/*
+ * dump_mboot,
+ *
+ * @param mboot :
+ */
+void dump_mboot(struct mboot_t *mboot){
+ 
+ 
+
+}
  
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
