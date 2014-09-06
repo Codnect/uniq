@@ -51,9 +51,10 @@ void die(const char *fmt, ...){
  *
  * @param err : hata mesaji
  */
-void _assert(const char *err){
+void _assert(const char *err,const char *file,uint32_t line_no){
 	
-	debug_print(KERN_EMERG, "Kernel Fault : %s",err);
+	debug_print(KERN_EMERG,"Kernel Assert Fault : %s",err);
+	debug_print(KERN_DUMP,"file name : %s, line : %u",file,line_no);
 	disable_irq();
 	halt_system();
 
