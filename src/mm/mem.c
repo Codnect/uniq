@@ -25,6 +25,7 @@
 #include <string.h>
 #include <uniq/spin_lock.h>
 #include <compiler.h>
+#include <uniq/multiboot.h>
 
 #define PAGE_FAULT_INT		14		/* page fault kesme numarasi */
 /* page fault flags */
