@@ -41,5 +41,17 @@ void __dump_time_test(tm_t *time){
 
 }
 
+/*
+ * gettimeofday,
+ *
+ * @param timeval :
+ * @param tz :
+ */
+int gettimeofday(timeval_t *timeval,void *tz){
+
+  return 0;
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
