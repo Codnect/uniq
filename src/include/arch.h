@@ -20,10 +20,10 @@
 #ifndef __UNIQ_ARCH_H__
 #define __UNIQ_ARCH_H__
 
-#define __i386__		386
-#define __i486__		486
-#define __i586__		586
-#define __i686__		686
+#define __arch_i386__		386
+#define __arch_i486__		486
+#define __arch_i586__		586
+#define __arch_i686__		686
 
 #define __kern_arch__		__i386__
 
