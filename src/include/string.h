@@ -50,6 +50,7 @@ extern char *strcasestr(const char *s1, const char *s2);
 extern char *strncasestr(const char *s1, const char *s2, size_t len);
 extern char *strcat(char *dest, const char *src);
 extern char *strncat(char *dest, const char *src, size_t count);
+extern char * strdup(const char *string);
 
 #define strlchr(s,c)		strchr(s,c)
 #define strltok(s,delim)	strtok(s,delim)
