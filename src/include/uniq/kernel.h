@@ -53,8 +53,8 @@ extern int printf(const char *fmt, ...);
  */
 #include <uniq/kern_debug.h>
 void die(const char *fmt, ...);
-void _assert(const char *err);
-#define assert(statement) 	(statement) ? ((void)0) : _assert(#statement)
+void _assert(const char *err,const char *file,uint32_t line_no);
+#define assert(statement) 	(statement) ? ((void)0) : _assert(#statement,__FILE__,__LINE__)
 
 /*
  * arch/i386
