@@ -18,11 +18,25 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/time.h>
+#include <drivers/cmos.h>
+
+static tm_t kern_start_time;
 
 /*
  * time_init,
  */
 void time_init(void){
+ 
+
+}
+
+/*
+ * __dump_time_test,
+ *
+ * @param time :
+ */
+void __dump_time_test(tm_t *time){
  
 
 }
