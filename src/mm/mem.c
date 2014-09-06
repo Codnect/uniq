@@ -24,6 +24,7 @@
 #include <uniq/task.h>
 #include <string.h>
 #include <uniq/spin_lock.h>
+#include <compiler.h>
 
 #define PAGE_FAULT_INT		14		/* page fault kesme numarasi */
 /* page fault flags */
@@ -80,6 +81,97 @@ static volatile uint32_t alloc_flock = 0;
 
 page_dir_t *kernel_dir = NULL;
 page_dir_t *current_dir = NULL;
+
+static void set_frame(uintptr_t frame_addr);
+
+#define MMAP_AVAILABLE		0x1
+#define MMAP_RESERVED		0x2
+#define PAGE_MASK		0xfff
+#define MMAP_LIMIT		0xFFFFFFFF
+
+/*
+ * sync_mmap,
+ *
+ * @param addr :
+ */
+void sync_mmap(struct mboot_t *mboot){
+
+
+	struct mboot_memmap_t *memmap = (struct mboot_memmap_t*)mboot->mmap_addr;
+	debug_print(KERN_NOTICE,"synchronizing the memory map");
+	debug_print(KERN_DUMP,"memmap : %p, mmap_addr : %p, mmap_length : %u byte",memmap,mboot->mmap_addr,
+										   mboot->mmap_length);
+	debug_print(KERN_DUMP,"type1 : available memory, type2 : reserved(system ROM, memory-mapped device, etc.)\n");
+
+	/*
+	 * type1 bizim kullanibilecegimiz bellek bolumudur.
+	 */	
+	while((uint32_t)memmap < mboot->mmap_addr + mboot->mmap_length){
+
+		/*
+		 * debug_print,printf fonksiyonunu cagirarak yazma islemi yapar. fakat bu
+		 * cekirdekteki printf 32bit desteklidir. eger yan yana 64 bit sayilari
+		 * yazmaya kalkarsaniz ortalik karisir ;).
+		 */
+		debug_print(KERN_DUMP,"-> memmap : %p , size : %u byte, type : %u",memmap,memmap->size,memmap->type);
+		debug_print(KERN_DUMP,"base_addr : %p",memmap->base_addr);
+		debug_print(KERN_DUMP,"length : %p byte",memmap->length);
+
+		if(memmap->type == MMAP_RESERVED){
+
+			for(uint32_t i = 0; i < memmap->length; i += PAGE_SIZE){
+				
+				if(memmap->base_addr + i > MMAP_LIMIT)	
+					break;
+				#if 0
+					debug_print(KERN_DUMP,"synchronizing %p",(uint32_t)(memmap->base_addr+i));
+				#endif				
+				set_frame((memmap->base_addr + i) & ~PAGE_MASK);
+				
+			}
+
+		}
+		
+		memmap = (struct mboot_memmap_t*)((uint32_t)memmap + memmap->size + sizeof(uint32_t));
+		
+
+	}
+	
+}
+
+#if (__kern_arch__ > __i386__)
+
+	#define __invlpg_supported__
+	/*
+	 * invlpg,
+	 *
+	 * @param addr:
+	 */	
+	void invlpg(uint32_t addr){
+		
+		__asm__ volatile("movl %0,%%eax\n\t"
+				 "invlpg (%%eax)\n\t"
+				 :
+				 : "r"(addr)
+				 : "%eax"
+				 );		
+		
+	}
+
+	/*
+	 * invlpg_tables,
+	 */
+	void invlpg_tables(void){
+
+		__asm__ volatile("movl %%cr3,%%eax\n\t"
+				 "movl %%eax,%%cr3\n\t"
+				 :
+				 :
+				 : "%eax"
+				 );
+
+	}
+#endif
 
 /*
  * total_memory_size,toplam bellegin framelere boyutlarina uygun olarak
@@ -693,6 +785,11 @@ void *sbrk(uint32_t inc){
 			
 		}
 		debug_print(KERN_DUMP,"successful!");
+			
+		#ifdef __invlpg_supported__
+			invlpg_tables();
+		#endif
+		
 	}
 
 	/* heap'in son gecerli adresini yeniliyoruz */
