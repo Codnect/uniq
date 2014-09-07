@@ -22,7 +22,7 @@
 #include <uniq/multiboot.h>
 #include <uniq/module.h>
 
-void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
+void kmain(mboot_info_t *mboot_info,uintptr_t mboot_magic){
 
 	/* vga konsol */
 	init_vga_console();
@@ -47,7 +47,7 @@ void kmain(struct mboot_t *mboot,uintptr_t mboot_magic){
 	/*
 	 * memory
 	 */
-	paging_init(mboot->mem_lower+mboot->mem_upper);
+	paging_init(mboot_info->mem_lower + mboot_info->mem_upper);
 	paging_final();	
 #if 0
 	 __page_fault_test();
