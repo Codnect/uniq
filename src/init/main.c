@@ -22,7 +22,7 @@
 #include <uniq/multiboot.h>
 #include <uniq/module.h>
 
-void kmain(mboot_info_t *mboot_info,uintptr_t mboot_magic){
+void kmain(mboot_info_t *mboot_info,uint32_t mboot_magic){
 
 	/* vga konsol */
 	init_vga_console();
