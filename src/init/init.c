@@ -20,7 +20,7 @@
 #include <uniq/types.h>
 #include <uniq/module.h>
 
-void init_system(uint32_t argc,char *argv[]){
+void system_init(uint32_t argc,char *argv[]){
 
 
 }
