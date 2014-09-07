@@ -27,7 +27,7 @@ void kmain(mboot_info_t *mboot_info,uintptr_t mboot_magic){
 	/* vga konsol */
 	init_vga_console();
 
-	if(mboot_magic != 0x2badb002)
+	if(mboot_magic != MULTIBOOT_LOADER_MAGIC)
 		debug_print(KERN_WARNING,"Invalid the magic number. The magic number is \033[1;31m%P",mboot_magic);
 	else
 		debug_print(KERN_INFO,"Valid the magic number.The magic number is \033[1;37m%P",mboot_magic);
