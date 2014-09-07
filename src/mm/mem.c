@@ -646,19 +646,19 @@ void paging_final(void){
 												last_addr,
 												last_addr + 0x4000);
 
-	uint32_t a_allocmem  = 0; /* kullanilabilir ayrilmis bellek,asagida
-				   * ekstradan 16 KiB ayriliyor dikkat !.
-				   * last_addr'in son kullanilan adres
-				   * oldugunu unutmayin.
-				   */
+	uint32_t available_allocmem  = 0; /* kullanilabilir ayrilmis bellek,asagida
+				   	   * ekstradan 16 KiB ayriliyor dikkat !.
+				           * last_addr'in son kullanilan adres
+				           * oldugunu unutmayin.
+				           */
 	/* 0x100000 adresinden, last_addr + 0x4000(16 KiB) adrese kadar bir mapping daha yapiyoruz */
 	debug_print(KERN_DUMP,"(0x00100000 - %p) mapping. %u KiB ",last_addr + 0x4000,
 								   (last_addr + 0x4000 - 0x100000)/1024); 
 	for(uint32_t j = 0x100000; j < last_addr + 0x4000; j += FRAME_SIZE_BYTE)
 		dma_frame(get_page(j,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,j);
-	a_allocmem += 0x4000;
-	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",a_allocmem,
-											a_allocmem/1024);
+	available_allocmem += 0x4000;
+	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",available_allocmem,
+											available_allocmem/1024);
 
 	/* vga text-mode video bellegini remapping isleminden geciriyoruz */
 	debug_print(KERN_DUMP,"(0xB8000-0xC0000) remapping vga text-mode dma. %u KiB",(0xC0000-0xB8000)/1024);
@@ -698,9 +698,9 @@ void paging_final(void){
 								   tmp_heap_start,
 								   tmp_heap_start - (last_addr+0x4000),
 								   (tmp_heap_start - (last_addr+0x4000))/1024); 
-	a_allocmem += (tmp_heap_start - (last_addr+0x4000));
-	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",a_allocmem,
-											a_allocmem/1024);
+	available_allocmem += (tmp_heap_start - (last_addr+0x4000));
+	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",available_allocmem,
+											available_allocmem/1024);
 	for (uint32_t i = last_addr + 0x4000; i < tmp_heap_start  ; i += FRAME_SIZE_BYTE)
 		alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
 	/* 
