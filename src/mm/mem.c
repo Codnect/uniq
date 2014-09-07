@@ -96,19 +96,19 @@ static void set_frame(uintptr_t frame_addr);
  *
  * @param addr :
  */
-void sync_mmap(struct mboot_t *mboot){
+void sync_mmap(mboot_info_t *mboot_info){
 
 
-	struct mboot_memmap_t *memmap = (struct mboot_memmap_t*)mboot->mmap_addr;
+	mboot_memmap_t *memmap = (mboot_memmap_t*)mboot_info->mmap_addr;
 	debug_print(KERN_NOTICE,"synchronizing the memory map");
-	debug_print(KERN_DUMP,"memmap : %p, mmap_addr : %p, mmap_length : %u byte",memmap,mboot->mmap_addr,
-										   mboot->mmap_length);
+	debug_print(KERN_DUMP,"memmap : %p, mmap_addr : %p, mmap_length : %u byte",memmap,mboot_info->mmap_addr,
+										   mboot_info->mmap_length);
 	debug_print(KERN_DUMP,"type1 : available memory, type2 : reserved(system ROM, memory-mapped device, etc.)\n");
 
 	/*
 	 * type1 bizim kullanibilecegimiz bellek bolumudur.
 	 */	
-	while((uint32_t)memmap < mboot->mmap_addr + mboot->mmap_length){
+	while((uint32_t)memmap < mboot_info->mmap_addr + mboot_info->mmap_length){
 
 		/*
 		 * debug_print,printf fonksiyonunu cagirarak yazma islemi yapar. fakat bu
@@ -126,7 +126,7 @@ void sync_mmap(struct mboot_t *mboot){
 				if(memmap->base_addr + i > MMAP_LIMIT)	
 					break;
 				#if 0
-					debug_print(KERN_DUMP,"synchronizing %p",(uint32_t)(memmap->base_addr+i));
+					debug_print(KERN_DUMP,"synchronizing %p",(uint32_t)(memmap->base_addr + i));
 				#endif				
 				set_frame((memmap->base_addr + i) & ~PAGE_MASK);
 				
@@ -134,7 +134,7 @@ void sync_mmap(struct mboot_t *mboot){
 
 		}
 		
-		memmap = (struct mboot_memmap_t*)((uint32_t)memmap + memmap->size + sizeof(uint32_t));
+		memmap = (mboot_memmap_t*)((uint32_t)memmap + memmap->size + sizeof(uint32_t));
 		
 
 	}
