@@ -19,6 +19,18 @@
  
 #include <uniq/module.h>
 #include <uniq/types.h>
+#include <uniq/multiboot.h>
+
+/*
+ * dump_vbe_info,
+ *
+ * @param vbe_info : 
+ */
+void dump_vbe_info(vbe_info_t *vbe_info){
+ 
+
+ 
+}
 
 /*
  * lfb_graph_init,
