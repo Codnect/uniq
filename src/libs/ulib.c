@@ -21,6 +21,11 @@
 #include <ctype.h>
 #include <uniq/module.h>
 
+/*
+ * swap,
+ *
+ * @param x,y :
+ */
 void swap(int32_t *x,int32_t *y){
     
     int32_t z = *x;
@@ -29,18 +34,38 @@ void swap(int32_t *x,int32_t *y){
   
 }
 
+/*
+ * abs,
+ *
+ * @param x :
+ */
 int32_t abs(int32_t x){
     return (x < 0) ? -x : x; 
 }
 
+/*
+ * max,
+ *
+ * @param x,y :
+ */
 int32_t max(int32_t x,int32_t y){
     return (x > y) ? x : y; 
 }
 
+/*
+ * min,
+ *
+ * @param x,y :
+ */
 int32_t min(int32_t x,int32_t y){
     return (x > y) ? y : x;
 }
 
+/*
+ * atoi,
+ *
+ * @param s :
+ */
 int atoi(const char *s){
 
 	int i = 0;
@@ -50,6 +75,9 @@ int atoi(const char *s){
 	return i;
 }
 
+/*
+ * krand,
+ */
 uint32_t krand(void){
 	static uint32_t x = 123456789;
 	static uint32_t y = 332437884;
