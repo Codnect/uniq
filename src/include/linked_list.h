@@ -25,19 +25,19 @@
 
 #define LINKED_LIST_SIGNATURE		0xEE384ACF
 
-typedef struct{
+typedef struct node_t{
 	void *item;			/* item */
 	struct node_t *prev; 		/* onceki dugum */
 	struct node_t *next;		/* sonraki dugum */
 	void *link_list;		/* dugumun hangi listeye bagli oldugu */
-}__packed node_t;
+}node_t;
 
-typedef struct{
+typedef struct linked_list_t{
 	uint32_t signature;		/* liste imzasi */
 	uint32_t size;			/* liste uzunlugu */
 	node_t *first_node;		/* ilk dugum */
 	node_t *last_node;		/* son dugum */
-}__packed linked_list_t;
+}linked_list_t;
 
 node_t *linked_list_push(linked_list_t *linked_list,void *item);
 
