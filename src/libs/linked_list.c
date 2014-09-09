@@ -538,6 +538,43 @@ void __linked_list_test(void){
 	#endif
 #endif
 
+
+#if 1	/* test-3 */
+	debug_print(KERN_INFO,"\ntest-3");
+	uint32_t *x = malloc(4);
+	list_t *list = list_create();
+	debug_print(KERN_DUMP,"linked_list : %P, x : %P",list,x);
+	debug_print(KERN_DUMP,"first_node : %P, size : %u",list->first_node,list->size);
+	list_push(list,x);
+	debug_print(KERN_DUMP,"first_node : %P, size : %u",list->first_node,list->size);
+
+	#if 1	/* test-3.1 */
+		debug_print(KERN_DUMP,"\ntest-3.1");
+		list_t *clone = list_clone(list);
+		debug_print(KERN_DUMP,"clone list : %P",clone);
+		debug_print(KERN_DUMP,"first_node : %P, size : %u",list->first_node,list->size);
+
+		/* test-3.2 */
+		debug_print(KERN_DUMP,"\ntest-3.2");
+		list_destroy(list);
+		list_destroy(clone);
+		list_t *list1 = list_create();
+		uint32_t *w = malloc(4);
+		list_push(list1,w);
+		list_t *list2 = list_create();
+		list_t *list3 = list_create();
+		debug_print(KERN_DUMP,"list1 : %P, list2 : %P, list3 : %P",list1,list2,list3);
+		debug_print(KERN_DUMP,"list1 first_node : %P",list1->first_node);
+		debug_print(KERN_DUMP,"list1 last_node : %P",list1->last_node);
+		debug_print(KERN_DUMP,"list2 first_node : %P",list2->first_node);
+		debug_print(KERN_DUMP,"list2 last_node : %P",list2->last_node);
+	#endif
+#endif
+
+#if 1	/* test-4 */
+
+#endif
+
 }
 
 MODULE_AUTHOR("Burak Köken");
