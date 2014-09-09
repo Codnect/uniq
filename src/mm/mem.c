@@ -311,14 +311,6 @@ static void set_frame(uintptr_t frame_addr){
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
 	uint32_t offset = FRAME_OFFSET_BIT(frame);
 
-	/* 
-	 * eger ulasilacak frame'in index'i toplam frame sayisindan
-	 * buyukse ugrasmaya gerek yok.
-	 */
-	if((index * 32 + offset) >= mp_info.nframe){
-		debug_print(KERN_CRITIC,"Not found the frame, frame index = %u",index * 32 + offset);
-		return;
-	}
 	mp_info.frame_map[index] |= (0x1 << offset);
 	
 }
@@ -335,14 +327,6 @@ static void remove_frame(uintptr_t frame_addr){
 	uint32_t index  = FRAME_INDEX_BIT(frame); 
 	uint32_t offset = FRAME_OFFSET_BIT(frame);
 
-	/* 
-	 * eger ulasilacak frame'in index'i toplam frame sayisindan
-	 * buyukse ugrasmaya gerek yok.
-	 */
-	if((index * 32 + offset) >= mp_info.nframe){
-		debug_print(KERN_CRITIC,"Not found the frame, frame index = %u",index * 32 + offset);
-		return;
-	}
 	mp_info.frame_map[index] &= ~(0x1 << offset);
 	
 }
