@@ -539,7 +539,7 @@ void __linked_list_test(void){
 #endif
 
 
-#if 1	/* test-3 */
+#if 0	/* test-3 */
 	debug_print(KERN_INFO,"\ntest-3");
 	uint32_t *x = malloc(4);
 	list_t *list = list_create();
