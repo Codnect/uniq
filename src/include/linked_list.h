@@ -26,7 +26,7 @@
 #define LINKED_LIST_SIGNATURE		0xEE384ACF
 
 typedef struct node_t{
-	void *item;			/* item */
+	void *item;			/* item(isaretci olduguna dikkat edin!) */
 	struct node_t *prev; 		/* onceki dugum */
 	struct node_t *next;		/* sonraki dugum */
 	void *link_list;		/* dugumun hangi listeye bagli oldugu */
@@ -39,7 +39,19 @@ typedef struct linked_list_t{
 	node_t *last_node;		/* son dugum */
 }linked_list_t;
 
+int32_t linked_list_get_index(linked_list_t *linked_list,void *search);
+node_t *linked_list_search(linked_list_t *linked_list,void *search);
+void linked_list_remove(linked_list_t *linked_list,uint32_t node_index);
+node_t *linked_list_pop(linked_list_t *linked_list);
+void linked_list_unlink(linked_list_t *linked_list,node_t *node);
 node_t *linked_list_push(linked_list_t *linked_list,void *item);
-
+void linked_list_link(linked_list_t *linked_list,node_t *new_node);
+void linked_list_clear(linked_list_t *linked_list);
+void linked_list_free(linked_list_t *linked_list);
+void linked_list_destroy(linked_list_t *linked_list);
+linked_list_t *linked_list_merge(linked_list_t *dest,linked_list_t *src);
+linked_list_t *linked_list_clone(linked_list_t *linked_list);
+linked_list_t *linked_list_create(void);
+void __linked_list_test(void);
 
 #endif /* __UNIQ_LINKED_LIST_H__ */
