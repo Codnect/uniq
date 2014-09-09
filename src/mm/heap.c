@@ -164,7 +164,7 @@ uint32_t kmalloc_orig(uint32_t size,bool align,uint32_t *physic_addr){
 			
 		}
 		
-		return ret_addr;
+		return (uint32_t)ret_addr;
 		
 	}
 
@@ -298,7 +298,7 @@ static void *blk_part_push(heap_blk_header_t *header,void *ptr){
 
 	assert(ptr && (uint32_t)header < (uint32_t)ptr);
 	uint32_t *addr = ptr;
-	*addr = (uint32_t*)header->point;
+	*addr = (uint32_t)header->point;
 	header->point = addr;
 
 }
@@ -314,7 +314,7 @@ static void *blk_part_pop(heap_blk_header_t *header){
 	assert(header && header->point);	
 	void *addr = header->point;
 	uint32_t *point = header->point;
-	header->point = *point;
+	header->point = (uint32_t*)*point;
 	
 	return addr;
 
