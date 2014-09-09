@@ -20,6 +20,7 @@
 #include <uniq/module.h>
 #include <linked_list.h>
 #include <uniq/kernel.h>
+#include <list.h>
 
 /*
  * linked_list_create,bagli bir liste olusturur.
@@ -130,6 +131,9 @@ void linked_list_free(linked_list_t *linked_list){
 	for(;node;node = node->next)
 		free(node);
 
+	linked_list->size = 0;
+	linked_list->first_node = linked_list->last_node = NULL;
+
 }
 
 /*
@@ -144,7 +148,7 @@ void linked_list_clear(linked_list_t *linked_list){
 		return;
 
 	/* 
- 	 * linked_list imza kontrolu 
+ 	 * linked_list imza kontrolu
 	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
@@ -389,7 +393,6 @@ int32_t linked_list_get_index(linked_list_t *linked_list,void *search){
 	node_t *node = linked_list->first_node;
 
 	for(;node;node = node->next,index++){
-
 		if(node->item == search)
 			return index;
 
@@ -397,6 +400,143 @@ int32_t linked_list_get_index(linked_list_t *linked_list,void *search){
 
 	/* bulunamadi :/ */
 	return -1;
+
+}
+
+/*
+ * __linked_list_test,
+ */
+void __linked_list_test(void){
+
+	debug_print(KERN_INFO,"linked_list test...");
+
+#if 0	/* test-0 */
+	
+	debug_print(KERN_INFO,"test-0\n");
+	list_t *list = list_create();
+	debug_print(KERN_DUMP,"linked_list : %P",list);
+	list_destroy(list);
+
+	list_t *new_list = list_create();
+	debug_print(KERN_DUMP,"new linked_list : %P",new_list);
+
+#endif
+
+#if 0	/* test-1 */
+
+	debug_print(KERN_INFO,"\ntest-1");
+	uint32_t *x = malloc(4);
+	list_t *list = list_create();
+	debug_print(KERN_DUMP,"linked_list : %P, x : %P",list,x);
+	debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+	
+	list_push(list,x);
+	debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+	debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+	debug_print(KERN_DUMP,"item : %P",list->first_node->item);
+
+	#if 1	/* test-1.1 */
+		debug_print(KERN_DUMP,"\ntest-1.1");
+		node_t *node = list_pop(list);
+		debug_print(KERN_DUMP,"node : %P",node);	
+		debug_print(KERN_DUMP,"node -> item : %P",node->item);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+	
+		/* test-1.2 */
+		debug_print(KERN_DUMP,"\ntest-1.2");
+		list_link(list,node);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+
+		/* test-1.3 */
+		debug_print(KERN_DUMP,"\ntest-1.3");
+		uint32_t *y = malloc(4);
+		list_push(list,y);
+		int8_t index = list_get_index(list,y);
+		debug_print(KERN_DUMP,"item index : %d, y : %P",index,y);
+		
+		node = list_search(list,x);
+		debug_print(KERN_DUMP,"node : %P",node);	
+		debug_print(KERN_DUMP,"node -> item : %P",node->item);
+	
+		/* test-1.4 */
+		debug_print(KERN_DUMP,"\ntest-1.4");
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);		
+		list_unlink(list,node);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+		list_link(list,node);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+
+		/* test-1.5 */
+		debug_print(KERN_DUMP,"\ntest-1.5");
+		list_remove(list,1);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+	#endif
+
+#endif
+
+#if 0	/* test-2 */
+	debug_print(KERN_INFO,"\ntest-2");
+	uint32_t *x = malloc(4);
+	list_t *list = list_create();
+	debug_print(KERN_DUMP,"linked_list : %P, x : %P",list,x);
+	debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+	
+	list_push(list,x);
+	debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+	debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+	debug_print(KERN_DUMP,"item : %P",list->first_node->item);
+
+	#if 1	/* test-2.1 */
+		debug_print(KERN_DUMP,"\ntest-2.1");
+		list_destroy(list);
+		list_t *new_list = list_create();
+		uint32_t *y = malloc(4);
+		debug_print(KERN_DUMP,"new linked_list : %P, y : %P",new_list,y);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+
+		/* test-2.2 */
+		debug_print(KERN_DUMP,"\ntest-2.2");
+		list_push(list,y);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+		list_free(list);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+		
+		node_t *new_node = malloc(sizeof(node_t));
+		uint32_t *w = malloc(4);
+		debug_print(KERN_DUMP,"new node : %P, w : %P",new_node,w);
+		free(new_node);
+
+		/* test-2.3 */
+		debug_print(KERN_DUMP,"\ntest-2.3");
+		list_push(list,w);
+		list_push(list,y);
+		debug_print(KERN_DUMP,"first_node : %P",list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",list->last_node);
+		list_clear(list);
+		uint32_t *h = malloc(4);
+		uint32_t *n = malloc(4);
+		debug_print(KERN_DUMP,"h : %P, n : %P",h,n);
+
+		/* test-2.4 */
+		debug_print(KERN_DUMP,"\ntest-2.4");
+		list_destroy(list);
+		list_t *end_list = list_create();
+		uint32_t *r = malloc(4);
+		uint32_t *t = malloc(4);
+		debug_print(KERN_DUMP,"new linked_list : %P, r : %P, t : %P",end_list,r,t);
+		debug_print(KERN_DUMP,"first_node : %P",end_list->first_node);
+		debug_print(KERN_DUMP,"last_node : %P",end_list->last_node);
+	#endif
+#endif
 
 }
 
