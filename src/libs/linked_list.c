@@ -66,10 +66,10 @@ linked_list_t *linked_list_clone(linked_list_t *linked_list){
  * @param dest : hedef liste
  * @param src : kaynak liste
  */
-node_t *linked_list_merge(linked_list_t *dest,linked_list_t *src){
+linked_list_t *linked_list_merge(linked_list_t *dest,linked_list_t *src){
 
 	if(!dest || !src)
-		return;
+		return NULL;
 
 	/* 
  	 * linked_list imza kontrolu 
