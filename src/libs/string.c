@@ -674,7 +674,7 @@ char * strdup(const char *string){
 	
 	size_t length = strlen(string);
 	char * new_string = malloc(length + 1);
-	memcpy(new_string,string,len+1);
+	memcpy(new_string,string,length + 1);
 	
 	return new_string;
 
