@@ -9,7 +9,9 @@ KERN_OUTPUT=kernel.bin
 KERN_ISO=uniq-iso.iso
 
 LIBS = 	libs/string.o \
-	libs/ulib.o
+	libs/ulib.o \
+	libs/linked_list.o \
+	libs/tree.o
 
 DRIVERS = drivers/vga.o \
 	  drivers/pit.o \
@@ -25,6 +27,7 @@ ALLSOURCES = arch/x86/boot.o \
              arch/x86/cpu/irq.o \
 	     arch/x86/cpu/cpuid.o \
 	     init/main.o \
+	     init/init.o \
 	     kernel/kprintf.o \
 	     kernel/kern_debug.o \
 	     kernel/panic.o \
