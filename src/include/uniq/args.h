@@ -20,14 +20,14 @@
 #ifndef __UNIQ_ARGS_H__
 #define __UNIQ_ARGS_H__
 
-typedef struct{
+typedef struct args_map_value{
 	void *arg_value;
-	struct args_value_t *next_value;
-}args_value_t;
+	struct args_map_value *next_value;
+}args_map_value_t;
 
-typedef struct{
+typedef struct args_map{
 	void *arg;
-	struct args_map_t *next_arg;
+	struct args_map *next_arg;
 	args_value_t *values;
 }args_map_t;
 
