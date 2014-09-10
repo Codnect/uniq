@@ -18,10 +18,16 @@
  */
 
 #include <uniq/module.h>
-#include <linked_list.h>
 #include <uniq/kernel.h>
 #include <tree.h>
 
+/*
+ * tree_create,
+ */
+tree_t *tree_create(void){
+
+
+}
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
