@@ -653,7 +653,7 @@ void __linked_list_test(void){
 		debug_print(KERN_DUMP,"\ntest-3.1");
 		list_t *clone = list_clone(list);
 		debug_print(KERN_DUMP,"clone list : %P",clone);
-		debug_print(KERN_DUMP,"first_node : %P, size : %u",list->first_node,list->size);
+		debug_print(KERN_DUMP,"first_node : %P, size : %u",clone->first_node,list->size);
 
 		/* test-3.2 */
 		debug_print(KERN_DUMP,"\ntest-3.2");
@@ -672,8 +672,113 @@ void __linked_list_test(void){
 	#endif
 #endif
 
-#if 1	/* test-4 */
+#if 0	/* test-4 */
+	debug_print(KERN_INFO,"\ntest-4");
+	uint32_t *x = malloc(4);
+	list_t *list1 = list_create();
+	uint32_t *y = malloc(4);
+	uint32_t *z = malloc(8);
+	list_t *list2 = list_create();
 
+	list_push(list1,x);
+	debug_print(KERN_DUMP,"list1 : %P, size : %u, x : %P",list1,list1->size,x);
+	debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+	list_push(list2,y);
+	list_push(list2,z);
+	debug_print(KERN_DUMP,"list2 : %P, size : %u, y : %P, z : %P",list2,list2->size,y,z);
+	debug_print(KERN_DUMP,"list2 first node : %P, last node : %P",list2->first_node,list2->last_node);
+
+	#if 1	/* test-4.1 */
+		debug_print(KERN_DUMP,"\ntest-4.1");
+		list_merge(list1,list2);
+		debug_print(KERN_DUMP,"list1 : %P, size : %u",list1,list1->size);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+		list_t *list3 = list_create();
+		uint32_t *w = malloc(4);
+		debug_print(KERN_DUMP,"list3 : %P, size : %u, w : %P",list3,list3->size,w);
+		debug_print(KERN_DUMP,"list3 first node : %P, last node : %P",list3->first_node,list3->last_node);
+	#endif
+	
+#endif
+
+
+#if 1	/* test-5 */
+	debug_print(KERN_INFO,"\ntest-5");
+	uint32_t *x = malloc(4);
+	list_t *list1 = list_create();
+
+
+	node_t *node0 = list_push(list1,x);
+	debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+	debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+
+	#if 0	/* test-5.1 */
+		debug_print(KERN_DUMP,"\ntest-5.1");
+		node_t *node1 = malloc(sizeof(node_t));
+		list_link_next(list1,node1,node0);
+		debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+	#endif
+
+	#if 0	/* test-5.2 */
+		debug_print(KERN_DUMP,"\ntest-5.2");
+		uint32_t *h = malloc(4);
+		node_t *h_node = list_push(list1,h);
+		node_t *node1 = malloc(sizeof(node_t));
+		debug_print(KERN_DUMP,"h_node : %P, h : %P, node1 : %P",h_node,h,node1);
+		list_link_next(list1,node1,node0);
+		debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+		debug_print(KERN_DUMP,"list1 first node next : %P",list1->first_node->next);
+		debug_print(KERN_DUMP,"node1 next : %P, node1 prev : %P, last node prev : %P",node1->next,node1->prev,list1->last_node->prev);
+	#endif
+
+	#if 0	/* test-5.3 */
+		debug_print(KERN_DUMP,"\ntest-5.3");
+		node_t *node1 = malloc(sizeof(node_t));
+		list_link_prev(list1,node1,node0);
+		debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+	#endif
+	
+	#if 0	/* test-5.4 */
+		debug_print(KERN_DUMP,"\ntest-5.4");
+		uint32_t *h = malloc(4);
+		node_t *h_node = list_push(list1,h);
+		node_t *node1 = malloc(sizeof(node_t));
+		debug_print(KERN_DUMP,"h_node : %P, h : %P, node1 : %P",h_node,h,node1);
+		list_link_prev(list1,node1,node0);
+		debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+		debug_print(KERN_DUMP,"list1 first node next : %P",list1->first_node->next);
+		debug_print(KERN_DUMP,"node1 next : %P, node1 prev : %P, last node prev : %P",node1->next,node1->prev,list1->last_node->prev);
+	#endif
+
+	#if 0	/* test-5.5 */
+		debug_print(KERN_DUMP,"\ntest-5.5");
+		uint32_t *h = malloc(4);
+		node_t *h_node = list_push(list1,h);
+		node_t *node1 = malloc(sizeof(node_t));
+		debug_print(KERN_DUMP,"h_node : %P, h : %P, node1 : %P",h_node,h,node1);
+		list_link_next(list1,node1,h_node);
+		debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P",list1->first_node,list1->last_node);
+		debug_print(KERN_DUMP,"list1 first node next : %P",list1->first_node->next);
+		debug_print(KERN_DUMP,"node1 next : %P, node1 prev : %P, last node prev : %P",node1->next,node1->prev,list1->last_node->prev);
+	#endif
+
+	#if 0	/* test-5.6 */
+		debug_print(KERN_DUMP,"\ntest-5.6");
+		uint32_t *h = malloc(4);
+		node_t *h_node = list_push(list1,h);
+		node_t *node1 = malloc(sizeof(node_t));
+		debug_print(KERN_DUMP,"h_node : %P, h : %P, node1 : %P\n",h_node,h,node1);
+		list_link_prev(list1,node1,h_node);
+		debug_print(KERN_DUMP,"list1 : %P, list1 size : %u, x : %P",list1,list1->size,x);
+		debug_print(KERN_DUMP,"list1 first node : %P, last node : %P\n",list1->first_node,list1->last_node);
+		debug_print(KERN_DUMP,"list1 first node next : %P",list1->first_node->next);
+		debug_print(KERN_DUMP,"node1 next : %P, node1 prev : %P, last node prev : %P",node1->next,node1->prev,list1->last_node->prev);
+	#endif
 #endif
 
 }
