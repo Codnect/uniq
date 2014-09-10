@@ -25,6 +25,6 @@
 #define __arch_i586__		586
 #define __arch_i686__		686
 
-#define __kern_arch__		__i386__
+#define __kern_arch__		__arch_i386__
 
 #endif /* __UNIQ_ARCH_H__ */
