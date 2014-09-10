@@ -31,7 +31,7 @@ uint32_t kmalloc(uint32_t size);
 #define PAGE_SIZE		4096
 #define KHEAP_INIT		0x00800000
 
-typedef struct heap_info_t{
+typedef struct heap_info{
 	uint32_t alloc_point;
 	uint32_t end_point;
 	uint32_t current_end;
@@ -41,8 +41,8 @@ typedef struct heap_info_t{
 /*
  * small block
  */
-typedef struct heap_blk_header_t{
-	struct heap_blk_header_t *next;		/* sonraki block header'in adresi */
+typedef struct heap_blk_header{
+	struct heap_blk_header *next;		/* sonraki block header'in adresi */
 	uint32_t size;				/* header blok boyutu */
 	uint32_t magic;				/* header block magic */
 	void *point;				/* header'in bos blok parcasinin bellek adresi.
@@ -54,7 +54,7 @@ typedef struct heap_blk_header_t{
 
 }heap_blk_header_t;
 
-typedef struct heap_blk_t{
+typedef struct heap_blk{
 	heap_blk_header_t *first;		/* ilk block header'in adresi*/
 }heap_blk_t;
 
@@ -63,14 +63,14 @@ typedef struct heap_blk_t{
  */
 #define BIG_MAX_TYPE	0x9
 
-typedef struct heap_big_blk_t{
-	struct heap_big_blk_t *next;		/* sonraki block header'in adresi */
+typedef struct heap_big_blk{
+	struct heap_big_blk *next;		/* sonraki block header'in adresi */
 	uint32_t size;				/* header blok boyutu */
 	uint32_t magic;				/* header block magic */
-	struct heap_big_blk_t *prev;		/* onceki block header'in adresi */
+	struct heap_big_blk *prev;		/* onceki block header'in adresi */
 }heap_big_blk_t;
 
-typedef struct heap_big_root_blk_t{
+typedef struct heap_big_root_blk{
 	heap_big_blk_t *node[BIG_MAX_TYPE + 1];
 }heap_big_root_blk_t;
 
