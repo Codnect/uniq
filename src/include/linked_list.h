@@ -53,5 +53,9 @@ linked_list_t *linked_list_merge(linked_list_t *dest,linked_list_t *src);
 linked_list_t *linked_list_clone(linked_list_t *linked_list);
 linked_list_t *linked_list_create(void);
 void __linked_list_test(void);
+node_t *linked_list_push_next(linked_list_t *linked_list,void *item,node_t *prev_node);
+node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next_node);
+void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_node);
+void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_node);
 
 #endif /* __UNIQ_LINKED_LIST_H__ */
