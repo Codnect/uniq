@@ -22,7 +22,7 @@
 
 #include <uniq/types.h>
 
-typedef struct _registers{
+typedef struct{
 	uint32_t gs, fs, es, ds;                          /* selektorler; ds = veri segmenti, es = extra segment,
 	                                                  * gs, fs diger segment yazmaclari.
 	                                                  */
