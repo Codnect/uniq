@@ -34,7 +34,7 @@ typedef struct tree_branch{
 typedef struct{
 	tree_branch_t *root_branch;
 	uint32_t signature;
-	uint32_t branch_count;	
+	uint32_t nbranch;	
 }tree_t;
 
 #endif /* __UNIQ_TREE_H__ */
