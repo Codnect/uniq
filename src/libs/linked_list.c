@@ -704,7 +704,7 @@ void __linked_list_test(void){
 #endif
 
 
-#if 1	/* test-5 */
+#if 0	/* test-5 */
 	debug_print(KERN_INFO,"\ntest-5");
 	uint32_t *x = malloc(4);
 	list_t *list1 = list_create();
