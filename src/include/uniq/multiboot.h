@@ -35,7 +35,7 @@
 #define MULTIBOOT_FLAG_APM     		0x200
 #define MULTIBOOT_FLAG_VBE     		0x400
 
-typedef struct _mboot_info{
+typedef struct{
 	uint32_t flags;
 	uint32_t mem_lower;
 	uint32_t mem_upper;
@@ -62,14 +62,14 @@ typedef struct _mboot_info{
 	uint32_t vbe_interface_len;
 }__attribute__ ((packed)) mboot_info_t;
 
-typedef struct _mboot_memmap{
+typedef struct{
 	uint32_t size;
 	uint64_t base_addr;
 	uint64_t length;
 	uint32_t type;
 }__attribute__ ((packed)) mboot_memmap_t;
 
-typedef struct _vbe_info{
+typedef struct{
 	uint16_t attributes;
 	uint8_t  winA, winB;
 	uint16_t granularity;
