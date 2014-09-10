@@ -22,7 +22,7 @@
 
 #include <uniq/types.h>
 
-typedef struct{
+typedef struct tm{
 	time_t tm_sec;		/* saniye */
 	time_t tm_min;		/* dakika */
 	time_t tm_hour;		/* saat */
@@ -34,7 +34,7 @@ typedef struct{
 	time_t tm_isdst;	/* yaz saati uygulamasi */
 }tm_t;
 
-typedef struct{
+typedef struct timeval{
 	time_t tv_sec;		/* saniye */
 	suseconds_t tv_usec;	/* mikrosaniye */
 }timeval_t;
