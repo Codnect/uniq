@@ -17,8 +17,8 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#ifndef __MULTIBOOT_H__
-#define __MULTIBOOT_H__
+#ifndef __UNIQ_MULTIBOOT_H__
+#define __UNIQ_MULTIBOOT_H__
 
 #include <uniq/types.h>
 
@@ -94,4 +94,4 @@ typedef struct{
 	uint16_t reserved2;
 }__attribute__ ((packed)) vbe_info_t;
 
-#endif /* __MULTIBOOT_H__ */
+#endif /* __UNIQ_MULTIBOOT_H__ */
