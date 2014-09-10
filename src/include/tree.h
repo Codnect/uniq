@@ -21,6 +21,9 @@
 #define __UNIQ_TREE_H__
 
 #include <uniq/types.h>
+#include <list.h>
+
+#define TREE_SIGNATURE			0xCCD499AA
 
 typedef struct tree_branch{
 	struct tree_branch *branch;
@@ -30,7 +33,8 @@ typedef struct tree_branch{
 
 typedef struct{
 	tree_branch_t *root_branch;
-	uint32_t branch_count;
+	uint32_t signature;
+	uint32_t branch_count;	
 }tree_t;
 
 #endif /* __UNIQ_TREE_H__ */
