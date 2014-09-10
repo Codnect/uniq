@@ -48,9 +48,6 @@ void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_
 	if(!linked_list || !prev_node || !node)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 	assert(!node->prev && !node->next && "node is already in a linked list!");
 	assert(prev_node->link_list == linked_list && "prev_node doesn't belong to this list!");
@@ -87,9 +84,6 @@ void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_
 	if(!linked_list || !next_node || !node)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 	assert(!node->prev && !node->next && "node is already in a linked list!");
 	assert(next_node->link_list == linked_list && "next_node doesn't belong to this list!");
@@ -142,9 +136,6 @@ node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next
 	if(!linked_list || !next_node || !item)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 	assert(next_node->link_list == linked_list && "next_node doesn't belong to this list!");
 
@@ -169,9 +160,6 @@ node_t *linked_list_push_next(linked_list_t *linked_list,void *item,node_t *prev
 	if(!linked_list || !prev_node || !item)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 	assert(prev_node->link_list == linked_list && "next_node doesn't belong to this list!");
 	
@@ -194,9 +182,6 @@ linked_list_t *linked_list_clone(linked_list_t *linked_list){
 	if(!linked_list)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 	
 	linked_list_t *clone = linked_list_create();
@@ -220,9 +205,6 @@ linked_list_t *linked_list_merge(linked_list_t *dest,linked_list_t *src){
 	if(!dest || !src)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(dest->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature(destination linked list)");
 	assert(src->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature(src linked list)");
 
@@ -269,9 +251,6 @@ void linked_list_free(linked_list_t *linked_list){
 	if(!linked_list)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	node_t *node = linked_list->first_node;
@@ -295,9 +274,6 @@ void linked_list_clear(linked_list_t *linked_list){
 	if(!linked_list)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	node_t *node = linked_list->first_node;
@@ -318,9 +294,6 @@ void linked_list_destroy(linked_list_t *linked_list){
 	if(!linked_list)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	linked_list_clear(linked_list);
@@ -341,9 +314,6 @@ void linked_list_link(linked_list_t *linked_list,node_t *new_node){
 	if(!linked_list || !new_node)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	new_node->link_list = linked_list;
@@ -382,9 +352,6 @@ node_t *linked_list_push(linked_list_t *linked_list,void *item){
 	if(!linked_list || !item)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	/*
@@ -411,9 +378,6 @@ void linked_list_unlink(linked_list_t *linked_list,node_t *node){
 	if(!linked_list || !node)
 		return;
 
-	/* 
- 	 * linked_list imza kontrolu
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	/*
@@ -450,9 +414,6 @@ node_t *linked_list_pop(linked_list_t *linked_list){
 	if(!linked_list)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	if(!linked_list->last_node)
@@ -476,9 +437,7 @@ void linked_list_remove(linked_list_t *linked_list,uint32_t node_index){
 
 	if(!linked_list || linked_list->size < node_index)
 		return;
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
+
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	uint32_t i = 0;
@@ -503,9 +462,6 @@ node_t *linked_list_search(linked_list_t *linked_list,void *search){
 	if(!search)
 		return NULL;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	node_t *node = linked_list->first_node;
@@ -532,9 +488,6 @@ int32_t linked_list_get_index(linked_list_t *linked_list,void *search){
 	if(!search)
 		return -1;
 
-	/* 
- 	 * linked_list imza kontrolu 
-	 */
 	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
 
 	int32_t index = 0;
