@@ -22,11 +22,11 @@
 
 #include <uniq/types.h>
 
-typedef struct{
+typedef struct _thread{
 
 }thread_t;
 
-typedef struct{
+typedef struct _process{
   
 }process_t;
 
