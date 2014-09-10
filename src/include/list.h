@@ -38,5 +38,9 @@ typedef linked_list_t 			list_t;
 #define list_clone(list)		linked_list_clone(list)
 #define list_create			linked_list_create
 #define __list_test			__linked_list_test
+#define list_push_next(list,item,prevn)	linked_list_push_next(list,item,prevn)
+#define list_push_prev(list,item,nextn)	linked_list_push_prev(list,item,nextn)
+#define list_link_prev(list,node,nextn)	linked_list_link_prev(list,node,nextn)
+#define list_link_next(list,node,prevn)	linked_list_link_next(list,node,prevn)
 
 #endif /* __UNIQ_LIST_H__ */
