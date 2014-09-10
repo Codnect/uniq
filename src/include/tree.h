@@ -22,5 +22,15 @@
 
 #include <uniq/types.h>
 
+typedef struct tree_branch{
+	struct tree_branch *branch;
+	list_t *sub_branches;
+	void *item;	
+}tree_branch_t;
+
+typedef struct{
+	tree_branch_t *root_branch;
+	uint32_t branch_count;
+}tree_t;
 
 #endif /* __UNIQ_TREE_H__ */
