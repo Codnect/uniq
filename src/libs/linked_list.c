@@ -37,11 +37,11 @@ linked_list_t *linked_list_create(void){
 }
 
 /*
- * linked_list_link_next,
+ * linked_list_link_next,dugumu belirtilen dugumden sonrasina baglar.
  *
- * @param linked_list :
- * @param node :
- * @param prev_node
+ * @param linked_list : liste
+ * @param node : baglanacak dugum
+ * @param prev_node : dugumun baglanacagi dugum
  */
 void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_node){
 
@@ -73,11 +73,11 @@ void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_
 }
 
 /*
- * linked_list_link_prev,
+ * linked_list_link_prev,dugumu belirtilen dugumun oncesine baglar.
  *
- * @param linked_list :
- * @param node :
- * @param prev_node :
+ * @param linked_list : liste
+ * @param node : baglanacak dugum
+ * @param next_node : dugumun baglanacagi dugum
  */
 void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_node){
 
@@ -125,11 +125,12 @@ void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_
 }
 
 /*
- * linked_list_push_prev,
+ * linked_list_push_prev,verilen itemi belirtilen bagli listede
+ * belirtilen dugumun oncesine ekler.
  *
- * @param linked_list :
- * @param item :
- * @param next_node :
+ * @param linked_list : liste
+ * @param item : eklenecek item
+ * @param next_node : itemin baglanacagi dugum
  */
 node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next_node){
 	
@@ -149,11 +150,12 @@ node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next
 }
 
 /*
- * linked_list_push_next,
+ * linked_list_push_next,verilen itemi belirtilen bagli listeye
+ * belirtilen dugumden sonrasina ekler.
  *
- * @param linked_list :
- * @param item :
- * @param prev_node :
+ * @param linked_list : liste
+ * @param item : eklenecek item
+ * @param prev_node : itemin baglanacagi dugum
  */
 node_t *linked_list_push_next(linked_list_t *linked_list,void *item,node_t *prev_node){
 
