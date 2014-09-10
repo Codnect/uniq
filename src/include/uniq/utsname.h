@@ -22,7 +22,7 @@
 
 #define UTSNAME_LENGTH		256
 
-typedef struct{
+typedef struct utsname{
 	char sysname[UTSNAME_LENGTH];
 	char nodename[UTSNAME_LENGTH];
 	char release[UTSNAME_LENGTH];
