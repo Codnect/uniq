@@ -45,6 +45,33 @@ linked_list_t *linked_list_create(void){
  */
 void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_node){
 
+	if(!linked_list || !prev_node || !node)
+		return;
+
+	/* 
+ 	 * linked_list imza kontrolu 
+	 */
+	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
+	assert(!node->prev && !node->next && "node is already in a linked list!");
+	assert(prev_node->link_list == linked_list && "prev_node doesn't belong to this list!");
+
+	node->link_list = linked_list;
+
+	if(!linked_list->first_node || linked_list->last_node == prev_node){
+
+		linked_list_link(linked_list,node);
+		return;
+		
+	}
+
+	node->prev = prev_node;
+	node->next = prev_node->next;
+
+	if(prev_node->next)
+		prev_node->next->prev = node;
+
+	prev_node->next = node;
+	linked_list->size++;
 
 }
 
@@ -57,6 +84,49 @@ void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_
  */
 void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_node){
 
+	if(!linked_list || !next_node || !node)
+		return;
+
+	/* 
+ 	 * linked_list imza kontrolu 
+	 */
+	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
+	assert(!node->prev && !node->next && "node is already in a linked list!");
+	assert(next_node->link_list == linked_list && "next_node doesn't belong to this list!");
+
+	node->link_list = linked_list;
+
+	/*
+	 * eger ilk dugum bossa 
+	 */
+	if(!linked_list->first_node){
+
+		linked_list_link(linked_list,node);
+		return;
+		
+	}
+
+	if(linked_list->first_node == next_node){
+
+		next_node->prev = node;
+		node->next = next_node;
+		node->prev = NULL;
+		linked_list->first_node = node;
+		linked_list->size++;
+
+		return;	
+
+	}
+
+
+	node->next = next_node;
+	node->prev = next_node->prev; 
+
+	if(next_node->prev)
+		next_node->prev->next = node;
+
+	next_node->prev = node;
+	linked_list->size++;
 
 }
 
@@ -68,7 +138,22 @@ void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_
  * @param next_node :
  */
 node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next_node){
+	
+	if(!linked_list || !next_node || !item)
+		return NULL;
 
+	/* 
+ 	 * linked_list imza kontrolu 
+	 */
+	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
+	assert(next_node->link_list == linked_list && "next_node doesn't belong to this list!");
+
+	node_t *new_node = malloc(sizeof(node_t));
+	new_node->next = new_node->prev = new_node->link_list = NULL;
+	new_node->item = item;
+	linked_list_link_prev(linked_list,new_node,next_node);
+	
+	return new_node;
 
 }
 
@@ -80,8 +165,23 @@ node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next
  * @param prev_node :
  */
 node_t *linked_list_push_next(linked_list_t *linked_list,void *item,node_t *prev_node){
+
+	if(!linked_list || !prev_node || !item)
+		return NULL;
+
+	/* 
+ 	 * linked_list imza kontrolu 
+	 */
+	assert(linked_list->signature == LINKED_LIST_SIGNATURE && "Wrong! linked list signature");
+	assert(prev_node->link_list == linked_list && "next_node doesn't belong to this list!");
 	
+	node_t *new_node = malloc(sizeof(node_t));
+	new_node->next = new_node->prev = new_node->link_list = NULL;
+	new_node->item = item;
+	linked_list_link_next(linked_list,new_node,prev_node);
 	
+	return new_node;
+
 }
 
 /*
