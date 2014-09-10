@@ -21,7 +21,6 @@
 #define __UNIQ_TREE_H__
 
 #include <uniq/types.h>
-#include <compiler.h>
 
 
 #endif /* __UNIQ_TREE_H__ */
