@@ -37,6 +37,54 @@ linked_list_t *linked_list_create(void){
 }
 
 /*
+ * linked_list_link_next,
+ *
+ * @param linked_list :
+ * @param node :
+ * @param prev_node
+ */
+void linked_list_link_next(linked_list_t *linked_list,node_t *node,node_t *prev_node){
+
+
+}
+
+/*
+ * linked_list_link_prev,
+ *
+ * @param linked_list :
+ * @param node :
+ * @param prev_node :
+ */
+void linked_list_link_prev(linked_list_t *linked_list,node_t *node,node_t *next_node){
+
+
+}
+
+/*
+ * linked_list_push_prev,
+ *
+ * @param linked_list :
+ * @param item :
+ * @param next_node :
+ */
+node_t *linked_list_push_prev(linked_list_t *linked_list,void *item,node_t *next_node){
+
+
+}
+
+/*
+ * linked_list_push_next,
+ *
+ * @param linked_list :
+ * @param item :
+ * @param prev_node :
+ */
+node_t *linked_list_push_next(linked_list_t *linked_list,void *item,node_t *prev_node){
+	
+	
+}
+
+/*
  * linked_list_clone, verilen listenin klonunu olusturur.
  *
  * @param linked_list : bagli liste
