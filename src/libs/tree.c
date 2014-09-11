@@ -19,7 +19,9 @@
 
 #include <uniq/module.h>
 #include <uniq/kernel.h>
+#include <list.h>
 #include <tree.h>
+
 
 /*
  * tree_create,
@@ -27,12 +29,128 @@
 tree_t *tree_create(void){
 
 	tree_t *new_tree = malloc(sizeof(tree_t));
-	new_tree->root = NULL;
-	new_tree->nbranch = 0;
+	new_tree->root_node = NULL;
+	new_tree->nnode = 0;
 	new_tree->signature = TREE_SIGNATURE;
 	
 	return new_tree;
 
+}
+
+/*
+ * tree_find_child_count,
+ *
+ *
+ */
+uint32_t tree_find_child_count(tree_node_t *node){
+
+	if(!node || !node->child)
+		return 0;
+
+	uint32_t count = 0;
+
+	return count;
+
+}
+
+/*
+ * tree_search_parent,
+ *
+ * @param tree :
+ * @param search :
+ */
+tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search){
+
+	if(!tree->root_node || !search)
+		return NULL;
+
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+	tree_node_t *node = NULL;
+
+	
+	return node;
+
+}
+
+/*
+ * tree_node_create,
+ *
+ * @param item :
+ */
+tree_node_t *tree_node_create(void *item){
+
+	if(!item)
+		return NULL;
+
+	tree_node_t *new_node = malloc(sizeof(tree_node_t));
+	new_node->parent = NULL;
+	new_node->child = list_create();
+	new_node->item  = item;
+
+	return new_node;
+
+}
+
+/*
+ * tree_set_root_branch,
+ *
+ * @param tree :
+ * @param item :
+ */
+tree_node_t *tree_set_root_node(tree_t *tree,void *item){
+	
+	if(!tree || !item)
+		return NULL;
+
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	tree_node_t *root = tree_node_create(item);
+	tree->nnode = 1;
+	tree->root_node = root;
+
+	return root;
+
+}
+
+/*
+ * tree_push_child_node,
+ *
+ * @param tree :
+ * @param child :
+ * @param parent :
+ */
+void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
+	
+	if(!tree || !child || !parent)
+		return;
+
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	tree->nnode++;
+	child->parent = parent;
+	list_push(parent->child,child);
+	
+}
+
+/*
+ * tree_push_child,
+ *
+ * @param tree :
+ * @param item :
+ * @param parent :
+ */
+tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
+	
+	if(!tree || !item || !parent)
+		return NULL;
+
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	tree_node_t *child = tree_node_create(item);
+	tree_push_child_node(tree,child,parent);
+	
+	return child;
+	
 }
 
 MODULE_AUTHOR("Burak Köken");
