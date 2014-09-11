@@ -27,7 +27,7 @@
 tree_t *tree_create(void){
 
 	tree_t *new_tree = malloc(sizeof(tree_t));
-	new_tree->root_branch = NULL;
+	new_tree->root = NULL;
 	new_tree->nbranch = 0;
 	new_tree->signature = TREE_SIGNATURE;
 	
