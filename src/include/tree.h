@@ -32,7 +32,7 @@ typedef struct _tree_branch_t{
 }tree_branch_t;
 
 typedef struct{
-	tree_branch_t *root_branch;
+	tree_branch_t *root;
 	uint32_t signature;
 	uint32_t nbranch;	
 }tree_t;
