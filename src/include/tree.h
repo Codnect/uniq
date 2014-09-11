@@ -25,8 +25,8 @@
 
 #define TREE_SIGNATURE			0xCCD499AA
 
-typedef struct tree_branch{
-	struct tree_branch *branch;
+typedef struct _tree_branch_t{
+	struct _tree_branch_t *branch;
 	list_t *sub_branches;
 	void *item;	
 }tree_branch_t;
