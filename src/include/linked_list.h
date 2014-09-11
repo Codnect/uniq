@@ -25,10 +25,10 @@
 
 #define LINKED_LIST_SIGNATURE		0xEE384ACF
 
-typedef struct node{
+typedef struct _node{
 	void *item;			/* item(isaretci olduguna dikkat edin!) */
-	struct node *prev; 		/* onceki dugum */
-	struct node *next;		/* sonraki dugum */
+	struct _node *prev; 		/* onceki dugum */
+	struct _node *next;		/* sonraki dugum */
 	void *link_list;		/* dugumun hangi listeye bagli oldugu */
 }node_t;
 
