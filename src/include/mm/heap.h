@@ -41,8 +41,8 @@ typedef struct{
 /*
  * small block
  */
-typedef struct _heap_blk_header{
-	struct _heap_blk_header *next;		/* sonraki block header'in adresi */
+typedef struct _heap_blk_header_t{
+	struct _heap_blk_header_t *next;	/* sonraki block header'in adresi */
 	uint32_t size;				/* header blok boyutu */
 	uint32_t magic;				/* header block magic */
 	void *point;				/* header'in bos blok parcasinin bellek adresi.
@@ -63,11 +63,11 @@ typedef struct{
  */
 #define BIG_MAX_TYPE	0x9
 
-typedef struct _heap_big_blk{
-	struct _heap_big_blk *next;		/* sonraki block header'in adresi */
+typedef struct _heap_big_blk_t{
+	struct _heap_big_blk_t *next;		/* sonraki block header'in adresi */
 	uint32_t size;				/* header blok boyutu */
 	uint32_t magic;				/* header block magic */
-	struct _heap_big_blk *prev;		/* onceki block header'in adresi */
+	struct _heap_big_blk_t *prev;		/* onceki block header'in adresi */
 }heap_big_blk_t;
 
 typedef struct{
