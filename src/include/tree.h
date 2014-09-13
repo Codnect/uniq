@@ -25,16 +25,16 @@
 
 #define TREE_SIGNATURE			0xCCD499AA
 
-typedef struct _tree_branch_t{
-	struct _tree_branch_t *branch;
-	list_t *sub_branches;
+typedef struct _tree_node_t{
+	struct _tree_node_t *parent;
+	list_t *child;
 	void *item;	
-}tree_branch_t;
+}tree_node_t;
 
 typedef struct{
-	tree_branch_t *root;
+	tree_node_t *root_node;
 	uint32_t signature;
-	uint32_t nbranch;	
+	uint32_t node_count;	
 }tree_t;
 
 #endif /* __UNIQ_TREE_H__ */
