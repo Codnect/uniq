@@ -209,6 +209,9 @@ uint32_t use_memory_size(void){
 #else
 	max_index = mp_info.aframe_size / 4;
 
+	if(mp_info.aframe_size % 4)
+		max_index++;
+
 	for(index = 0; index < max_index; index++){
 
 		if((index == max_index - 1) && mp_info.remaining >= 0){	
@@ -373,6 +376,9 @@ static uint32_t find_free_frame(void){
 	}
 #else
 	max_index = mp_info.aframe_size / 4;
+
+	if(mp_info.aframe_size % 4)
+		max_index++;
 	
 	for(index = 0; index < max_index; index++){
 
