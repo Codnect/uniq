@@ -214,11 +214,11 @@ uint32_t use_memory_size(void){
 
 	for(index = 0; index < max_index; index++){
 
-		if(mp_info.remaining >=0 && (index == (max_index-1))){	
+		if(mp_info.remaining >= 0 && (index == (max_index-1))){	
 				for(offset = 0; offset < mp_info.remaining; offset++){
 					uint32_t cntrl = 0x1 << offset;
 					if(mp_info.frame_map[index] & cntrl)
-						use++;	
+						use++;
 				}
 		}
 		else{
@@ -580,7 +580,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
 	uint32_t alloc_frame_byte = mp_info->nframe / BITS_PER_BYTE;
 	uint8_t alloc_frame_remaining = mp_info->nframe % BITS_PER_BYTE; 
-	alloc_frame_byte += !!(alloc_frame_remaining);
+	alloc_frame_byte += !!(alloc_frame_remaining) * 4;
 
 	if(mp_info->nframe % 32 > 0)
 		mp_info->remaining = mp_info->nframe % 32;
@@ -590,7 +590,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 #endif
 
 	mp_info->aframe_size = alloc_frame_byte;
-	mp_info->frame_map = (uint32_t *)kmalloc(alloc_frame_byte);
+	mp_info->frame_map = (uint32_t*)kmalloc(alloc_frame_byte);
  	memset(mp_info->frame_map,0,alloc_frame_byte);
 
 }
