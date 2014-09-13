@@ -237,6 +237,14 @@ uint32_t use_memory_size(void){
 
 }
 
+
+#define HEAP_SIZE_1x	0x01000000	/* 16 MiB */
+#define HEAP_SIZE_2x	0x02000000	/* 32 MiB */
+#define HEAP_SIZE_4x	0x04000000	/* 64 MiB */
+#define HEAP_SIZE_8x	0x08000000	/* 128 MiB */
+#define HEAP_SIZE_16x	0x10000000	/* 256 MiB */
+#define HEAP_SIZE_32x	0x20000000	/* 512 MiB */
+
 /*
  * calc_heap_size, toplam bellek miktarina gore heap alaninin
  * boyutunu hesaplar. sistemin en az 64 MiB olmasi gerekiyor!
@@ -249,20 +257,20 @@ static void calc_heap_size(void){
 	#define byte_to_kib(x)	(x / 1024)
 
 	if(n >= 8 && n < 16) /* 64 MiB - 128 MiB */
-		heap_info.size = 16777216; /* 16 MiB */
+		heap_info.size = HEAP_SIZE_1x;
 	else if(n >= 16 && n < 32) /* 128 MiB - 256 MiB */
-		heap_info.size = 33554432; /* 32 MiB */
+		heap_info.size = HEAP_SIZE_2x;
 	else if(n >= 32 && n < 64) /* 256 MiB - 512 MiB */
-		heap_info.size = 67108864; /* 64 MiB */
+		heap_info.size = HEAP_SIZE_4x;
 	else if(n >= 64 && n < 128) /* 512 MiB - 1024 MiB */
-		heap_info.size = 134217728; /* 128 MiB */
+		heap_info.size = HEAP_SIZE_8x;
 	else if(n >= 128 && n < 256) /* 1024 MiB - 2048 MiB */
-		heap_info.size = 268435456; /* 256 MiB */
+		heap_info.size = HEAP_SIZE_16x;
 	else /* 2048 MiB > */
-		heap_info.size = 536870912; /* 512 MiB */
+		heap_info.size = HEAP_SIZE_32x;
 
 	if(n < 8)
-		die("The amount of memory is critically low for heap.");
+		die("The size of memory is critically low for heap.");
 	else if(n < 64)
 		debug_print(KERN_INFO,"The amount of memory is normal level for heap. Heap size : %u KiB",
 										byte_to_kib(heap_info.size));
