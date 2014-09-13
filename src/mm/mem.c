@@ -524,11 +524,13 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 	if(dir->tables[table_index])
 		return &dir->tables[table_index]->pages[addr % 1024];
 	else if(make){
+		
 		uint32_t temp;
 		dir->tables[table_index] = (page_table_t *)kmalloc_aphysic(sizeof(page_table_t),&temp);
 		memset(dir->tables[table_index],0,FRAME_SIZE_BYTE);
 		dir->tables_physic[table_index] = temp | 0x7;	/* present,rw,us */
 		return &dir->tables[table_index]->pages[addr % 1024];
+		
 	}
 	
 	return NULL;
@@ -536,7 +538,7 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 }
 
 /*
- * change_page_dir,sayfa dizini degistirir.
+ * change_page_dir,sayfa dizinini degistirir.
  *
  * @param new_dir : yeni sayfa dizini adresi.
  */
@@ -618,93 +620,88 @@ static void dump_mp_info(mp_info_t *mp_info){
  */
 void paging_final(void){
 
+	/*
+	 *  bellekte hangi sayfalarin ve sayfa tablolarinin oldugunu belirtelim.
+	 */
 	debug_print(KERN_INFO,"Initializing the memory mapping.");
-	
-	/* ilk 1 MiB'i mapping islemi uygulayalim */
 	debug_print(KERN_DUMP,"Memory mapping size : %u KiB",use_memory_size());
+	
+	/* 
+	 * ilk 1 MiB icin mapping islemi uygulayalim 
+	 */
 	debug_print(KERN_DUMP,"(0x00000000 - 0x00100000) mapping. %u KiB",0x00100000 / 1024);	
 	for(uint32_t i = 0; i < 0x100000; i += FRAME_SIZE_BYTE)
 		dma_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,i);
 
-	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m, last_addr + 0x4000 : \033[1;37m%p",
-												last_addr,
-												last_addr + 0x4000);
-
-	uint32_t available_allocmem  = 0; /* kullanilabilir ayrilmis bellek,asagida
-				   	   * ekstradan 16 KiB ayriliyor dikkat !.
-				           * last_addr'in son kullanilan adres
-				           * oldugunu unutmayin.
-				           */
-	/* 0x100000 adresinden, last_addr + 0x4000(16 KiB) adrese kadar bir mapping daha yapiyoruz */
-	debug_print(KERN_DUMP,"(0x00100000 - %p) mapping. %u KiB ",last_addr + 0x4000,
-								   (last_addr + 0x4000 - 0x100000)/1024); 
+	/*
+	 * 1 MiB'dan last_addr(linker "end") + 0x4000 'e kadar mapping islemi 
+	 * gerceklestiriyoruz. + 0x4000'u ise asil heap alanimiz ile last_addr
+	 * arasinda tampon bolge oldugunu dusunebilirsiniz.
+	 */
 	for(uint32_t j = 0x100000; j < last_addr + 0x4000; j += FRAME_SIZE_BYTE)
 		dma_frame(get_page(j,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS,j);
-	available_allocmem += 0x4000;
-	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",available_allocmem,
-											available_allocmem/1024);
 
-	/* vga text-mode video bellegini remapping isleminden geciriyoruz */
+	/* 
+	* vga text-mode video bellegini remapping isleminden geciriyoruz.
+	*/
 	debug_print(KERN_DUMP,"(0xB8000-0xC0000) remapping vga text-mode dma. %u KiB",(0xC0000-0xB8000)/1024);
 	for(uint32_t k = 0xB8000; k < 0xC0000; k += FRAME_SIZE_BYTE)
 		dma_frame(get_page(k,false,kernel_dir),PAGE_RWRITE,PAGE_USER_ACCESS,k);
-	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
 
-
-	uint32_t tmp_heap_start = KHEAP_INIT;	/* 0x00800000,ekstra yada temel diyecegimiz heap'in baslangic adresi */
-	/* eger bizim bu adresimiz last_addr + 0x4000'den kucuk ise bu adresi 1 MiB ileri tasiyoruz */
+	/*
+	 * asil heap alanimiz 8 MiB'tan basliyor!
+	 */
+	uint32_t tmp_heap_start = KHEAP_INIT;
+	
+	/*
+	 * eger last_addr(linker "end") + 0x4000 asil heap alanimizin adresini asmissa heap
+	 * baslangic adresini 1 MiB ileri tasiyoruz.
+	 */
 	if (tmp_heap_start <= last_addr + 0x4000){
+		
 		debug_print(KERN_ERROR, "Kernel heap init address error!");
 		debug_print(KERN_DUMP,"tmp_heap_start : %p, last_addr + 0x4000 : %p", tmp_heap_start,last_addr + 0x4000);
 		tmp_heap_start = last_addr + 0x100000;
 		debug_print(KERN_DUMP,"new tmp_heap_start : %p",tmp_heap_start);
+		
 	}
 	heap_info.alloc_point = tmp_heap_start;
 
-	/* 
-	 * ----------------------------------------------------------------------------------------------
-	 * ekstra heap'in adresine kadar olan tum bellek alanini bizim su anlik temel heap
-	 * alanimizi olusturuyoruz. eger kmallocla tahsisi yaparak bu adrese gelirsek bu
-	 * ekstra heap bolgesine giriyoruz. ve artik buradan tahsis islemini gerceklestiriyoruz.
-	 * eger bu ek artik bu bolgede yetmeze o zaman sikinti olusur :(. bu bolgenin bellek
-	 * miktarini sahip oldugumuz bellek miktarina gore ayarliyoruz. sistemimizin en az 64 MiB
-         * bellek kullanilacak  sekilde ayarlandi. 64 MiB bellekte 16 MiB'lik bir heap ayarliyoruz.
-	 * daha fazla bilgi icin calc_heap_size'i inceleyin.
-	 * ----------------------------------------------------------------------------------------------
-	 */
-
 	/*
-	 * en son last_addr + 0x4000 adresine kadar mapping islemini yaptigimizi hatirlayin.
-	 * burdan temel yada ekstra olarak adlandirdigimiz heap alanina kadar mapping islemi
-	 * yapiyoruz.
+	 * mapping isleminden en son kaldigimiz yerden asil heap alani baslangicina kadar
+	 * sayfalari kullanmak icin ayarliyoruz.
 	 */
-	debug_print(KERN_DUMP,"(%p - %p) mapping. %u Byte / %u KiB",last_addr + 0x4000,
-								   tmp_heap_start,
-								   tmp_heap_start - (last_addr+0x4000),
-								   (tmp_heap_start - (last_addr+0x4000))/1024); 
-	available_allocmem += (tmp_heap_start - (last_addr+0x4000));
-	debug_print(KERN_DUMP,"--> available allocation memory size = %u Byte / %u KiB",available_allocmem,
-											available_allocmem/1024);
 	for (uint32_t i = last_addr + 0x4000; i < tmp_heap_start  ; i += FRAME_SIZE_BYTE)
 		alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
-	/* 
-	 * sayfa tablolarinin bellekten tahsis edilmesinden dolayi last_addr'in arttigini
-	 * farkedebilirsiniz.
-	 */
-	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
 
-	
-	/*  heap genislemesi icin. sayfalari sadece sayfalari ayarladigimiza dikkat edin. */
-	heap_info.end_point = tmp_heap_start + heap_info.size;	
+	/*
+	 * heap boyutu bellek boyutuna bagli olarak degiskenlik gosterecektir.
+	 * yukaridaki calc_heap_size fonksiyonunu inceleyiniz.
+	 */
+	heap_info.end_point = tmp_heap_start + heap_info.size;
 	debug_print(KERN_DUMP,"(%p - %p) preallocation for heap. %u Byte / %u KiB",heap_info.alloc_point,
 								  		   heap_info.end_point,
 								   	  	   heap_info.size,
-								  		   heap_info.size/1024); 
+								  		   heap_info.size/1024);
+	/*
+	 * yukaridaki heap baslangicina kadar olan mapping isleminden farkli olarak
+	 * asil heap baslangic adresinden son adresine kadar bir preallocation
+	 * yapiyoruz diyelibiliriz. sayfa ve sayfa tablolari ayarlaniyor sadece,
+	 * yukarida alloc_frame fonksiyonuyla birlikte sayfalarin bellek kullanilabilir
+	 * oldugunuda yani bellekte oldugunu belirtiyorduk. burada sadece gerekli on
+	 * ayarlamayi yapiyoruz. gerekli oldugunda sbrk fonksiyonuyla bu sayfalari
+	 * alloc_frame ile kullanilabilir hale getirecegiz.
+	 */
 	for (uint32_t i = heap_info.alloc_point ; i < heap_info.end_point ; i += FRAME_SIZE_BYTE)
-		get_page(i,true, kernel_dir);
-	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
+		get_page(i,true,kernel_dir);
 
+	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
 	debug_print(KERN_DUMP,"Memory mapping size : %u KiB",use_memory_size());
+	
+	/*
+	 * page fault kesme isleyicisini ayarlayip, sayfa dizinini
+	 * degistiriyoruz.
+	 */
 	isr_add_handler(PAGE_FAULT_INT,page_fault_handler);
 	change_page_dir(kernel_dir);
 
