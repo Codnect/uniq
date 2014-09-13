@@ -272,10 +272,10 @@ static void calc_heap_size(void){
 	if(n < 8)
 		die("The size of memory is critically low for heap.");
 	else if(n < 64)
-		debug_print(KERN_INFO,"The amount of memory is normal level for heap. Heap size : %u KiB",
+		debug_print(KERN_INFO,"The size of memory is normal level for heap. Heap size : %u KiB",
 										byte_to_kib(heap_info.size));
 	else
-		debug_print(KERN_INFO,"The amount of memory is very good level for heap. Heap size : %u KiB",
+		debug_print(KERN_INFO,"The size of memory is very good level for heap. Heap size : %u KiB",
 										byte_to_kib(heap_info.size));
 
 	#undef byte_to_kib
