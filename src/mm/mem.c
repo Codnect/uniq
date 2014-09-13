@@ -39,29 +39,6 @@
 #define PAGING_ENABLE		0x80000000
 #define PAGING_DISABLE		0x7fffffff
 
-/*
- * memory mapping'de 2 yontem olusturdum. MEM_NORMAL_USE tanimlamasi
- * kullanilirsa bellek framelere ayrilmasinda frame sayisi hem 8 hemde
- * 32'ye tam bolunecek sekilde olusturulmustur. bunun nedenlerini 
- * aciklayacak olursak framelerin kontrolleri ve diger islemlerde
- * frame_map'in 32 bit olarak islemden gecmesi ve frame_map'e bellek
- * ayrilirken byte(8 bit) seklinde hesaplanmasi kolay ve hizli olmasidir,
- * fakat artik bellek miktari fazla olabilir. diger yontemde ise bellekte
- * en fazla 3 KiB artik bellek kalabilecegi sekilde tasarlanmistir yani
- * mecburen yinede kaliyor ama dedigim gibi en fazla 3 KiB :),bildiginiz
- * gibi sayfalamada 4 KiB gibi bir boyut kullaniliyordu. hiz olayina 
- * geldigimizde ornek vermek gerekirse 256 MiB bellegi tahsis islemine
- * tutalim. MEM_NORMAL USE tanimli bir cekirdekte 256 MiB bellek tahsis
- * islemini 4 sn gibi surede gerceklestiriyorsa,diger yontemle 5 sn
- * gibi surede gerceklestiriyor. eger bellegi sonuna kadar kullanmak
- * istiyorsaniz MEM_NORMAL_USE tanimini kullanmayabilirsiniz. ornegin
- * ben 128 MiB bellek icin bu olayi gerceklestirdim MEM_NORMAL_USE
- * tanimiyla kullanilan mapping isleminde 639 KiB bellek artik olarak
- * kalirken diger yontemde dedigimiz gibi en fazla 3 KiB artik olustu.
- * MEM_NORMAL_USE kullanilmayabilir her zaman yuksek bir miktarda bellek
- * tahsisi yapilmayacagi icin hiz faktoru es gecebiliriz,bellegi iyi
- * kullanalim yeter ki .).
- */
 #if 0
 	#define MEM_NORMAL_USE
 #endif
