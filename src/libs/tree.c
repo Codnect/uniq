@@ -30,7 +30,7 @@ tree_t *tree_create(void){
 
 	tree_t *new_tree = malloc(sizeof(tree_t));
 	new_tree->root_node = NULL;
-	new_tree->nnode = 0;
+	new_tree->node_count = 0;
 	new_tree->signature = TREE_SIGNATURE;
 	
 	return new_tree;
@@ -38,18 +38,64 @@ tree_t *tree_create(void){
 }
 
 /*
+ * tree_total_node,
+ *
+ * @param tree :
+ */
+uint32_t tree_total_node(tree_t *tree){
+
+	if(!tree || !tree->root_node)
+		return 0;
+
+	return tree->node_count;
+
+}
+
+/*
  * tree_find_child_count,
  *
- *
+ * @param node :
  */
 uint32_t tree_find_child_count(tree_node_t *node){
 
 	if(!node || !node->child)
 		return 0;
 
-	uint32_t count = 0;
+	uint32_t count = node->child->size;
+	node_t *child = node->child->first_node;
+	
+	for(;child; child = child->next)
+		count += tree_find_child_count((tree_node_t*)child->item);
 
 	return count;
+
+}
+
+
+/*
+ * tree_node_search_parent,
+ *
+ * @param node :
+ * @param search :
+ */
+tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search){
+
+	tree_node_t *node = NULL;
+	node_t *child = start_node->child->first_node;
+
+	for(;child;child = child->next){
+		
+		if(child->item == search)
+			return start_node;
+
+		node = tree_node_search_parent((tree_node_t*)child->item,search);
+
+		if(node)
+			break;
+
+	}
+
+	return node;
 
 }
 
@@ -65,10 +111,8 @@ tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search){
 		return NULL;
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
-	tree_node_t *node = NULL;
-
 	
-	return node;
+	return tree_node_search_parent(tree->root_node,search);
 
 }
 
@@ -105,7 +149,7 @@ tree_node_t *tree_set_root_node(tree_t *tree,void *item){
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
 
 	tree_node_t *root = tree_node_create(item);
-	tree->nnode = 1;
+	tree->node_count = 1;
 	tree->root_node = root;
 
 	return root;
@@ -126,7 +170,7 @@ void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
 
-	tree->nnode++;
+	tree->node_count++;
 	child->parent = parent;
 	list_push(parent->child,child);
 	
