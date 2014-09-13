@@ -580,7 +580,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
 	uint32_t alloc_frame_byte = mp_info->nframe / BITS_PER_BYTE;
 	uint8_t alloc_frame_remaining = mp_info->nframe % BITS_PER_BYTE; 
-	alloc_frame_byte += !!(alloc_frame_remaining) * 4;
+	alloc_frame_byte += !!(alloc_frame_remaining);
 
 	if(mp_info->nframe % 32 > 0)
 		mp_info->remaining = mp_info->nframe % 32;
