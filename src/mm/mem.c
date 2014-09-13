@@ -207,14 +207,11 @@ uint32_t use_memory_size(void){
 				}
 	}
 #else
-	if(mp_info.remaining > 0)
-		max_index = mp_info.aframe_size / 4 + 1;
-	else
-		max_index = mp_info.aframe_size / 4;
+	max_index = mp_info.aframe_size / 4;
 
 	for(index = 0; index < max_index; index++){
 
-		if(mp_info.remaining >= 0 && (index == (max_index-1))){	
+		if((index == max_index - 1) && mp_info.remaining >= 0){	
 				for(offset = 0; offset < mp_info.remaining; offset++){
 					uint32_t cntrl = 0x1 << offset;
 					if(mp_info.frame_map[index] & cntrl)
@@ -375,11 +372,8 @@ static uint32_t find_free_frame(void){
 			}
 	}
 #else
-	if(mp_info.remaining > 0)
-		max_index = mp_info.aframe_size / 4 + 1;
-	else
-		max_index = mp_info.aframe_size / 4;
-
+	max_index = mp_info.aframe_size / 4;
+	
 	for(index = 0; index < max_index; index++){
 
 		if(mp_info.remaining >=0 && (index == (max_index-1))){	
@@ -702,7 +696,7 @@ void paging_final(void){
 	 */
 	for (uint32_t i = heap_info.alloc_point ; i < heap_info.end_point ; i += FRAME_SIZE_BYTE)
 		get_page(i,true,kernel_dir);
-
+	
 	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p\033[0m",last_addr);
 	debug_print(KERN_DUMP,"Memory mapping size : %u KiB",use_memory_size());
 	
