@@ -38,6 +38,28 @@ tree_t *tree_create(void){
 }
 
 /*
+ * tree_node_free,
+ *
+ * @param node :
+ */
+void tree_node_free(tree_node_t *node){
+
+
+
+}
+
+/*
+ * tree_free,
+ *
+ * @param tree :
+ */
+void tree_free(tree_t *tree){
+
+
+
+}
+
+/*
  * tree_total_node,
  *
  * @param tree :
