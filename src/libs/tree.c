@@ -147,9 +147,6 @@ tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search){
  */
 tree_node_t *tree_node_create(void *item){
 
-	if(!item)
-		return NULL;
-
 	tree_node_t *new_node = malloc(sizeof(tree_node_t));
 	new_node->parent = NULL;
 	new_node->child = list_create();
@@ -167,7 +164,7 @@ tree_node_t *tree_node_create(void *item){
  */
 tree_node_t *tree_set_root_node(tree_t *tree,void *item){
 	
-	if(!tree || !item)
+	if(!tree)
 		return NULL;
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
@@ -209,7 +206,7 @@ void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
  */
 tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 	
-	if(!tree || !item || !parent)
+	if(!tree || !parent)
 		return NULL;
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
@@ -226,8 +223,16 @@ tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
  */
 void __tree_test(void){
 	
+	debug_print(KERN_INFO,"tree test...");
+	tree_t *tree = tree_create();
+	tree_set_root_node(tree,NULL);
 
-	
+	debug_print(KERN_DUMP,"tree addr : %p, root node addr : %p, node count : %u",tree,
+										     tree->root_node,
+										     tree_total_node(tree));
+	debug_print(KERN_DUMP,"root; child : %p, item : %p, parent : %p",tree->root_node->child,
+									 tree->root_node->item,
+									 tree->root_node->parent);	
 }
 
 MODULE_AUTHOR("Burak Köken");
