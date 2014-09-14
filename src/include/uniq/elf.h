@@ -20,4 +20,13 @@
 #ifndef __UNIQ_ELF_H__
 #define __UNIQ_ELF_H__
 
+/*
+ * elf magic
+ */
+#define ELF_MAGIC0  0x7f
+#define ELF_MAGIC1   'E'
+#define ELF_MAGIC2   'L'
+#define ELF_MAGIC3   'F'
+
+
 #endif /* __UNIQ_ELF_H__ */
