@@ -35,10 +35,10 @@ void kmain(mboot_info_t *mboot_info,uint32_t mboot_magic){
 	/*
 	 * gdt,idt,isr ve irq
 	 */
-	gdt_init();
-	idt_init();
-	isr_init();
-	irq_init();
+	gdt_init();	/* global tanimlayici tablosu */
+	idt_init();	/* kesme tanimlayici tablosu */
+	isr_init();	/* kesme servis istekleri */
+	irq_init();	/* donanim kesme istekleri */
 #if 0
 	__int_test();
 #endif
