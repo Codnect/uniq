@@ -86,10 +86,10 @@ uint32_t tree_child_count(tree_node_t *node){
 		return 0;
 
 	uint32_t count = node->child->size;
-	node_t *child = node->child->first_node;
+	node_t *child_list_node = node->child->first_node;
 	
-	for(;child; child = child->next)
-		count += tree_find_child_count((tree_node_t*)child->item);
+	for(;child_list_node; child_list_node = child_list_node->next)
+		count += tree_find_child_count((tree_node_t*)child_list_node->item);
 
 	return count;
 
@@ -105,14 +105,14 @@ uint32_t tree_child_count(tree_node_t *node){
 tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search){
 
 	tree_node_t *node = NULL;
-	node_t *child = start_node->child->first_node;
+	node_t *child_list_node = start_node->child->first_node;
 
-	for(;child;child = child->next){
+	for(;child_list_node;child_list_node = child_list_node->next){
 		
-		if(child->item == search)
+		if(child_list_node->item == search)
 			return start_node;
 
-		node = tree_node_search_parent((tree_node_t*)child->item,search);
+		node = tree_node_search_parent((tree_node_t*)child_list_node->item,search);
 
 		if(node)
 			break;
