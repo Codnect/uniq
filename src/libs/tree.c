@@ -76,11 +76,11 @@ uint32_t tree_total_node(tree_t *tree){
 }
 
 /*
- * tree_find_child_count,
+ * tree_child_count,
  *
  * @param node :
  */
-uint32_t tree_find_child_count(tree_node_t *node){
+uint32_t tree_child_count(tree_node_t *node){
 
 	if(!node || !node->child)
 		return 0;
