@@ -46,7 +46,9 @@ uint32_t tree_total_node(tree_t *tree){
 
 	if(!tree || !tree->root_node)
 		return 0;
-
+	
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+	
 	return tree->node_count;
 
 }
