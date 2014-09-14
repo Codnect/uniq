@@ -243,6 +243,15 @@ void tree_node_remove_parent(tree_t *tree,tree_node_t *node,tree_node_t *parent)
 	
 	if(!parent || !node)
 		return;
+	
+	node_t *search = list_search(parent->child,node);
+	list_unlink(parent->child,search);
+
+	/*
+	 * +1 dugumun kendisi 
+	 */
+	tree->node_count -= 1 + tree_child_count(node);
+	tree_node_free(node);
 
 }
 
