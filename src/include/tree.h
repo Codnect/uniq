@@ -41,7 +41,7 @@ tree_t *tree_create(void);
 void tree_node_free(tree_node_t *node);
 void tree_free(tree_t *tree);
 uint32_t tree_total_node(tree_t *tree);
-uint32_t tree_find_child_count(tree_node_t *node);
+uint32_t tree_child_count(tree_node_t *node);
 tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search);
 tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search);
 tree_node_t *tree_node_create(void *item);
