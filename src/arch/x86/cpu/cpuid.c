@@ -303,11 +303,8 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 	/* 
 	 * genisletilmemis ise 
 	 */
-	if(!extended){
-
-		strcpy(cpuid_info->brand_string,"not extended (amd)");
+	if(!extended)
 		return;
-	}	
 
 	if(extended >= 0x80000002) {
 			for(uint32_t i = 0x80000002;i <= 0x80000004;i++){
