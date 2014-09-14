@@ -31,8 +31,7 @@
  * cpu baya yorulur fakat kullanmak zorundayiz.
  *
  * kulladigimiz bu fonksiyonlar(__sync_lock_test_and_set,__sync_lock_release) 
- * yada her ne dersek diyelim buyuk ihtimal makrodur. bunlar gcc'nin bize sundugu 
- * yararlardan sadece biri ;).
+ * yada her ne dersek diyelim buyuk ihtimal makrodur.
  *
  * ornek vermek gerekirse iki process'de ayni fonksiyona cagri yapsin 
  *
