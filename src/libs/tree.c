@@ -89,7 +89,7 @@ uint32_t tree_child_count(tree_node_t *node){
 	node_t *child_list_node = node->child->first_node;
 	
 	for(;child_list_node; child_list_node = child_list_node->next)
-		count += tree_find_child_count((tree_node_t*)child_list_node->item);
+		count += tree_child_count((tree_node_t*)child_list_node->item);
 
 	return count;
 
@@ -131,11 +131,14 @@ tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search
  */
 tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search){
 
-	if(!tree->root_node || !search)
+	if(!tree)
 		return NULL;
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
 	
+	if(!tree->root_node || !search)
+		return NULL;
+
 	return tree_node_search_parent(tree->root_node,search);
 
 }
@@ -186,10 +189,13 @@ tree_node_t *tree_set_root_node(tree_t *tree,void *item){
  */
 void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
 	
-	if(!tree || !child || !parent)
+	if(!tree)
 		return;
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	if(!parent || !child)
+		return;
 
 	tree->node_count++;
 	child->parent = parent;
@@ -206,16 +212,38 @@ void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
  */
 tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 	
-	if(!tree || !parent)
+	if(!tree)
 		return NULL;
 
 	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	if(!parent)
+		return NULL;
 
 	tree_node_t *child = tree_node_create(item);
 	tree_push_child_node(tree,child,parent);
 	
 	return child;
 	
+}
+
+/*
+ * tree_node_remove_parent
+ *
+ * @param tree :
+ * @param node :
+ * @param parent :
+ */
+void tree_node_remove_parent(tree_t *tree,tree_node_t *node,tree_node_t *parent){
+
+	if(!tree)
+		return;
+	
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+	
+	if(!parent || !node)
+		return;
+
 }
 
 /*
