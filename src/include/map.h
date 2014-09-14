@@ -22,5 +22,8 @@
 
 #include <uniq/types.h>
 
+typedef struct{
+
+}map_t;
 
 #endif /* __UNIQ_MAP_H__ *
