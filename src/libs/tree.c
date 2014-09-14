@@ -221,5 +221,14 @@ tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 	
 }
 
+/*
+ * __tree_test
+ */
+void __tree_test(void){
+	
+
+	
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
