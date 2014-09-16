@@ -32,6 +32,7 @@ ALLSOURCES = arch/x86/boot.o \
 	     kernel/kern_debug.o \
 	     kernel/panic.o \
 	     kernel/version.o \
+	     kernel/time.o \
 	     mm/heap.o \
 	     mm/mem.o
 
@@ -57,4 +58,4 @@ link:
 	$(LD) -m $(LDEMULATION) $(LDFLAGS) -o $(KERN_OUTPUT) -b $(TARGET) $(SOURCES)
 
 qemu-run:
-	qemu -kernel $(KERN_OUTPUT)
+	qemu -kernel $(KERN_OUTPUT) -rtc base=localtime
