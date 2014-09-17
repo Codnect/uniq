@@ -25,11 +25,14 @@
 static tm_t kern_start_time;
 
 /*
- * time_init,
+ * time_init, kernel baslama zamanini saklamak icin.
  */
 void time_init(void){
  
+	debug_print(KERN_INFO,"Initializing the time.");
+	get_time(&kern_start_time);
 
+	
 }
 
 /*
@@ -54,10 +57,11 @@ void __dump_time_test(void){
 }
 
 /*
- * gettimeofday,
+ * gettimeofday, 1970 yilindan bulunan zamana kadar
+ * olan sureyi timeval yapisina doldurur.
  *
- * @param timeval :
- * @param tz :
+ * @param timeval : timeval yapisi
+ * @param tz : (NULL)
  */
 int32_t gettimeofday(timeval_t *timeval,void *tz){
 
