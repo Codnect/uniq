@@ -22,10 +22,13 @@
 #include <uniq/multiboot.h>
 #include <uniq/module.h>
 
+extern void time_init(void);
+
 void kmain(mboot_info_t *mboot_info,uint32_t mboot_magic){
 
 	/* vga konsol */
 	init_vga_console();
+	time_init();
 
 	if(mboot_magic != MULTIBOOT_LOADER_MAGIC)
 		debug_print(KERN_WARNING,"Invalid the magic number. The magic number is \033[1;31m%P",mboot_magic);
