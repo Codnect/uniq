@@ -44,7 +44,7 @@ typedef struct tm{
 
 typedef struct timeval{
 	time_t tv_sec;		/* saniye */
-	suseconds_t tv_usec;	/* mikrosaniye */
+	time_t tv_usec;		/* mikrosaniye */
 }timeval_t;
 
 void __dump_time_test(void);
