@@ -22,15 +22,23 @@
 
 #include <uniq/types.h>
 
+/*
+ * saniye cinsinden zaman tanimlamalari
+ */
+#define TIME_MINUTE	60
+#define TIME_HOUR	TIME_MINUTE * 60
+#define TIME_DAY	TIME_HOUR * 24
+#define TIME_YEAR	TIME_DAY * 365
+
 typedef struct tm{
-	time_t tm_sec;		/* saniye */
-	time_t tm_min;		/* dakika */
-	time_t tm_hour;		/* saat */
-	time_t tm_mday;		/* ayin kacinci gunu */
-	time_t tm_mon;		/* ay */
-	time_t tm_year;		/* yil */
-	time_t tm_wday;		/* haftanin kacinci gunu */
-	time_t tm_yday;		/* yilin kacinci gunu */
+	time_t tm_sec;		/* saniye (0-61) */
+	time_t tm_min;		/* dakika (0-59) */
+	time_t tm_hour;		/* saat (0-23) */
+	time_t tm_mday;		/* ayin kacinci gunu (1-31) */
+	time_t tm_mon;		/* ay (0-11) */
+	time_t tm_year;		/* yil (1900'dan itibaren) */
+	time_t tm_wday;		/* haftanin kacinci gunu, pazar=0 (0-6) */
+	time_t tm_yday;		/* yilin kacinci gunu (0-365) */
 	time_t tm_isdst;	/* yaz saati uygulamasi */
 }tm_t;
 
@@ -38,5 +46,8 @@ typedef struct timeval{
 	time_t tv_sec;		/* saniye */
 	suseconds_t tv_usec;	/* mikrosaniye */
 }timeval_t;
+
+void __dump_time_test(void);
+int32_t gettimeofday(timeval_t *timeval,void *tz);
 
 #endif /* __UNIQ_TIME_H__ */
