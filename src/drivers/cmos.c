@@ -121,7 +121,7 @@ void get_time(tm_t *time){
 
 	time->tm_wday--;
 	time->tm_yday--;
-	time->tm_isdst	= -1;
+	time->tm_isdst	= 0;
 
 }
 
