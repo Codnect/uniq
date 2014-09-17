@@ -24,6 +24,11 @@
 
 static tm_t kern_start_time;
 
+uint8_t month_days[] = { /* 0  */ 31, /* 1  */ 28, /* 2  */ 31,
+			 /* 3  */ 30, /* 4  */ 31, /* 5  */ 30,
+			 /* 6  */ 31, /* 7  */ 31, /* 8  */ 30,
+			 /* 9  */ 31, /* 10 */ 30, /* 11 */ 31 };
+
 /*
  * time_init, kernel baslama zamanini saklamak icin.
  */
