@@ -38,6 +38,7 @@
 #define	RTC_YEAR		2000
 #define bcd_to_bin(x)  		((x / 16) * 10 + (x & 0xf))
 #define is_leap_year(x)		!(x % 4) && ((x % 100) || !(x % 400))
+
 void cmos_read(uint8_t *cmos_index_arr);
 void get_time(tm_t *time);
 
