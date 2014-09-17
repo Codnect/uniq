@@ -28,11 +28,18 @@ static tm_t kern_start_time;
  * time_init, kernel baslama zamanini saklamak icin.
  */
 void time_init(void){
- 
+
+
 	debug_print(KERN_INFO,"Initializing the time.");
 	get_time(&kern_start_time);
-
 	
+	debug_print(KERN_DUMP,"kernel start time =  %u:%u:%u, %u.%u.%u",kern_start_time.tm_hour,
+								        kern_start_time.tm_min,
+							                kern_start_time.tm_sec,
+							                kern_start_time.tm_mday,
+							                kern_start_time.tm_mon + 1,
+							                kern_start_time.tm_year + 1900);
+
 }
 
 /*
