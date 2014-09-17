@@ -18,6 +18,7 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
 #include <uniq/time.h>
 #include <drivers/cmos.h>
 
@@ -33,11 +34,22 @@ void time_init(void){
 
 /*
  * __dump_time_test,
- *
- * @param time :
  */
-void __dump_time_test(tm_t *time){
- 
+void __dump_time_test(void){
+
+	debug_print(KERN_INFO,"time test...");
+	tm_t time;
+	get_time(&time);
+
+	debug_print(KERN_DUMP,"second : %u, minute : %u, hour : %u, year : %u",time.tm_sec,
+									       time.tm_min,
+									       time.tm_hour,
+									       time.tm_year);
+	debug_print(KERN_DUMP,"month : %u, mday : %u, wday : %d, yday : %u",time.tm_mon,
+								 	    time.tm_mday,
+								 	    time.tm_wday,
+								 	    time.tm_yday);
+
 
 }
 
@@ -47,11 +59,42 @@ void __dump_time_test(tm_t *time){
  * @param timeval :
  * @param tz :
  */
-int gettimeofday(timeval_t *timeval,void *tz){
+int32_t gettimeofday(timeval_t *timeval,void *tz){
 
-  return 0;
+	tm_t time;
+	get_time(&time);
+	time.tm_mon++;
+	time.tm_yday++;
+
+	int32_t time_sec,days,years;
+	time_sec = days = 0;
+	
+
+	years = 1900 + time.tm_year - 1;
+	while(years > 1969){
+		
+		days += 365;
+
+		if(is_leap_year(years))
+			days++;
+
+		years--;
+
+	}
+
+	time_sec += days * TIME_DAY;
+	time_sec += (time.tm_yday - 1) * TIME_DAY;
+	time_sec += time.tm_hour * TIME_HOUR;
+	time_sec += time.tm_min * TIME_MINUTE;
+	time_sec += time.tm_sec;
+	
+	timeval->tv_sec = time_sec;
+	timeval->tv_usec = 0;
+
+ 	return 0;
 
 }
+
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
