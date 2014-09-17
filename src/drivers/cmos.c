@@ -35,9 +35,9 @@
  */
 
 /*
- * cmos_read,
+ * cmos_read, cmos bilgilerini verilen diziye doldurur.
  *
- * @param cmos_index_arr
+ * @param cmos_index_arr : cmos dizisi
  */
 void cmos_read(uint8_t *cmos_index_arr){
 
@@ -51,9 +51,9 @@ void cmos_read(uint8_t *cmos_index_arr){
 }
 
 /*
- * get_tm_yday,
+ * get_tm_yday, yilin kacinci gunu oldugunu hesaplar.
  *
- * @param time :
+ * @param time : tm_t yapisi isaretcisi
  */
 static void get_tm_yday(tm_t *time){
 
@@ -103,9 +103,10 @@ static void get_tm_yday(tm_t *time){
 }
 
 /*
- * get_time,
+ * get_time, cmos bilgilerini okuyarak tm_t yapisina
+ * zamanla ilgili verileri doldurur.
  *
- * @param time :
+ * @param time : tm_t yapisi isaretcisi
  */
 void get_time(tm_t *time){
 
