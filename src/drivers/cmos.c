@@ -34,6 +34,8 @@
  *
  */
 
+extern uint8_t month_days[];
+
 /*
  * cmos_read, cmos bilgilerini verilen diziye doldurur.
  *
@@ -58,11 +60,6 @@ void cmos_read(uint8_t *cmos_index_arr){
 static void get_tm_yday(tm_t *time){
 
 	uint32_t yday = 0;
-
-	uint8_t month_days[] = { /* 0  */ 31, /* 1  */ 28, /* 2  */ 31,
-				 /* 3  */ 30, /* 4  */ 31, /* 5  */ 30,
-				 /* 6  */ 31, /* 7  */ 31, /* 8  */ 30,
-				 /* 9  */ 31, /* 10 */ 30, /* 11 */ 31 };
  
 	switch(time->tm_mon){
 
