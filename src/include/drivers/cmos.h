@@ -20,6 +20,8 @@
 #ifndef __UNIQ_CMOS_H__
 #define __UNIQ_CMOS_H__
 
+#include <uniq/time.h>
+
 #define CMOS_RTC_SEC		0x00			/* saniye */
 #define CMOS_RTC_MIN		0x02			/* dakika */
 #define CMOS_RTC_HOUR		0x04			/* saat */
@@ -32,5 +34,11 @@
 #define CMOS_DATA		0x71
 #define CMOS_MAX_INDEX		0x7f
 #define CMOS_MAX		CMOS_MAX_INDEX + 1
+
+#define	RTC_YEAR		2000
+#define bcd_to_bin(x)  		((x / 16) * 10 + (x & 0xf))
+#define is_leap_year(x)		!(x % 4) && ((x % 100) || !(x % 400))
+void cmos_read(uint8_t *cmos_index_arr);
+void get_time(tm_t *time);
 
 #endif /* __UNIQ_CMOS_H__ */
