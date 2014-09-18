@@ -373,10 +373,9 @@ void exit_vga_console(void){
 
 
 /*
- * init_vga_console, vga konsolunu baslatir.eger bu fonksiyon
- * vga konsolu baslatilmazsa ekrana karakter yada karakter 
- * dizisi yazdirmaniz mumkun olmaz.onun icin init_vga_console'u
- * baslatmayi unutmayin!
+ * init_vga_console, vga konsolunu baslatir. eger vga konsolu
+ * baslatilmazsa ekrana karakter yada karakter  dizisi yazdirmaniz
+ * mumkun olmaz. bunun icin init_vga_console'u baslatmayi unutmayin!
  */
 void init_vga_console(void){
 
