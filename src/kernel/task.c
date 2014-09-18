@@ -28,5 +28,13 @@ void goto_user_mode(void){
  
 }
 
+/*
+ * multitasking_init,
+ */
+void multitasking_init(void){
+ 
+ 
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
