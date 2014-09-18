@@ -274,13 +274,13 @@ tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 }
 
 /*
- * tree_node_remove_parent
+ * tree_node_parent_remove
  *
  * @param tree :
  * @param node :
  * @param parent :
  */
-void tree_node_remove_parent(tree_t *tree,tree_node_t *node,tree_node_t *parent){
+void tree_node_parent_remove(tree_t *tree,tree_node_t *node,tree_node_t *parent){
 
 	if(!tree)
 		return;
