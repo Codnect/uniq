@@ -44,7 +44,34 @@ tree_t *tree_create(void){
  */
 void tree_node_free(tree_node_t *node){
 
+	if(!node)
+		return;
 
+	node_t *child_list_node = node->child->first_node;
+	
+	for(;child_list_node; child_list_node = child_list_node->next)
+		tree_node_free((tree_node_t*)child_list_node->item);
+	
+	free(node);
+
+}
+
+/*
+ * tree_node_destroy,
+ *
+ * @param node :
+ */
+void tree_node_destroy(tree_node_t *node){
+
+	if(!node)
+		return;
+
+	node_t *child_list_node = node->child->first_node;
+	
+	for(;child_list_node; child_list_node = child_list_node->next)
+		tree_node_destroy((tree_node_t*)child_list_node->item);
+	
+	free(child_list_node->item);
 
 }
 
@@ -55,7 +82,26 @@ void tree_node_free(tree_node_t *node){
  */
 void tree_free(tree_t *tree){
 
+	if(!tree || !tree->root_node)
+		return;
+	
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+	tree_node_free(tree->root_node);
 
+}
+
+/*
+ * tree_destroy,
+ * 
+ * @param tree :
+ */
+void tree_destroy(tree_t *tree){
+
+	if(!tree || !tree->root_node)
+		return;
+	
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+	tree_node_destroy(tree->root_node);
 
 }
 
