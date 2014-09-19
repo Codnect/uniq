@@ -24,7 +24,7 @@
 
 
 /*
- * tree_create,
+ * tree_create, agac yapisi olusturur.
  */
 tree_t *tree_create(void){
 
@@ -38,9 +38,11 @@ tree_t *tree_create(void){
 }
 
 /*
- * tree_node_free,
+ * tree_node_free, verilen dugumden baslayarak bu
+ * dugumun alt dugumleriyle birlikte bellekte bosa
+ * cikarir.(free)
  *
- * @param node :
+ * @param node : agac dugumu
  */
 void tree_node_free(tree_node_t *node){
 
@@ -57,9 +59,12 @@ void tree_node_free(tree_node_t *node){
 }
 
 /*
- * tree_node_destroy,
+ * tree_node_destroy, verilen dugumden baslayarak bu
+ * dugumun alt dugumleriyle birlikte bulunan itemleri yada
+ * diger bir tabirle icerikleri siler.(bellekte bosa cikarir
+ * -free)
  *
- * @param node :
+ * @param node : agac dugumu
  */
 void tree_node_destroy(tree_node_t *node){
 
@@ -71,14 +76,16 @@ void tree_node_destroy(tree_node_t *node){
 	for(;child_list_node; child_list_node = child_list_node->next)
 		tree_node_destroy((tree_node_t*)child_list_node->item);
 	
-	free(child_list_node->item);
+	free(node->item);
 
 }
 
 /*
- * tree_free,
+ * tree_free, verilen agac yapisinda kok dugumden
+ * baslayarak tum dugumleri siler yada diger bir
+ * tabirle bellekte bosa cikarir diyebiliriz.(free)
  *
- * @param tree :
+ * @param tree : agac yapisi
  */
 void tree_free(tree_t *tree){
 
@@ -91,9 +98,11 @@ void tree_free(tree_t *tree){
 }
 
 /*
- * tree_destroy,
- * 
- * @param tree :
+ * tree_destroy, agac yapisinda kok dugumden baslayarak
+ * tum dugumlerde bulunan icerikleri(itemleri) siler.
+ * (bellekte bosa cikarir-free)
+ *
+ * @param tree : agac yapisi
  */
 void tree_destroy(tree_t *tree){
 
@@ -106,9 +115,10 @@ void tree_destroy(tree_t *tree){
 }
 
 /*
- * tree_total_node,
+ * tree_total_node, agac yapisindaki toplam dugum
+ * sayisini dondurur.
  *
- * @param tree :
+ * @param tree : agac yapisi
  */
 uint32_t tree_total_node(tree_t *tree){
 
@@ -122,9 +132,10 @@ uint32_t tree_total_node(tree_t *tree){
 }
 
 /*
- * tree_child_count,
+ * tree_child_count, verilen agac dugumundeki child
+ * (cocuk) dugum sayisini dondurur.
  *
- * @param node :
+ * @param node : agac dugumu
  */
 uint32_t tree_child_count(tree_node_t *node){
 
@@ -143,10 +154,12 @@ uint32_t tree_child_count(tree_node_t *node){
 
 
 /*
- * tree_node_search_parent,
+ * tree_node_search_parent, verilen baslangic dugumunden
+ * baslayarak buna bagli tum dugumlerde istenilen dugumu
+ * bulmaya calisir, bulamazsa "NULL" doner.
  *
- * @param node :
- * @param search :
+ * @param start_node : baslangic dugumu
+ * @param search : aranan dugum
  */
 tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search){
 
@@ -170,10 +183,11 @@ tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search
 }
 
 /*
- * tree_search_parent,
+ * tree_search_parent, agac yapisinde istenilen dugumu
+ * bulmaya calisir, bulamazsa "NULL" doner.
  *
- * @param tree :
- * @param search :
+ * @param tree : agac yapisi
+ * @param search : aranan dugum
  */
 tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search){
 
@@ -190,9 +204,10 @@ tree_node_t *tree_search_parent(tree_t *tree, tree_node_t *search){
 }
 
 /*
- * tree_node_create,
+ * tree_node_create, verilen item icin agac dugumu 
+ * olusturur.
  *
- * @param item :
+ * @param item : item
  */
 tree_node_t *tree_node_create(void *item){
 
@@ -206,10 +221,11 @@ tree_node_t *tree_node_create(void *item){
 }
 
 /*
- * tree_set_root_branch,
+ * tree_set_root_node, agac yapisindaki kok dugumu
+ * ayarlar. 
  *
- * @param tree :
- * @param item :
+ * @param tree : agac yapisi
+ * @param item : item(isaretci olduguna dikkat!)
  */
 tree_node_t *tree_set_root_node(tree_t *tree,void *item){
 	
@@ -227,11 +243,12 @@ tree_node_t *tree_set_root_node(tree_t *tree,void *item){
 }
 
 /*
- * tree_push_child_node,
+ * tree_push_child_node, child dugumunu parent dugumunun
+ * child listesine ekler.
  *
- * @param tree :
- * @param child :
- * @param parent :
+ * @param tree : agac yapisi
+ * @param child : child(cocuk) dugum
+ * @param parent : parent(ebeveyn) dugum
  */
 void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
 	
@@ -250,11 +267,15 @@ void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent){
 }
 
 /*
- * tree_push_child,
+ * tree_push_child, yukaridaki tree_push_child_node 
+ * fonksiyonundan farkli olarak verilen item icin
+ * dugum olusturur ve daha sonra parent dugumunun
+ * child listesine bu dugumu ekler. usteki fonksiyonda
+ * child dugumu zaten parametre olarak veriyoruz.
  *
- * @param tree :
- * @param item :
- * @param parent :
+ * @param tree : agac yapisi
+ * @param item : item(isaretci!)
+ * @param parent : parent dugumu
  */
 tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 	
@@ -274,11 +295,13 @@ tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 }
 
 /*
- * tree_node_parent_remove
+ * tree_node_parent_remove, verilen dugumu parent dugumunun
+ * child listesinde arar, eger bu listede varsa bu dugum 
+ * kaldirilir.
  *
- * @param tree :
- * @param node :
- * @param parent :
+ * @param tree : agac yapisi
+ * @param node : dugum
+ * @param parent : parent dugumu
  */
 void tree_node_parent_remove(tree_t *tree,tree_node_t *node,tree_node_t *parent){
 
@@ -298,6 +321,34 @@ void tree_node_parent_remove(tree_t *tree,tree_node_t *node,tree_node_t *parent)
 	 */
 	tree->node_count -= 1 + tree_child_count(node);
 	tree_node_free(node);
+
+}
+
+/*
+ * tree_node_remove, agac yapisindaki verilen dugumu bellekte 
+ * bosa cikarir(free) yada agac yapisindan kaldirir diyebiliriz.
+ *
+ * @param tree : agac yapisi
+ * @param node : dugum
+ */
+void tree_node_remove(tree_t *tree,tree_node_t *node){
+
+	 if(!tree || !node)
+		return;
+
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	if(node == tree->root_node){
+		
+		tree_node_free(node);
+		tree->root_node = NULL;
+		tree->node_count = 0;
+
+		return;
+
+	}
+
+	tree_node_parent_remove(tree,node,node->parent);
 
 }
 
