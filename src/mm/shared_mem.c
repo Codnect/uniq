@@ -18,6 +18,15 @@
  */
  
 #include <uniq/module.h>
- 
+
+/*
+ * shared_mem_init,
+ */
+void shared_mem_init(void){
+
+
+
+}
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
