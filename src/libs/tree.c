@@ -294,6 +294,36 @@ tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent){
 	
 }
 
+/* 
+ * tree_node_parent_merge,
+ *
+ * @param tree : agac yapisi
+ * @param node : dugum
+ */
+void tree_node_parent_merge(tree_t *tree,tree_node_t *node){
+
+	 if(!tree || !node)
+		return;
+
+	assert(tree->signature == TREE_SIGNATURE && "Wrong! tree signature");
+
+	tree_node_t *parent = node->parent;
+	if(!parent)
+		return;
+
+	node_t *search = list_search(parent->child,node);
+	list_unlink(parent->child,search);
+	tree->node_count--;
+
+	node_t *child_list_node = node->child->first_node;
+	for(;child_list_node;child_list_node = child_list_node->next)
+		((tree_node_t*)child_list_node->item)->parent = parent;
+
+	list_merge(parent->child,node->child);
+	free(node);
+
+}
+
 /*
  * tree_node_parent_remove, verilen dugumu parent dugumunun
  * child listesinde arar, eger bu listede varsa bu dugum 
