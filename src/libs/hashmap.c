@@ -458,6 +458,14 @@ void *hashmap_remove(hashmap_t *hashmap,void *hash_key){
 
 }
 
+/*
+ * __hashmap_test
+ */
+void __hashmap_test(void){
+
+
+
+}
 
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
