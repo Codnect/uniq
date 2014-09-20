@@ -249,9 +249,7 @@ void *hashmap_get(hashmap_t *hashmap,void *hash_key){
 	uint32_t index = hashmap->hash_code(hash_key) % hashmap->size;
 	hashmap_entry_t *entry = hashmap->entries[index];
 
-	if(!entry)
-		return NULL;
-	else{
+	if(entry)
 
 		do{
 
