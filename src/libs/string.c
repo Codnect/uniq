@@ -185,7 +185,7 @@ char* strtolower(char *s){
  * @param s : karakter dizisi
  * @param count : maksimum karakter sayisi
  */
-char* strntoupper(char* s,size_t count) {
+char* strntoupper(char* s,size_t count){
 
 	size_t i = 0;
 	while(count--){
@@ -256,7 +256,7 @@ char *strncpy(char *dest, const char *src, size_t count){
  */
 int strtobool(const char *s, bool *r){
 	
-	switch (*s) {
+	switch (*s){
 		case '1':
 		case 'y':
 		case 'Y':
@@ -280,9 +280,11 @@ int strtobool(const char *s, bool *r){
  * @param s : karakter dizisi
  */
 char *str_ltrim(char *s){
+	
 	while(isspace(*s))
 		++s;
 	return (char*)s;
+
 }
 
 
@@ -316,6 +318,7 @@ char *str_rtrim(char *s){
  * @param s : karakter dizisi
  */
 char *strim(char *s){
+
 	return str_ltrim(str_rtrim(s));
 	
 }
@@ -335,6 +338,7 @@ char *strchr(const char *s, int c){
 	}while(*(++s));
 
 	return NULL;
+
 }
 
 
@@ -348,7 +352,7 @@ char *strchr(const char *s, int c){
 char *strrchr(const char *s, int c){
 
 	const char *temp = s + strlen(s);
-	do {
+	do{
            if (*temp == (char)c)
                return (char *)temp;
         }while (--temp >= s);
@@ -383,11 +387,11 @@ char *strcat(char *dest, const char *src){
 char *strncat(char *dest, const char *src, size_t count){
 	
 	char *temp = dest;
-	if (count) {
+	if (count){
 		while (*dest)
 			dest++;
-		while ((*dest++ = *src++) != '\0') {
-			if (--count == 0) {
+		while ((*dest++ = *src++) != '\0'){
+			if (--count == 0){
 				*dest = '\0';
 				break;
 			}
@@ -548,7 +552,7 @@ void *memset(void *s, int v, size_t c){
 void *memscan(void *s, int v, size_t c){
 	unsigned char *p = s;
 
-	while (c--) {
+	while (c--){
 		if (*p == v)
 			break;
 		p++;
@@ -573,7 +577,7 @@ char *strstr(const char *s1, const char *s2){
 		return (char *)s1;
 
 	l1 = strlen(s1);
-	while (l1 >= l2) {
+	while (l1 >= l2){
 		l1--;
 		if (!memcmp(s1, s2, l2))
 			return (char *)s1;
@@ -599,7 +603,7 @@ char *strcasestr(char *s1,char *s2){
 		return (char *)s1;
 
 	l1 = strlen(s1);
-	while (l1 >= l2) {
+	while (l1 >= l2){
 		l1--;
 		if (!memcmp(strtolower(s1),strtolower(s2), l2))
 			return (char *)s1;
@@ -626,7 +630,7 @@ char *strnstr(const char *s1, const char *s2, size_t len){
 	if (!l2)
 		return (char *)s1;
 	
-	while (len >= l2) {
+	while (len >= l2){
 		len--;
 		if (!memcmp(s1, s2, l2))
 			return (char *)s1;
@@ -653,7 +657,7 @@ char *strncasestr(char *s1,char *s2, size_t len){
 	if (!l2)
 		return (char *)s1;
 	
-	while (len >= l2) {
+	while (len >= l2){
 		len--;
 		if (!memcmp(strtolower(s1),strtolower(s2), l2))
 			return (char *)s1;
