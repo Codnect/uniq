@@ -42,7 +42,19 @@ typedef struct{
 	hashmap_entry_t **entries;
 	hashmap_cmp_t  hash_cmp;
 	hashmap_dup_t hash_dup;
-	hashmap_free_t hash_free;
+	hashmap_free_t hash_item_free;
+	hashmap_free_t hash_key_free;
 }hashmap_t;
+
+void hashmap_destroy(hashmap_t *hashmap);
+int32_t hashmap_check(hashmap_t *hashmap,void *hash_key);
+list_t *hashmap_get_values(hashmap_t *hashmap);
+list_t *hashmap_get_keys(hashmap_t *hashmap);
+void *hashmap_get(hashmap_t *hashmap,void *hash_key);
+void *hashmap_set(hashmap_t *hashmap,void *item,void *hash_key);
+hashmap_t *hashmap_int_create(uint32_t size);
+hashmap_t *hashmap_str_create(uint32_t size);
+void *hashmap_remove(hashmap_t *hashmap,void *hash_key);
+
 
 #endif /* __UNIQ_HASHMAP_H__ */
