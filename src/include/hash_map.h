@@ -24,6 +24,6 @@
 
 typedef struct{
 
-}map_t;
+}hash_map_t;
 
 #endif /* __UNIQ_MAP_H__ *
