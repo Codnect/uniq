@@ -34,12 +34,14 @@ typedef struct _tree_node_t{
 typedef struct{
 	tree_node_t *root_node;
 	uint32_t signature;
-	uint32_t node_count;	
+	uint32_t node_count;
 }tree_t;
 
 tree_t *tree_create(void);
 void tree_node_free(tree_node_t *node);
+void tree_node_destroy(tree_node_t *node);
 void tree_free(tree_t *tree);
+void tree_destroy(tree_t *tree);
 uint32_t tree_total_node(tree_t *tree);
 uint32_t tree_child_count(tree_node_t *node);
 tree_node_t *tree_node_search_parent(tree_node_t *start_node,tree_node_t *search);
@@ -48,6 +50,11 @@ tree_node_t *tree_node_create(void *item);
 tree_node_t *tree_set_root_node(tree_t *tree,void *item);
 void tree_push_child_node(tree_t *tree,tree_node_t *child,tree_node_t *parent);
 tree_node_t *tree_push_child(tree_t *tree,void *item,tree_node_t *parent);
+void tree_node_unlink(tree_node_t *node);
+void tree_node_parent_merge(tree_t *tree,tree_node_t *node);
+void tree_parent_root(tree_t *tree,tree_node_t *node);
+void tree_node_parent_remove(tree_t *tree,tree_node_t *node,tree_node_t *parent);
+void tree_node_remove(tree_t *tree,tree_node_t *node);
 void __tree_test(void);
 
 #endif /* __UNIQ_TREE_H__ */
