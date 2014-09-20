@@ -34,7 +34,7 @@ static uint32_t hashmap_str_hashcode(void *hash_key){
 	uint8_t c;
 
 	while(c = *key++)
-		hash_code = c + hash_code + (hash_code << 5) + (hash_code << 14) - (hash_code << 7);
+		hash_code = c + (hash_code << 6) + (hash_code << 16) - hash_code;
 
 	return hash_code;
 
