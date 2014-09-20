@@ -17,13 +17,17 @@
  *  with Uniq.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UNIQ_MAP_H__
-#define __UNIQ_MAP_H__
+#ifndef __UNIQ_HASH_MAP_H__
+#define __UNIQ_HASH_MAP_H__
 
 #include <uniq/types.h>
+
+typedef struct _hash_map_entry_t{
+
+}hash_map_entry_t;
 
 typedef struct{
 
 }hash_map_t;
 
-#endif /* __UNIQ_MAP_H__ *
+#endif /* __UNIQ_HASH_MAP_H__ *
