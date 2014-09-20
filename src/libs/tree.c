@@ -372,7 +372,6 @@ void tree_parent_root(tree_t *tree,tree_node_t *node){
 	list_unlink(parent->child,search);
 	tree->node_count--;
 
-	
 	node_t *child_list_node = node->child->first_node;
 	for(;child_list_node;child_list_node = child_list_node->next)
 		((tree_node_t*)child_list_node->item)->parent = tree->root_node;
