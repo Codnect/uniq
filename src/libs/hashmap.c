@@ -24,9 +24,10 @@
 #include <list.h>
 
 /*
- * hashmap_str_hashcode,
+ * hashmap_str_hashcode, karakter dizisi icin hash kodu
+ * uretir.
  *
- * @param hash_key :
+ * @param hash_key : hash anahtari
  */
 static uint32_t hashmap_str_hashcode(void *hash_key){
 
@@ -42,9 +43,10 @@ static uint32_t hashmap_str_hashcode(void *hash_key){
 }
 
 /*
- * hashmap_int_hashcode,
+ * hashmap_int_hashcode, integer hashmap icin hash kodu belirlenir.
+ * (hash kodu olarak adresin geri donduruldugune dikkat edin!)
  *
- * @param hash_key :
+ * @param hash_key : hash anahtari
  */
 static uint32_t hashmap_int_hashcode(void *hash_key){
 
@@ -53,10 +55,11 @@ static uint32_t hashmap_int_hashcode(void *hash_key){
 }
 
 /*
- * hashmap_strcmp,
+ * hashmap_strcmp, hashmap icin 2 karakter dizisini karsilastirir.
+ * (hashmap icin hash key karsilastirilmasinda kullanilir.)
  *
- * @param x :
- * @param y :
+ * @param x : ilk karakter dizisi
+ * @param y : diger karakter dizisi
  */
 static int32_t hashmap_strcmp(void *x,void *y){
 
@@ -65,10 +68,11 @@ static int32_t hashmap_strcmp(void *x,void *y){
 }
 
 /*
- * hashmap_intcmp,
+ * hashmap_intcmp, verilen 2 adresi karsilastirir.
+ * (hashmap icin hash key karsilastirilmasinda kullanilir.)
  *
- * @param x :
- * @param y :
+ * @param x : ilk adres
+ * @param y : diger adres
  */
 static int32_t hashmap_intcmp(void *x,void *y){
 
@@ -77,9 +81,10 @@ static int32_t hashmap_intcmp(void *x,void *y){
 }
 
 /*
- * hashmap_strdup,
+ * hashmap_strdup, verilen karakter dizisini klonlar.(hashmap icin
+ * hash key'in klonlanmasinda kullanilir.)
  *
- * @param s :
+ * @param s : karakter dizisi
  */
 static void *hashmap_strdup(void *s){
 
@@ -88,9 +93,13 @@ static void *hashmap_strdup(void *s){
 }
 
 /*
- * hashmap_intdup,
- *
- * @param integer :
+ * hashmap_intdup ve hashmap_int_free fonksiyonlarinin kullanilmasi
+ * gereksiz gibi durabilir. fakat hashmap yapisi incelediginizde
+ * yapida fonksiyon isaretcilerinin oldugunu goreceksiniz. bu
+ * fonksiyonlar string ve integer hashmaplerin ortak fonksiyonlar
+ * tarafindan islenmesinde ayri ayri fonksiyonlarin yazilmamasi
+ * konusunda icin gereklidir. bunu hashmap fonksiyonlarinin tamamini
+ * incelediginizde goreceksiniz.
  */
 static void *hashmap_intdup(void *integer){
 
@@ -98,11 +107,6 @@ static void *hashmap_intdup(void *integer){
 
 }
 
-/*
- * hashmap_int_free,
- *
- * @param integer :
- */
 static void hashmap_int_free(void *integer){
 
 	return;
@@ -110,9 +114,10 @@ static void hashmap_int_free(void *integer){
 }
 
 /*
- * hashmap_destroy,
+ * hashmap_destroy, hashmap yapisini tum icerigiyle
+ * birlikte siler.
  *
- * @param hashmap :
+ * @param hashmap : hashmap yapisi
  */
 void hashmap_destroy(hashmap_t *hashmap){
 
@@ -141,10 +146,11 @@ void hashmap_destroy(hashmap_t *hashmap){
 }
 
 /*
- * hashmap_check,
+ * hashmap_check, hashmap yapisindan hash key'i arar
+ * bulunamazsa -1, bulunursa 1 doner.
  *
- * @param hashmap : 
- * @param hash_key :
+ * @param hashmap : hashmap yapisi 
+ * @param hash_key : hash anahtari
  */
 int32_t hashmap_check(hashmap_t *hashmap,void *hash_key){
 
@@ -177,9 +183,11 @@ int32_t hashmap_check(hashmap_t *hashmap,void *hash_key){
 }
 
 /*
- * hashmap_get_values,
+ * hashmap_get_values, hashmap yapisindaki itemler yada
+ * diger bir deyisle icerikleri bir liste olusturup, listeye
+ * doldurur ve listenin adresini dondurur.
  *
- * @param hashmap :
+ * @param hashmap : hashmap yapisi
  */
 list_t *hashmap_get_values(hashmap_t *hashmap){
 
@@ -204,9 +212,11 @@ list_t *hashmap_get_values(hashmap_t *hashmap){
 }
 
 /*
- * hashmap_get_keys,
+ * hashmap_get_keys, hashmap yapisindaki hash keyleri
+ * bir liste olusturup, listeye doldurur ve listenin adresini
+ * donudurur.
  *
- * @param hashmap :
+ * @param hashmap : hashmap yapisi
  */
 list_t *hashmap_get_keys(hashmap_t *hashmap){
 
@@ -231,10 +241,12 @@ list_t *hashmap_get_keys(hashmap_t *hashmap){
 }
 
 /*
- * hashmap_get,
+ * hashmap_get, hashmap yapisinda belirtilen hash anahtarina
+ * gore arama yapar ve hash anahtarina ait itemin-icerigin
+ * adresini dondurur.
  *
- * @param hashmap :
- * @param hash_key :
+ * @param hashmap : hashmap yapisi
+ * @param hash_key : hash anahtari
  */
 void *hashmap_get(hashmap_t *hashmap,void *hash_key){
 
@@ -267,11 +279,13 @@ void *hashmap_get(hashmap_t *hashmap,void *hash_key){
 }
 
 /*
- * hashmap_set,
+ * hashmap_set, hashmap yapisina hash anahtarina gore yeni
+ * icerik eklenir yada belirtilen hash anahtari onceden
+ * listede varsa icerigi guncellenir.
  *
- * @param hashmap :
- * @param item :
- * @param hash_key :
+ * @param hashmap : hashmap yapisi
+ * @param item : icerik
+ * @param hash_key : hash anahtari 
  */
 void *hashmap_set(hashmap_t *hashmap,void *item,void *hash_key){
 
@@ -328,9 +342,9 @@ void *hashmap_set(hashmap_t *hashmap,void *item,void *hash_key){
 }
 
 /*
- * hashmap_int_create,
+ * hashmap_int_create, integer hashmap olusturur.
  *
- * @param size :
+ * @param size : boyut
  */
 hashmap_t *hashmap_int_create(uint32_t size){
 
@@ -356,9 +370,9 @@ hashmap_t *hashmap_int_create(uint32_t size){
 }
 
 /*
- * hashmap_str_create,
+ * hashmap_str_create, string hashmap olusturur.
  *
- * @param size :
+ * @param size : boyut
  */
 hashmap_t *hashmap_str_create(uint32_t size){
 
@@ -383,10 +397,11 @@ hashmap_t *hashmap_str_create(uint32_t size){
 }
 
 /*
- * hashmap_remove,
+ * hashmap_remove, hashmap yapisindaki belirtilen hash
+ * anahtarini kaldirir.
  *
- * @param hashmap :
- * @param hash_key :
+ * @param hashmap : hashmap yapisi
+ * @param hash_key : hash anahtari
  */
 void *hashmap_remove(hashmap_t *hashmap,void *hash_key){
 
