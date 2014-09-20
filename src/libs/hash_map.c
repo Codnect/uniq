@@ -18,7 +18,7 @@
  */
 
 #include <uniq/module.h>
-#include <map.h>
+#include <hash_map.h>
 
 
 MODULE_AUTHOR("Burak Köken");
