@@ -30,4 +30,4 @@ typedef struct{
 
 }hash_map_t;
 
-#endif /* __UNIQ_HASH_MAP_H__ *
+#endif /* __UNIQ_HASH_MAP_H__ */
