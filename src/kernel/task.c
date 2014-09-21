@@ -98,6 +98,8 @@ page_dir_t *page_directory_clone(page_dir_t *src_directory){
 		}
 
 	}
+	
+	return clone;
 
 }
 
