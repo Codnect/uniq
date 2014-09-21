@@ -57,9 +57,9 @@ typedef struct{
 	 * ise flaglardir.bu tablonun adresini cr3 kaydedicesine
 	 * atacagiz.
 	 */
-	uint32_t tables_physic[PAGE_MAX_LIMIT];
-	/* tables_physic adresi */
-	uint32_t physic_addr;
+	uint32_t physical_tables[PAGE_MAX_LIMIT];
+	/* physical_tables adresi */
+	uint32_t physical_addr;
 	
 }page_dir_t;
 
