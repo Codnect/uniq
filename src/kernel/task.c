@@ -57,7 +57,7 @@ page_table_t *page_table_clone(page_table_t *src_table,uint32_t *physical_addr){
 	page_table_t *clone = (page_table_t*)kmalloc_aphysic(sizeof(page_table_t),physical_addr);
 	memset(clone,0,sizeof(page_table_t));
 
-	for(uint32_t i = 0;i < 1024;i++){
+	for(uint32_t i = 0;i < PAGE_MAX_LIMIT;i++){
 
 
 	}
