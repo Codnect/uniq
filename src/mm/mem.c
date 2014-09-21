@@ -513,7 +513,7 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 		uint32_t temp;
 		dir->tables[table_index] = (page_table_t *)kmalloc_aphysic(sizeof(page_table_t),&temp);
 		memset(dir->tables[table_index],0,FRAME_SIZE_BYTE);
-		dir->tables_physic[table_index] = temp | 0x7;	/* present,rw,us */
+		dir->physical_tables[table_index] = temp | 0x7;	/* present,rw,us */
 		return &dir->tables[table_index]->pages[addr % 1024];
 		
 	}
@@ -530,7 +530,7 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 void change_page_dir(page_dir_t *new_dir){
 
 	current_dir = new_dir;
-	__asm__ volatile("mov %0, %%cr3" :: "r"(&new_dir->tables_physic));
+	__asm__ volatile("mov %0, %%cr3" :: "r"(&new_dir->physical_tables));
 	enable_paging();
 
 }
