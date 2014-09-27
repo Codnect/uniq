@@ -19,7 +19,7 @@
 Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) | Maintainer
 ------- | ----- | -------- | ----------------- | --------------------
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | [v0.0.1-final](https://github.com/codnect/uniq/releases/tag/0.0.1-final) | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
-[**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1-release  | i386,i686 | 28.09.2014 | [Burak Köken](https://github.com/burakkoken)
+[**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.1-release  | i386,i686 | - | [Burak Köken](https://github.com/burakkoken)
 - | -   | i386,i686 | - | -
 - | -   | i386,i686 | - | -
 
