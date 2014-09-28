@@ -26,6 +26,29 @@ copy_page_phys:
 		pushf
 		cli
 		
+		mov ebx, [esp + 12]
+		mov ecx, [esp + 16]
+		
+		mov edx, cr0
+		and edx, 0x7fffffff
+		mov cr0, edx
+		
+		mov edx, 0x400
+
+.page_loop:
+		mov eax, [ebx]
+		mov [ecx], eax
+		
+		add ebx, 0x4
+		add ecx, 0x4
+		dec edx
+		
+		jnz .copy_page_loop
+		
+		mov edx, cr0
+		or  edx, 0x80000000
+		mov cr0, edx
+		
 		popf
 		pop ebx
 		ret
