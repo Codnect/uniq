@@ -43,7 +43,7 @@ copy_page_phys:
 		add ecx, 0x4
 		dec edx
 		
-		jnz .copy_page_loop
+		jnz .page_loop
 		
 		mov edx, cr0
 		or  edx, 0x80000000
