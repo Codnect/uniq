@@ -21,15 +21,21 @@
 #define __UNIQ_PROC_H__
 
 #include <uniq/types.h>
+#include <mm/mem.h>
 
 typedef struct{
-
+	uint32_t ebp;			/* base pointer */
+	uint32_t esp;			/* stack pointer */
+	uint32_t eip;			/* instruction pointer */
+	page_dir_t *page_dir;		/* sayfa dizini */
 }thread_t;
 
 typedef struct{
-  
+  	pid_t	id;			/* surec id */
+	char	*name;			/* surec ismi */
+	char	*description;		/* surec aciklamasi */
+	thread_t thread;		/* thread */
 }process_t;
-
 
 
 #endif /* __UNIQ_PROC_H__ */
