@@ -37,12 +37,13 @@ typedef struct{
 
 typedef struct{
   	pid_t	id;			/* surec id */
-	char	*name;			/* surec ismi */
-	char	*description;		/* surec aciklamasi */
+	char *name;			/* surec ismi */
+	char *description;		/* surec aciklamasi */
+	char **cmdline;
 	
 	thread_t thread;		/* thread */
 	uint32_t flags;			/* flaglar */
-	uint32_t umask;
+	uint32_t umask;	
 }process_t;
 
 
