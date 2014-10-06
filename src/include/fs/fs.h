@@ -28,6 +28,18 @@
 #define FS_SYMLINK      	0x20
 #define FS_MOUNTPOINT   	0x40
 
+struct fs_node;
+
+typedef void (*fs_open_t)(struct fs_node *node,uint32_t flags);
+typedef void (*fs_close_t)(struct fs_node *node);
+typedef uint32_t (*fs_read_t)(struct fs_node *node,uint32_t offset,uint32_t size,uint8_t *buf);
+typedef uint32_t (*fs_write_t)(struct fs_node *node,uint32_t offset,uint32_t size,uint8_t *buf);
+
+typedef struct dirent *(*fs_readdir_t)(struct fs_node *node, uint32_t index);
+typedef struct fs_node *(*fs_finddir_t)(struct fs_node *node,char *name);
+typedef void (*fs_mkdir_t)(struct fs_node *node,char *name,uint16_t perm);
+
+
 struct fs_node{
     	char  fname[256];           /* dosya ismi */
     	uint32_t mask;              /* izin maskeleri */
@@ -44,6 +56,20 @@ struct fs_node{
 	uint32_t create_time;       /* olusturma  */
 	
 	/* dosya islemleri */
+	fs_open_t open;
+	fs_close_t close;
+	fs_read_t read;
+	fs_write_t write;
+
+	fs_readdir_t readdir;
+	fs_finddir_t finddir;
+	fs_mkdir_t mkdir;
+	
 }fs_node_t;
+
+struct dirent{
+	uint32_t inode;
+	char fname[256];
+};
 
 #endif /* __UNIQ_FS__ */
