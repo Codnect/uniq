@@ -20,7 +20,6 @@
 BITS 32
 
 global copy_page_phys
-
 copy_page_phys:
 		push ebx
 		pushf
