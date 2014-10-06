@@ -32,8 +32,8 @@ struct fs_node;
 
 typedef void (*fs_open_t)(struct fs_node *node,uint32_t flags);
 typedef void (*fs_close_t)(struct fs_node *node);
-typedef uint32_t (*fs_read_t)(struct fs_node *node,uint32_t offset,uint32_t size,uint8_t *buf);
-typedef uint32_t (*fs_write_t)(struct fs_node *node,uint32_t offset,uint32_t size,uint8_t *buf);
+typedef int32_t (*fs_read_t)(struct fs_node *node,uint32_t offset,uint32_t size,uint8_t *buf);
+typedef int32_t (*fs_write_t)(struct fs_node *node,uint32_t offset,uint32_t size,uint8_t *buf);
 
 typedef struct dirent *(*fs_readdir_t)(struct fs_node *node, uint32_t index);
 typedef struct fs_node *(*fs_finddir_t)(struct fs_node *node,char *name);
