@@ -33,6 +33,8 @@ typedef struct{
 }page_t;
 
 #define PAGE_MAX_LIMIT		1024	/* sayfa ve tablo maksimum girdi sayisi */
+#define PAGE_MAX		PAGE_MAX_LIMIT
+#define PAGE_TABLE_MAX		1024
 #define PAGE_KERNEL_ACCESS	0x0
 #define PAGE_PRESENT		0x1
 /* user icin flaglar */
