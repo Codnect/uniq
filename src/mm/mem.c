@@ -485,7 +485,7 @@ page_t *get_page(uint32_t addr,bool make,page_dir_t *dir){
 void change_page_dir(page_dir_t *new_dir){
 
 	current_dir = new_dir;
-	__asm__ volatile("mov %0, %%cr3" :: "r"(&new_dir->physical_tables));
+	__asm__ volatile("mov %0, %%cr3" :: "r"(new_dir->physical_addr));
 	enable_paging();
 
 }
@@ -647,6 +647,7 @@ void paging_final(void){
 	 * degistiriyoruz.
 	 */
 	isr_add_handler(PAGE_FAULT_INT,page_fault_handler);
+	kernel_dir->physical_addr = (uint32_t)kernel_dir->physical_tables;
 	change_page_dir(kernel_dir);
 
 }
