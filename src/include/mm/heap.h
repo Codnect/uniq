@@ -30,6 +30,7 @@ uint32_t kmalloc(uint32_t size);
 
 #define PAGE_SIZE		4096
 #define KHEAP_INIT		0x00800000
+#define KHEAP_END  		0x20000000
 
 typedef struct{
 	uint32_t alloc_point;
