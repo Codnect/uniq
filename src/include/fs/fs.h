@@ -65,6 +65,7 @@ struct fs_node{
 	fs_finddir_t finddir;
 	fs_mkdir_t mkdir;
 	
+	struct fs_node *point;
 }fs_node_t;
 
 struct dirent{
