@@ -11,7 +11,8 @@ KERN_ISO=uniq-iso.iso
 LIBS = 	libs/string.o \
 	libs/ulib.o \
 	libs/linked_list.o \
-	libs/tree.o
+	libs/tree.o \
+	libs/hash_map.o
 
 DRIVERS = drivers/vga.o \
 	  drivers/pit.o \
@@ -33,6 +34,8 @@ ALLSOURCES = arch/x86/boot.o \
 	     kernel/panic.o \
 	     kernel/version.o \
 	     kernel/time.o \
+	     kernel/task.o \
+	     kernel/asm.o \
 	     mm/heap.o \
 	     mm/mem.o
 
@@ -58,4 +61,4 @@ link:
 	$(LD) -m $(LDEMULATION) $(LDFLAGS) -o $(KERN_OUTPUT) -b $(TARGET) $(SOURCES)
 
 qemu-run:
-	qemu -kernel $(KERN_OUTPUT) -rtc base=localtime
+	qemu -kernel $(KERN_OUTPUT) -cpu core2duo -m 1024M
