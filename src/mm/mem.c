@@ -47,7 +47,7 @@ typedef struct{
 	uint32_t total_mem;			/* toplam bellek (multiboot'tan aldigimiz bellek miktari) */
 	uint32_t nframe;			/* frame sayisi */
 	uint32_t *frame_map;			/* frame map adresi */
-	uint32_t aframe_size;			/* frame map icin tahsis edilmis bellek miktari (byte olarak) */
+	uint32_t alloc_frame_size;		/* frame map icin tahsis edilmis bellek miktari (byte olarak) */
 	int8_t remaining;			/* bunun amacini kod ustunde incelemeniz daha faydali olur ;),
 					 	* mod islemleri sonrasi kalan frame sayisi tuttugunu soyliyim.
 					 	*/
@@ -184,9 +184,9 @@ uint32_t use_memory_size(void){
 				}
 	}
 #else
-	max_index = mp_info.aframe_size / 4;
+	max_index = mp_info.alloc_frame_size / 4;
 
-	if(mp_info.aframe_size % 4)
+	if(mp_info.alloc_frame_size % 4)
 		max_index++;
 
 	for(index = 0; index < max_index; index++){
@@ -307,9 +307,9 @@ static uint32_t find_free_frame(void){
 			}
 	}
 #else
-	max_index = mp_info.aframe_size / 4;
+	max_index = mp_info.alloc_frame_size / 4;
 
-	if(mp_info.aframe_size % 4)
+	if(mp_info.alloc_frame_size % 4)
 		max_index++;
 	
 	for(index = 0; index < max_index; index++){
@@ -521,7 +521,7 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 
 #endif
 
-	mp_info->aframe_size = alloc_frame_byte;
+	mp_info->alloc_frame_size = alloc_frame_byte;
 	mp_info->frame_map = (uint32_t*)kmalloc(alloc_frame_byte);
  	memset(mp_info->frame_map,0,alloc_frame_byte);
 
@@ -545,17 +545,17 @@ static void dump_mp_info(mp_info_t *mp_info){
 	debug_print(KERN_DUMP,"Dump the memory paging info :");
 	debug_print(KERN_DUMP,"Frame map address is \033[1;37m%p\033[0m, Frame map end address is \033[1;37m%p",
 												mp_info->frame_map,
-												mp_info->frame_map + mp_info->aframe_size / 4);
+												mp_info->frame_map + mp_info->alloc_frame_size / 4);
 	debug_print(KERN_DUMP,"last_addr(end) : \033[1;37m%p",last_addr);	
 	debug_print(KERN_DUMP,"total memory size : %u KiB, total frame : %u",mp_info->total_mem,mp_info->nframe);
 
 #ifdef MEM_NORMAL_USE
-	debug_print(KERN_DUMP,"frame map size : %u Byte, available memory size : %u KiB",mp_info->aframe_size,
+	debug_print(KERN_DUMP,"frame map size : %u Byte, available memory size : %u KiB",mp_info->alloc_frame_size,
 										    	 (mp_info->nframe / 32) * 32 * FRAME_SIZE_KIB);
 
 	debug_print(KERN_DUMP,"unused memory size : %u KiB",mp_info->total_mem - (mp_info->nframe / 32) * 32 * FRAME_SIZE_KIB);
 #else
-	debug_print(KERN_DUMP,"frame map size : %u Byte, available memory size : %u KiB",mp_info->aframe_size,
+	debug_print(KERN_DUMP,"frame map size : %u Byte, available memory size : %u KiB",mp_info->alloc_frame_size,
 										    	 mp_info->nframe * FRAME_SIZE_KIB);
 
 	debug_print(KERN_DUMP,"unused memory size : %u KiB",mp_info->total_mem - mp_info->nframe * FRAME_SIZE_KIB);
