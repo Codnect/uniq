@@ -214,51 +214,6 @@ uint32_t use_memory_size(void){
 
 }
 
-
-#define HEAP_SIZE_1x	0x01000000	/* 16 MiB */
-#define HEAP_SIZE_2x	0x02000000	/* 32 MiB */
-#define HEAP_SIZE_4x	0x04000000	/* 64 MiB */
-#define HEAP_SIZE_8x	0x08000000	/* 128 MiB */
-#define HEAP_SIZE_16x	0x10000000	/* 256 MiB */
-#define HEAP_SIZE_32x	0x20000000	/* 512 MiB */
-
-/*
- * calc_heap_size, toplam bellek miktarina gore heap alaninin
- * boyutunu hesaplar. sistemin en az 64 MiB olmasi gerekiyor!
- */
-static void calc_heap_size(void){
-	
-	uint32_t total_mem = total_memory_size();
-	uint32_t n = total_mem / 8192;
-	
-	#define byte_to_kib(x)	(x / 1024)
-
-	if(n >= 8 && n < 16) /* 64 MiB - 128 MiB */
-		heap_info.size = HEAP_SIZE_1x;
-	else if(n >= 16 && n < 32) /* 128 MiB - 256 MiB */
-		heap_info.size = HEAP_SIZE_2x;
-	else if(n >= 32 && n < 64) /* 256 MiB - 512 MiB */
-		heap_info.size = HEAP_SIZE_4x;
-	else if(n >= 64 && n < 128) /* 512 MiB - 1024 MiB */
-		heap_info.size = HEAP_SIZE_8x;
-	else if(n >= 128 && n < 256) /* 1024 MiB - 2048 MiB */
-		heap_info.size = HEAP_SIZE_16x;
-	else /* 2048 MiB > */
-		heap_info.size = HEAP_SIZE_32x;
-
-	if(n < 8)
-		die("The size of memory is critically low for heap.");
-	else if(n < 64)
-		debug_print(KERN_INFO,"The size of memory is normal level for heap. Heap size : %u KiB",
-										byte_to_kib(heap_info.size));
-	else
-		debug_print(KERN_INFO,"The size of memory is very good level for heap. Heap size : %u KiB",
-										byte_to_kib(heap_info.size));
-
-	#undef byte_to_kib
-
-}
-
 /*
  * enable_paging, sayfalamayi aktif hale getirir.
  */
@@ -547,11 +502,12 @@ static void set_mp_info(mp_info_t *mp_info,uint32_t mem_size){
 	if(!mp_info)
 		die("mp_info address is not found!");
 
-	mp_info->total_mem = mem_size;	
+	mp_info->total_mem = mem_size;
 
 #ifdef MEM_NORMAL_USE
-	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
+	mp_info->nframe = mem_size / FRAME_SIZE_KIB;	/* frame adedi */
 	uint32_t alloc_frame_byte = mp_info->nframe / BITS_PER_BYTE;
+	//mp_info->nframe = alloc_frame_byte * 8;
 #else
 	mp_info->nframe = mem_size / FRAME_SIZE_KIB;
 	uint32_t alloc_frame_byte = mp_info->nframe / BITS_PER_BYTE;
@@ -644,7 +600,7 @@ void paging_final(void){
 	 * asil heap alanimiz 8 MiB'tan basliyor!
 	 */
 	uint32_t tmp_heap_start = KHEAP_INIT;
-	
+
 	/*
 	 * eger last_addr(linker "end") + 0x4000 asil heap alanimizin adresini asmissa heap
 	 * baslangic adresini 1 MiB ileri tasiyoruz.
@@ -658,7 +614,8 @@ void paging_final(void){
 		
 	}
 	heap_info.alloc_point = tmp_heap_start;
-
+	heap_info.end_point = KHEAP_END;
+	heap_info.size = heap_info.end_point - heap_info.alloc_point;
 	/*
 	 * mapping isleminden en son kaldigimiz yerden asil heap alani baslangicina kadar
 	 * sayfalari kullanmak icin ayarliyoruz.
@@ -666,11 +623,6 @@ void paging_final(void){
 	for (uint32_t i = last_addr + 0x4000; i < tmp_heap_start  ; i += FRAME_SIZE_BYTE)
 		alloc_frame(get_page(i,true,kernel_dir),PAGE_RONLY,PAGE_KERNEL_ACCESS);
 
-	/*
-	 * heap boyutu bellek boyutuna bagli olarak degiskenlik gosterecektir.
-	 * yukaridaki calc_heap_size fonksiyonunu inceleyiniz.
-	 */
-	heap_info.end_point = tmp_heap_start + heap_info.size;
 	debug_print(KERN_DUMP,"(%p - %p) preallocation for heap. %u Byte / %u KiB",heap_info.alloc_point,
 								  		   heap_info.end_point,
 								   	  	   heap_info.size,
@@ -712,7 +664,6 @@ void paging_init(uint32_t mem_size){
 	debug_print(KERN_INFO,"Initializing the paging.");
 	set_mp_info(&mp_info,mem_size);
 	dump_mp_info(&mp_info);
-	calc_heap_size();
 
 	kernel_dir = (page_dir_t *)kmalloc_align(sizeof(page_dir_t));
 	memset(kernel_dir,0,sizeof(page_dir_t));
