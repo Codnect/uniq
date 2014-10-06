@@ -28,7 +28,7 @@
 #define FS_SYMLINK      	0x20
 #define FS_MOUNTPOINT   	0x40
 
-struct fs_node_t{
+struct fs_node{
     	char  fname[256];           /* dosya ismi */
     	uint32_t mask;              /* izin maskeleri */
     	uint32_t uid;               /* kullanici sahip id*/
@@ -44,6 +44,6 @@ struct fs_node_t{
 	uint32_t create_time;       /* olusturma  */
 	
 	/* dosya islemleri */
-};
+}fs_node_t;
 
 #endif /* __UNIQ_FS__ */
