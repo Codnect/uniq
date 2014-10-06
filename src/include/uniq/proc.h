@@ -23,6 +23,11 @@
 #include <uniq/types.h>
 #include <mm/mem.h>
 
+#define PROCESS_STARTED			0x1
+#define PROCESS_RUNNING			0x2
+#define PROCESS_FINISHED		0x4
+#define PROCESS_PREUMASK		022
+
 typedef struct{
 	uint32_t ebp;			/* base pointer */
 	uint32_t esp;			/* stack pointer */
@@ -34,7 +39,10 @@ typedef struct{
   	pid_t	id;			/* surec id */
 	char	*name;			/* surec ismi */
 	char	*description;		/* surec aciklamasi */
+	
 	thread_t thread;		/* thread */
+	uint32_t flags;			/* flaglar */
+	uint32_t umask;
 }process_t;
 
 
