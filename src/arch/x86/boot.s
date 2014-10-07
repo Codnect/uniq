@@ -34,7 +34,7 @@ extern code
 extern bss
 extern end
 
-
+SECTION .mboot
 mboot_header:
 		dd	MBOOT_HEADER_MAGIC
 		dd	MBOOT_HEADER_FLAGS
@@ -46,15 +46,25 @@ mboot_header:
 		dd	kentry			; kernel giris noktasi (ilk EIP)
 
 
+SECTION .text
+
 global kentry					; kernel giris noktasi
 extern kmain
 
 kentry:
+
+		mov esp, 0x7FFFF		; stack pointer'i ayarliyoruz
+		push esp
+
 		push eax			; multiboot onyuklecisi
 						; magic number = 0x2BADB002
 		push ebx			; multiboot yapisi adresi
+
 
 		; kerneli calistir
 		cli				; kesmeleri kapat
 		call kmain
 		jmp $
+
+SECTION .bss
+		resb 8192			; 8 KiB
