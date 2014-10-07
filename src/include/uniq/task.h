@@ -20,7 +20,9 @@
 #ifndef __UNIQ_TASK_H__
 #define __UNIQ_TASK_H__
 
+#include <mm/mem.h>
 
-
+extern page_dir_t *page_directory_clone(page_dir_t *src_directory);
+extern page_table_t *page_table_clone(page_table_t *src_table,uint32_t *physical_addr);
 
 #endif /* __UNIQ_TASK_H__ */
