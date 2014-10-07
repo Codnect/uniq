@@ -24,6 +24,7 @@
 
 
 process_t *current_process = NULL;			/* calistirilan surec */
+process_t *idle_process = NULL;				/* kernel bos sureci */
 
 list_t *process_list;					/* surec listesi */
 list_t *process_ready_queue;				/* hazir olan surec listesi */		
