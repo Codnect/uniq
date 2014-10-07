@@ -18,6 +18,16 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/kernel.h>
+
+/*
+ * vfs_init,
+ */
+void vfs_init(void){
+ 
+	debug_print(KERN_INFO,"Initializing the vfs.");
+ 
+}
  
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
