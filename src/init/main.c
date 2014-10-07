@@ -24,11 +24,14 @@
 
 extern void time_init(void);
 
-void kmain(mboot_info_t *mboot_info,uint32_t mboot_magic){
+void kmain(mboot_info_t *mboot_info,uint32_t mboot_magic,uint32_t stack_ptr){
 
+	
 	/* vga konsol */
 	init_vga_console();
 	time_init();
+
+	debug_print(KERN_INFO,"Stack pointer : \033[1;7m%P",stack_ptr);
 
 	if(mboot_magic != MULTIBOOT_LOADER_MAGIC)
 		debug_print(KERN_WARNING,"Invalid the magic number. The magic number is \033[1;31m%P",mboot_magic);
@@ -56,6 +59,7 @@ void kmain(mboot_info_t *mboot_info,uint32_t mboot_magic){
 	 __page_fault_test();
 #endif
 	heap_init();
+	multitasking_init();
 
 }
 
