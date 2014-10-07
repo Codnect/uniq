@@ -14,6 +14,7 @@
 **Son Sürüm(Latest Release)** |[v0.0.1-final](https://github.com/codnect/uniq/releases/tag/0.0.1-final)
 **Çekirdek Türü(Kernel Type)**|Monolitik Kernel(Monolithic Kernel)
 **Lisans(License)**| [GNU GPL v2](https://github.com/codnect/uniq/blob/master/LICENSE)
+**Dosya Sistemleri(File Systems)** | -
 
 ####Kernel Sürüm Geçmişi (Kernel Version History)####
 Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) | Maintainer
