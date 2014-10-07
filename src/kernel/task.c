@@ -72,18 +72,12 @@ page_table_t *page_table_clone(page_table_t *src_table,uint32_t *physical_addr){
 		/*
  		 * flaglari ayarliyoruz
 		 */	
-		if(src_table->pages[i].present)
-			clone_table->pages[i].present = true;
-		if(src_table->pages[i].rw)
-			clone_table->pages[i].rw = true;
-		if(src_table->pages[i].user)
-			clone_table->pages[i].user = true;
-		if(src_table->pages[i].accessed)
-			clone_table->pages[i].accessed = true;
-		if(src_table->pages[i].dirty)
-			clone_table->pages[i].dirty = true;
+		clone_table->pages[i].present 	= src_table->pages[i].present;
+		clone_table->pages[i].rw 	= src_table->pages[i].rw;
+		clone_table->pages[i].user 	= src_table->pages[i].user;
+		clone_table->pages[i].accessed 	= src_table->pages[i].accessed;
+		clone_table->pages[i].dirty 	= src_table->pages[i].dirty;
 
-		
 		copy_page_phys(src_table->pages[i].frame * FRAME_SIZE_BYTE,clone_table->pages[i].frame * FRAME_SIZE_BYTE);
 	
 	}
