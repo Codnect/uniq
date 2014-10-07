@@ -75,4 +75,4 @@ struct dirent{
 	char fname[256];
 };
 
-#endif /* __UNIQ_FS__ */
+#endif /* __UNIQ_FS_H__ */
