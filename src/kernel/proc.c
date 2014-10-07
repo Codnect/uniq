@@ -18,6 +18,31 @@
  */
  
 #include <uniq/module.h>
+#include <uniq/proc.h>
+#include <tree.h>
+#include <list.h>
+
+
+process_t *current_process = NULL;			/* calistirilan surec */
+
+list_t *process_list;					/* surec listesi */
+list_t *process_ready_queue;				/* hazir olan surec listesi */		
+list_t *process_sleep_queue;				/* beklemeye alinmis surec listesi */
+tree_t *process_tree;					/* surec agaci (parent-child) */
+
+char *process_default_name = "[unnamed process]";	/* varsayilan surec ismi */
+
+/*
+ * process_init,
+ */
+void process_init(void){
+
+	process_tree = tree_create();
+	process_list = list_create();
+	process_ready_queue = list_create();
+	process_sleep_queue = list_create();
+
+}
  
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
