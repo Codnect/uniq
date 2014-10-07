@@ -19,6 +19,7 @@
  
 #include <uniq/module.h>
 #include <uniq/kernel.h>
+#include <fs/fs.h>
 
 /*
  * vfs_init,
@@ -29,5 +30,97 @@ void vfs_init(void){
  
 }
  
+/*
+ * fs_read,
+ *
+ * @param node :
+ * @param offset :
+ * @param size :
+ * @param buf :
+ */
+int32_t fs_read(fs_node_t *node,uint32_t offset,uint32_t size,uint8_t *buf){
+
+	if(!node)
+		return -1;
+
+	if(node->read)
+		return node->read(node,offset,size,buf);
+
+	return -1;
+
+}
+
+/*
+ * fs_write,
+ *
+ * @param node :
+ * @param offset :
+ * @param size :
+ * @param buf :
+ */
+int32_t fs_write(fs_node_t *node,uint32_t offset,uint32_t size,uint8_t *buf){
+
+	if(!node)
+		return -1;
+
+	if(node->read)
+		return node->write(node,offset,size,buf);
+
+	return -1;
+
+}
+
+/*
+ * fs_open,
+ *
+ * @param node :
+ * @param flags :
+ */
+void fs_open(fs_node_t *node,uint32_t flags){
+
+	if(!node)
+		return;
+
+}
+
+/*
+ * fs_close,
+ *
+ * @param node :
+ */
+void fs_close(fs_node_t *node){
+
+	if(!node)
+		return;
+
+}
+
+/*
+ * fs_readdir,
+ *
+ * @param node :
+ * @param index :
+ */
+struct dirent *fs_readdir(fs_node_t *node,uint32_t index){
+
+	if(!node)
+		return NULL;
+
+}
+
+/*
+ * fs_finddir,
+ *
+ * @param node :
+ * @param name :
+ */
+fs_node_t *fs_finddir(fs_node_t *node,char *name){
+
+	if(!node)
+		return NULL;
+
+}
+
+
 MODULE_AUTHOR("Burak Köken");
 MODULE_LICENSE("GNU GPL v2");
