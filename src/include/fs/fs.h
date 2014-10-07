@@ -20,6 +20,8 @@
 #ifndef __UNIQ_FS_H__
 #define __UNIQ_FS_H__
 
+#include <uniq/types.h>
+
 #define FS_FILE         	0x01
 #define FS_DIRECTORY    	0x02
 #define FS_CHAR_DEVICE  	0x04
@@ -40,7 +42,7 @@ typedef struct fs_node *(*fs_finddir_t)(struct fs_node *node,char *name);
 typedef void (*fs_mkdir_t)(struct fs_node *node,char *name,uint16_t perm);
 
 
-struct fs_node{
+typedef struct fs_node{
     	char  fname[256];           /* dosya ismi */
     	uint32_t mask;              /* izin maskeleri */
     	uint32_t uid;               /* kullanici sahip id*/
