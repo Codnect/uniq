@@ -120,13 +120,13 @@ static void cpuid(uint32_t op_num,uint32_t *eax,uint32_t *ebx,uint32_t *ecx,uint
 }
 
 /*
- * verify_intel_cpu, kendisine parametre olarak verilen
+ * is_intel_cpu, kendisine parametre olarak verilen
  * cpuid kaydedicilerine gore cpu'nun imzalarinin 
  * intel cpu imzalariyla eslesip eslesmedigini kontrol eder.
  *
  * @param regs : cpuid kaydedicileri
  */
-static bool verify_intel_cpu(cpuid_regs_t *regs){
+static bool is_intel_cpu(cpuid_regs_t *regs){
 
 	if(regs->ebx != INTEL_SIGNATURE_EBX ||
 	   regs->ecx != INTEL_SIGNATURE_ECX ||
@@ -137,13 +137,13 @@ static bool verify_intel_cpu(cpuid_regs_t *regs){
 }
 
 /*
- * verify_amd_cpu, kendisine parametre olarak verilen
+ * is_amd_cpu, kendisine parametre olarak verilen
  * cpuid kaydedicilerine gore cpu'nun imzalarinin 
  * amd cpu imzalariyla eslesip eslesmedigini kontrol eder.
  *
  * @param regs : cpuid kaydedicileri
  */
-static bool verify_amd_cpu(cpuid_regs_t *regs){
+static bool is_amd_cpu(cpuid_regs_t *regs){
 
 	if(regs->ebx != AMD_SIGNATURE_EBX ||
 	   regs->ecx != AMD_SIGNATURE_ECX ||
@@ -248,14 +248,11 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 
 	if(max_eax >= 0x80000004) {
 			for(uint32_t i = 0x80000002; i <= 0x80000004;i++){
-
 				cpuid(i,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 				get_brand_string(cpuid_info->brand_string,&cpuid_regs);
-
 			}
 	}
 	else if(brand > 0){
-
 		if(brand < 0x18){
 			if(signature == 0x000006B1 || signature == 0x00000F13)
 				strcpy(cpuid_info->brand_string,intel_old_cpu_list[brand + 24]);
@@ -264,10 +261,8 @@ static void do_intel_cpuinfo(cpuid_info_t *cpuid_info){
 		}
 		else
 			strcpy(cpuid_info->brand_string,"reserved");
-
 	}
 	
-
 }
 
 
@@ -308,10 +303,8 @@ static void do_amd_cpuinfo(cpuid_info_t *cpuid_info){
 
 	if(extended >= 0x80000002) {
 			for(uint32_t i = 0x80000002;i <= 0x80000004;i++){
-
 				cpuid(i,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 				get_brand_string(cpuid_info->brand_string,&cpuid_regs);
-
 			}
 	}
 
@@ -332,15 +325,14 @@ bool get_cpuid_info(cpuid_info_t *cpuid_info){
 	cpuid_regs_t cpuid_regs;
 	cpuid(CPUID_VENDOR_ID,&cpuid_regs.eax,&cpuid_regs.ebx,&cpuid_regs.ecx,&cpuid_regs.edx);
 
-	if(verify_intel_cpu(&cpuid_regs))		/* intel islemci */
+	if(is_intel_cpu(&cpuid_regs))		/* intel islemci */
 		do_intel_cpuinfo(cpuid_info);
-	else if(verify_amd_cpu(&cpuid_regs))		/* amd islemci */
+	else if(is_amd_cpu(&cpuid_regs))		/* amd islemci */
 		do_amd_cpuinfo(cpuid_info);
 	else{						/* bilinmeyen */
 
 		strcpy(cpuid_info->vendor_id,"Unknown cpu vendor!");
 		strcpy(cpuid_info->brand_string,"Not found brand string!");
-
 		cpuid_info->stepping = 0;
 		cpuid_info->model = 0;
 		cpuid_info->cpu_family = 0;
