@@ -110,7 +110,7 @@ void get_brand_string(char *brand,cpuid_regs_t *regs){
  *
  * @param eax,ebx,ecx,edx : cpuid regs
  */
-static inline void cpuid(uint32_t op_num,uint32_t *eax,uint32_t *ebx,uint32_t *ecx,uint32_t *edx){
+static void cpuid(uint32_t op_num,uint32_t *eax,uint32_t *ebx,uint32_t *ecx,uint32_t *edx){
 
 	__asm__ volatile("cpuid"
 			 : "=a"(*eax), "=b"(*ebx), "=c"(*ecx), "=d"(*edx)
@@ -126,7 +126,7 @@ static inline void cpuid(uint32_t op_num,uint32_t *eax,uint32_t *ebx,uint32_t *e
  *
  * @param regs : cpuid kaydedicileri
  */
-static inline bool verify_intel_cpu(cpuid_regs_t *regs){
+static bool verify_intel_cpu(cpuid_regs_t *regs){
 
 	if(regs->ebx != INTEL_SIGNATURE_EBX ||
 	   regs->ecx != INTEL_SIGNATURE_ECX ||
@@ -143,7 +143,7 @@ static inline bool verify_intel_cpu(cpuid_regs_t *regs){
  *
  * @param regs : cpuid kaydedicileri
  */
-static inline bool verify_amd_cpu(cpuid_regs_t *regs){
+static bool verify_amd_cpu(cpuid_regs_t *regs){
 
 	if(regs->ebx != AMD_SIGNATURE_EBX ||
 	   regs->ecx != AMD_SIGNATURE_ECX ||
