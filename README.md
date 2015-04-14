@@ -1,5 +1,3 @@
-![Uniq]
-
 **Uniq**, x86 mimarisine sahip bir işletim sistemi çekirdeğidir. *Unix* yada *Linux* tabanlı değildir,*Unix* benzeri bir işletim sistemi çekirdeği diyebiliriz ve tüm çekirdek sıfırdan yazılmıştır. Bunun yanında çekirdeğin **POSIX** standartlarını büyük ölçüde desteklemeye
 çalışacaktır.
 
@@ -20,8 +18,8 @@ Kod Adı(Code Name)| Sürüm(Version) | Platform | Sürüm Tarihi(Release Date) 
 ------- | ----- | -------- | ----------------- | --------------------
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | [v0.0.1-final](https://github.com/codnect/uniq/releases/tag/0.0.1-final) | i386 | 28.08.2014 | [Burak Köken](https://github.com/burakkoken)
 [**Dennis Ritchie**](http://en.wikipedia.org/wiki/Dennis_Ritchie) | v0.0.2-alpha | i386 | - | [Burak Köken](https://github.com/burakkoken)
-- | -   | i386,i686 | - | -
-- | -   | i386,i686 | - | -
+- | v0.0.2-beta   | i386 | - | -
+- | v0.0.2-final   | i386,i686 | - | -
 
 ####Sorularla Uniq####
 
